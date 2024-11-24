@@ -1,0 +1,86 @@
+.note-lokasi-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 0;
+}
+
+.note-lokasi-card {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1000px;
+  z-index: 1000;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+
+.note-lokasi-card.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.accordion-toggle {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  z-index: 1001;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+}
+
+.note-lokasi-card.minimized {
+  transform: translateX(-50%) translateY(calc(80% - 70px)); /* Tinggi card minimized */
+  overflow: hidden;
+  padding: 5px 15px; /* Jarak lebih rapi untuk konten */
+}
+
+.note-lokasi-card.minimized .card-body {
+  padding: 5px 20px; /* Padding minimal saat card minimized */
+}
+
+.note-lokasi-card .custom-tag {
+  padding: 5px 10px; /* Tambahkan jarak internal di badge */
+  font-size: 0.9rem; /* Sesuaikan ukuran tag */
+}
+
+.note-lokasi-card .content-wrapper {
+  padding: 10px 20px; /* Jarak dari tepi card */
+}
+
+.note-lokasi-card .content-wrapper h1.custom-medium-small {
+  font-size: 1.1rem;
+  margin: 0;
+  text-align: center; /* Agar text berada di tengah */
+}
+
+.note-lokasi-card .content-wrapper .tags-wrapper {
+  margin-top: 8px; /* Jarak antar badge dan title */
+}
+
+.note-lokasi-card .content-wrapper .btn {
+  padding: 5px 15px;
+}
+.pick-location-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.pick-location-actions {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+}

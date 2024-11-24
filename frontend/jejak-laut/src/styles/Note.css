@@ -1,0 +1,86 @@
+.custom-tag {
+    background-color: #052844 !important;
+    color: white !important;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px !important;
+}
+
+.text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+.custom-small {
+    color: #052844 !important;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 590;
+}
+
+.custom-very-small {
+    color: #697076 !important;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px !important;
+    font-weight: 500;
+}
+
+.custom-medium {
+    color: #052844 !important;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+}
+
+.custom-medium-small {
+    color: #052844 !important;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px !important;
+    font-weight: bold;
+}
+
+.custom-medium-small-2 {
+    color: #052844 !important;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px !important;
+    font-weight: bold;
+}
+
+.custom-judul {
+    color: #052844 !important;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+.custom-button {
+    background-color: #052844 !important;
+    color: #cbe9fa !important;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.custom-button:hover {
+    background-color: #cbe9fa !important;
+    color: #052844 !important;
+}
+
+.custom-button-2 {
+    background-color: #cbe9fa !important;
+    color: #052844 !important;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.custom-button-2:hover {
+    background-color: #052844 !important;
+    color: #cbe9fa !important;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
