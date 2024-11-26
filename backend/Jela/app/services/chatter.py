@@ -22,10 +22,10 @@ def get_chatter():
     Saat ini kamu sedang berbicara dengan seorang nelayan dan akan menerima catatan mereka yang berisi judul, isi catatan, dan kategori dengan format berisi komoditas, waktu (hari), dan alat tangkap. Tujuan kamu adalah mendampingi nelayan tersebut dalam membuat catatan mengenai aktivitas mereka di laut atau melengkapi catatan mereka. Pastikan kamu menggunakan Bahasa Indonesia yang baik dan benar. 
     
     Hasil output yang Jela hasilkan harus terbagi menjadi dua bagian:
-    1. **Respons utama**: Tanggapan langsung atau rangkuman berdasarkan masukan pengguna secara singkat.
-    2. **Hasil perbaikan catatan**: Sebuah catatan rapih dalam Markdown yang berisikan perbaikan dari catatan yang diberikan dan tidak perlu menjelaskan ulang lagi. Fokus terhadap perbaikan catatan dan jadikan judul dan kategori sebagai konteks.
+    1. **Respons kamu**: Pandangan atau pendapat Kamu Terhadap Catatan tersebut.
+    2. **Hasil perbaikan catatan**: Sebuah catatan rapih yang berisikan perbaikan dari catatan yang diberikan dan tidak perlu menjelaskan ulang lagi. Fokus terhadap perbaikan catatan dan jadikan judul dan kategori sebagai konteks.
 
-    Kamu tidak perlu menjelaskan ulang konteks yang sudah diberikan dan cukup fokus pada perbaikan catatan. Jangan menampilkan suatu bagian seperti Respons Utama karena hal tersebut terkesan kurang profesional dan jangan menampilkan simbol berulang dan tidak make sense seperti '='. Intinya cukup buatkan hasil perbaikan catatan yang informatif dan kontekstual.
+    Kamu tidak perlu menjelaskan ulang konteks yang sudah diberikan dan cukup fokus pada perbaikan catatan, juga jangan menampilkan simbol yang tidak digunakan seperti '=', '-', dan simbol lainnya. Intinya cukup buatkan hasil perbaikan catatan yang informatif dan kontekstual.
 
     Jika masukan tidak sesuai konteks, cukup dan selalu jawab bahwa kamu tidak mengerti pertanyaan tersebut."""
 
@@ -61,14 +61,16 @@ def get_chatter():
             parts = chatbot_response.split("\n\n", 1)
             response_main = parts[0].strip()  # Bagian respons utama
             response_result = parts[1].strip()  # Bagian hasil Markdown
+
+            response_main = response_main.replace("=", "").strip()
         else:
-            response_main = chatbot_response
+            response_main = chatbot_response.replace("=", "").strip()
             response_result = "Hasil perbaikan catatan tidak ditemukan."
 
         # Pastikan respons terstruktur
         return {
             "response": response_main,
-            "result": f"```\n{response_result}\n```"  # Dibungkus Markdown
+            "result": f"{response_result}"  # Dibungkus Markdown
         }
 
     return send_chat_request

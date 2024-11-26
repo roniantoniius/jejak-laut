@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Depends
 from fastapi.security import APIKeyHeader
-from fastapi.openapi.models import APIKey
 
 from app.routes import chat, health
 from app.utils.token_manager import generate_token
@@ -14,6 +13,8 @@ app = FastAPI(
 # Tambahkan APIKeyHeader untuk Swagger UI
 API_KEY_HEADER = APIKeyHeader(name="Authorization", auto_error=True)
 
+
+# well this on_event is deprecated so we need to use app.add_event_handler instead
 @app.on_event("startup")
 def configure_openapi():
     if app.openapi_schema:

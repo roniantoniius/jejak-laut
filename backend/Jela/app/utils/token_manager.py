@@ -5,7 +5,7 @@ from fastapi import HTTPException, status
 from time import time
 
 # Koneksi ke Redis
-redis_client = redis.Redis(host='localhost', port=6380, db=0)
+redis_client = redis.Redis(host='localhost', port=6380, db=0) # arti dari database 0 adalah database default
 
 # Waktu habis token (30 menit)
 TOKEN_EXPIRATION_TIME = timedelta(minutes=30)
