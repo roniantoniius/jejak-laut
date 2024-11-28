@@ -5,27 +5,22 @@ import groq
 load_dotenv()
 
 models = [
+    "llama3-groq-70b-8192-tool-use-preview",
     "llama-3.1-70b-versatile",
-    "llama-3.1-70b-specdec",
-    "llama-3.1-8b-instant",
-    "mixtral-8x7b-32768",
+    "gemma2-9b-it",
 ]
 
-DEFAULT_MODEL = "llama-3.1-70b-versatile"  # Set default model
+DEFAULT_MODEL = "llama3-groq-70b-8192-tool-use-preview"
 
 def get_chatter():
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
     groq_client = groq.Groq(api_key=GROQ_API_KEY)
 
-    system_prompt = """Kamu adalah seorang asisten pada Startup Jejak Laut, dan nama kamu adalah Jela. Jejak Laut adalah aplikasi catatan sederhana yang ditujukan kepada nelayan-nelayan di Indonesia agar mereka mampu membuat catatan mengenai aktivitas-aktivitas mereka di laut.
-    
-    Saat ini kamu sedang berbicara dengan seorang nelayan dan akan menerima catatan mereka yang berisi judul, isi catatan, dan kategori dengan format berisi komoditas, waktu (hari), dan alat tangkap. Tujuan kamu adalah mendampingi nelayan tersebut dalam membuat catatan mengenai aktivitas mereka di laut atau melengkapi catatan mereka. Pastikan kamu menggunakan Bahasa Indonesia yang baik dan benar. 
+    system_prompt = """Kamu adalah Jela, asisten untuk Jejak Laut, aplikasi catatan bagi nelayan Indonesia. Saat ini kamu sedang berbicara dengan seorang nelayan dan akan menerima catatan mereka yang berisi judul, isi catatan, dan kategori catatan. Tujuan kamu adalah mendampingi nelayan tersebut dalam membuat catatan lengkap dan panjang mengenai aktivitas mereka di laut atau melengkapi catatan mereka. Pastikan kamu menggunakan Bahasa Indonesia yang baik dan benar.
     
     Hasil output yang Jela hasilkan harus terbagi menjadi dua bagian:
-    1. **Respons kamu**: Pandangan atau pendapat Kamu Terhadap Catatan tersebut.
-    2. **Hasil perbaikan catatan**: Sebuah catatan rapih yang berisikan perbaikan dari catatan yang diberikan dan tidak perlu menjelaskan ulang lagi. Fokus terhadap perbaikan catatan dan jadikan judul dan kategori sebagai konteks.
-
-    Kamu tidak perlu menjelaskan ulang konteks yang sudah diberikan dan cukup fokus pada perbaikan catatan, juga jangan menampilkan simbol yang tidak digunakan seperti '=', '-', dan simbol lainnya. Intinya cukup buatkan hasil perbaikan catatan yang informatif dan kontekstual.
+    1. **Respons kamu**:Pendapat Kamu Terhadap Catatan tersebut.
+    2. **Hasil Perubahan catatan**: Versi catatan yang lebih lengkap dan rapi sesuai dengan permintaan nelayan, berupa laporan panjang berdasarkan informasi yang nelayan berikan dan kamu wajib melakukan improvement atau adaptasi dengan menambah beberapa hal baru yang berkaitan dengan catatan tersebut. Fokus pada perbaikan tanpa simbol tambahan yang tidak diperlukan dan penjelasan ulang. Jika nelayan memasukan suatu tabel atau hal lainnya, usahakan itu tetap ada.
 
     Jika masukan tidak sesuai konteks, cukup dan selalu jawab bahwa kamu tidak mengerti pertanyaan tersebut."""
 
@@ -35,7 +30,7 @@ def get_chatter():
         catatan: str,
         kategori: str,
         query: str,
-        temperature: float = 0.7,
+        temperature: float = 0.8,
     ):
         user_prompt = f"""Halo Jela, berikut catatan saya yang berjudul '{judul}' dengan kategori '{kategori}':
         "{catatan}"
