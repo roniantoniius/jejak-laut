@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
-import { Row, Col, Stack, Button, Form, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Row, Col, Stack, Form, Card } from "react-bootstrap";
 import ReactSelect from "react-select";
 import { Tag } from "../App";
 import styles from "../styles/NoteList.module.css";
@@ -8,6 +7,7 @@ import '../styles/Note.css';
 import { GuideStep } from "../components/GuideStep";
 import { EditTagsModal } from "../components/EditTagsModel";
 import { NoteCard, SimplifiedNote } from "../components/NoteCard";
+import { PopupCard } from "../components/PopupCard";
 
 type NoteListProps = {
   availableTags: Tag[];
@@ -49,17 +49,20 @@ export function NoteList({
           </Stack>
         </Col>
         <Col xs="auto">
-          <Stack gap={2} direction="horizontal">
-            <Link to="/baru">
-              <Button variant="primary custom-button">Tambah Jejak Baru</Button>
-            </Link>
-            <Button
-              onClick={() => setEditTagsModalIsOpen(true)}
-              variant="outline-secondary text"
-            >
-              Perbarui Kategori
-            </Button>
-          </Stack>
+          <PopupCard
+            icon={<img src="/dark-nobg.svg" alt="Icon" style={{ width: 24, height: 24 }} />}
+            title="Menu Aksi"
+            buttons={[
+              {
+                label: "Tambah Jejak Baru",
+                onClick: () => console.log("Navigasi ke Tambah Jejak Baru"),
+              },
+              {
+                label: "Perbarui Kategori",
+                onClick: () => setEditTagsModalIsOpen(true),
+              },
+            ]}
+          />
         </Col>
       </Row>
       <hr className={styles.horizontalDivider} />
@@ -111,13 +114,20 @@ export function NoteList({
         </Card.Body>
       </Card>
 
-      <Row xs={1} sm={2} lg={3} xl={2} className="g-3">
+      <Row className="g-3">
         {filteredNotes.map((note) => (
-          <Col key={note.id}>
-            <NoteCard id={note.id} title={note.title} tags={note.tags} latitude={note.latitude} longitude={note.longitude} />
+          <Col xs={12} key={note.id}>
+            <NoteCard
+              id={note.id}
+              title={note.title}
+              tags={note.tags}
+              latitude={note.latitude}
+              longitude={note.longitude}
+            />
           </Col>
         ))}
       </Row>
+
       <EditTagsModal
         onUpdateTag={onUpdateTag}
         onDeleteTag={onDeleteTag}

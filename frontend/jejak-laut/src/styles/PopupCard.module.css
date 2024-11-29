@@ -1,0 +1,61 @@
+.popupCardContainer {
+    top: 10px;
+    right: 100px;
+    z-index: 1100; /* Pastikan lebih tinggi dari elemen lain */
+}
+
+.floatingButton {
+    display: flex; /* Pastikan tombol terpusat */
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    background-color: #007bff; /* Warna tombol */
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+}
+
+.floatingButton:hover {
+    transform: scale(1.1);
+}
+
+.popup {
+    position: absolute; /* Tetap absolute agar menempel pada container */
+    top: 80px;
+    right: 92px;
+    min-width: 400px;
+    padding: 1rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1200; /* Lebih tinggi dari .popupCardContainer */
+}
+
+.title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.popupButton {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    text-align: center;
+    background-color: #007bff; /* Warna tombol popup */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.popupButton:hover {
+    background-color: #0056b3; /* Warna hover */
+}
