@@ -1,3 +1,4 @@
 env/
 .env
 app/__pycache__/
+.tes_redis.py

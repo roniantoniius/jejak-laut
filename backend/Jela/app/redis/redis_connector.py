@@ -1,4 +1,5 @@
 import os
+import asyncio
 from dotenv import load_dotenv
 import redis.asyncio as redis
 
@@ -39,3 +40,17 @@ class RedisTokenManager:
         """Delete a token from Redis."""
         connection = await self.create_connection()
         await connection.delete(key)
+
+    async def get_latest_token(self):
+        """Now were getting the last token based on the most recent addition time."""
+
+        koneksi = await self.create_connection()
+        kuncis = await koneksi.keys("token:*")
+        if not kuncis:
+            return None
+
+        tugas = [koneksi.ttl(kunci) for kunci in kuncis]
+        ttls = await asyncio.gather(*tugas)
+        indeks_token_terbaru = ttls.index(max(ttls))
+        kunci_token_terbaru = kuncis[indeks_token_terbaru]
+        return kunci_token_terbaru.split("token:")[1]

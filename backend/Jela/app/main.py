@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import APIKeyHeader
 from app.routes import chat, health
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,9 +8,9 @@ from app.redis.redis_connector import RedisTokenManager
 
 
 app = FastAPI(
-    title="Jela Chatbot API",
-    description="Microservice chatbot untuk mendampingi nelayan mencatat aktivitas di laut.",
-    version="1.0.0",
+    title="Jela",
+    description="Microservice chatbot untuk mendampingi nelayan mencatat aktivitas di laut adalah Jela.",
+    version="1.5.1",
 )
 
 API_KEY_HEADER = APIKeyHeader(name="Authorization", auto_error=True)
@@ -40,20 +40,23 @@ async def startup():
     # Membuat koneksi Redis saat aplikasi mulai
     await redis_client.create_connection()
 
-@app.get("/ping")
-async def ping():
-    # Memeriksa apakah Redis terhubung dengan benar
-    redis_connection = await redis_client.create_connection()
-    pong = await redis_connection.ping()
-    return {"message": pong}
-
-@app.post("/generate_token")
+@app.post("/api/session/redis/generate_token")
 async def generate_token_endpoint():
     token = await generate_token()  # Tambahkan 'await' di sini
     return {"token": token}
 
-app.include_router(health.router, prefix="/health", tags=["Health"])
-app.include_router(chat.router, prefix="/chat", tags=["Chat"], dependencies=[Depends(API_KEY_HEADER)])
+@app.get("/api/session/redis/latest_token")
+async def get_latest_token():
+    token_terbaru = await redis_client.get_latest_token()
+    if not token_terbaru:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Tidak ada token yang ditemukan!"
+        )
+    return {"token_terbaru": token_terbaru}
+
+app.include_router(health.router, prefix="/api/jela/health", tags=["Jela's Health Check and Token Generator"])
+app.include_router(chat.router, prefix="/api/jela/chat", tags=["Jela's Respons API"], dependencies=[Depends(API_KEY_HEADER)])
 
 if __name__ == "__main__":
     uvicorn.run("app.main:app", host="0.0.0.0", port=5212, reload=True)
