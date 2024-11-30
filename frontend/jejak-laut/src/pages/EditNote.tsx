@@ -1,4 +1,4 @@
-import { Badge, Col, Row, Stack, Button } from "react-bootstrap";
+import { Badge, Col, Row, Stack } from "react-bootstrap";
 import { NoteData, Tag } from "../App";
 import { NoteForm } from "../components/NoteForm";
 import { useNote } from "../layouts/NoteLayout";
@@ -16,8 +16,25 @@ export function EditNote({ onSubmit, onAddTag, availableTags }: EditNoteProps) {
   return (
     <>
       <Row className="align-items-center mb-4">
-        <img src="/dark-nobg.svg" alt="Logo" style={{ width: '85px', height: '60px' }} />
         <Col>
+          <Link
+            to="/"
+            style={{
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+            }}
+          >
+            <img
+              src="/back.svg"
+              alt="Logo"
+              style={{ width: '65px', height: '40px' }}
+            />
+            <h3 className="custom-medium" style={{ margin: 0 }}>Kembali</h3>
+          </Link>
+        </Col>
+        <Col xs="auto">
           <h1 className="custom-medium">{note.title}</h1>
           {note.tags.length > 0 && (
             <Stack gap={1} direction="horizontal" className="flex-wrap">
@@ -28,13 +45,6 @@ export function EditNote({ onSubmit, onAddTag, availableTags }: EditNoteProps) {
               ))}
             </Stack>
           )}
-        </Col>
-        <Col xs="auto">
-          <Stack gap={2} direction="horizontal">
-            <Link to="/" style={{ textDecoration: 'none' }}>
-              <Button variant="outline-secondary text">Kembali</Button>
-            </Link>
-          </Stack>
         </Col>
       </Row>
       <hr className={styles.horizontalDivider} />

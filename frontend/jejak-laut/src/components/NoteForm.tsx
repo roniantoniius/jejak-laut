@@ -102,7 +102,7 @@ export function NoteForm({
         <Row>
           <Col>
             <Form.Group controlId="latitude">
-              <Form.Label>Latitude</Form.Label>
+              <Form.Label className="custom-small">Latitude</Form.Label>
               <Form.Control
                 type="number"
                 step="any"
@@ -113,7 +113,7 @@ export function NoteForm({
           </Col>
           <Col>
             <Form.Group controlId="longitude">
-              <Form.Label>Longitude</Form.Label>
+              <Form.Label className="custom-small">Longitude</Form.Label>
               <Form.Control
                 type="number"
                 step="any"

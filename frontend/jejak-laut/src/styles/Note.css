@@ -5,6 +5,13 @@
     font-size: 10px !important;
 }
 
+.custom-tag-besar {
+    background-color: #052844 !important;
+    color: white !important;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px !important;
+}
+
 .text {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;

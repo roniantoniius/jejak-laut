@@ -8,6 +8,7 @@ import { GuideStep } from "../components/GuideStep";
 import { EditTagsModal } from "../components/EditTagsModel";
 import { NoteCard, SimplifiedNote } from "../components/NoteCard";
 import { PopupCard } from "../components/PopupCard";
+import { useNavigate } from "react-router-dom";
 
 type NoteListProps = {
   availableTags: Tag[];
@@ -25,6 +26,7 @@ export function NoteList({
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [title, setTitle] = useState("");
   const [editTagsModalIsOpen, setEditTagsModalIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const filteredNotes = useMemo(() => {
     return notes.filter((note) => {
@@ -45,20 +47,22 @@ export function NoteList({
         <Col>
           <Stack direction="horizontal" gap={2}>
             <img src="/dark-nobg.svg" alt="Logo" style={{ width: '40px', height: '40px'}} />
-            <h1 style={{ fontSize: '1.5em', margin: 0 }} className="custom-judul">Jejak Laut</h1>
+            <h2 style={{ margin: 0 }} className="custom-judul">Jejak Laut</h2>
           </Stack>
         </Col>
         <Col xs="auto">
           <PopupCard
-            icon={<img src="/dark-nobg.svg" alt="Icon" style={{ width: 24, height: 24 }} />}
-            title="Menu Aksi"
+            icon={<img src="/menu.svg" alt="Icon" style={{ width: 24, height: 24 }} />}
+            title="Menu Aksi Beranda"
             buttons={[
               {
                 label: "Tambah Jejak Baru",
-                onClick: () => console.log("Navigasi ke Tambah Jejak Baru"),
+                className: "primary custom-button",
+                onClick: () => navigate("/baru"),
               },
               {
                 label: "Perbarui Kategori",
+                className: "outline-secondary text",
                 onClick: () => setEditTagsModalIsOpen(true),
               },
             ]}

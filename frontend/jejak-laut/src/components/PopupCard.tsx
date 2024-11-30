@@ -5,7 +5,7 @@ import styles from "../styles/PopupCard.module.css";
 type PopupCardProps = {
   icon: React.ReactNode; // SVG icon atau gambar
   title: string; // Judul pada popup
-  buttons: { label: string; onClick: () => void }[]; // Konten tombol dalam popup
+  buttons: { label: string; onClick: () => void; className: string; }[]; // Konten tombol dalam popup
 };
 
 export function PopupCard({ icon, title, buttons }: PopupCardProps) {
@@ -13,7 +13,6 @@ export function PopupCard({ icon, title, buttons }: PopupCardProps) {
 
   return (
     <div className={styles.popupCardContainer}>
-      {/* Floating Button */}
       <Button
         className={styles.floatingButton}
         onClick={() => setIsOpen((prev) => !prev)}
@@ -31,8 +30,7 @@ export function PopupCard({ icon, title, buttons }: PopupCardProps) {
                 <Button
                   key={index}
                   onClick={button.onClick}
-                  variant="primary"
-                  className={styles.popupButton}
+                  variant={button.className}
                 >
                   {button.label}
                 </Button>

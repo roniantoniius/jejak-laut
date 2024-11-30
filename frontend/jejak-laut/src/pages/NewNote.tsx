@@ -1,9 +1,9 @@
-import { Col, Stack, Button } from "react-bootstrap";
+import { Col, Stack, Button, Row } from "react-bootstrap";
 import { NoteData, Tag } from "../App";
 import { NoteForm } from "../components/NoteForm";
 import styles from "../styles/NoteList.module.css";
 import '../styles/Note.css';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useEffect } from "react";
 
@@ -35,12 +35,32 @@ export function NewNote({ onSubmit, onAddTag, availableTags }: NewNoteProps) {
 
   return (
     <>
-      <Col>
-        <Stack direction="horizontal" gap={2} className="align-items-center mb-4">
-          <img src="/dark-nobg.svg" alt="Logo" style={{ width: '40px', height: '40px' }} />
-          <h1 className="mb-0 custom-judul" style={{ fontSize: '1.5em', margin: 0 }}>Catatan Jejak Laut Baru!</h1>
-        </Stack>
-      </Col>
+      <Row className="align-items-center mb-4">
+        <Col>
+          <Stack direction="horizontal" gap={2} className="align-items-center mb-4">
+            <Link
+              to="/"
+              style={{
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+              }}
+            >
+              <img
+                src="/dark-nobg.svg"
+                alt="Logo"
+                style={{ width: '50px', height: '50px' }}
+              />
+              <h3 className="custom-medium" style={{ margin: 0 }}>Bikin Jejak Catatan Kamu!</h3>
+            </Link>
+
+          </Stack>
+        </Col>
+        <Col xs="auto">
+          <Button variant="outline-primary text" onClick={() => navigate("/pilihlokasi")}>Pilih lokasi di Peta</Button>
+        </Col>
+      </Row>
       <hr className={styles.horizontalDivider} />
 
       <NoteForm
@@ -50,9 +70,6 @@ export function NewNote({ onSubmit, onAddTag, availableTags }: NewNoteProps) {
         latitude={selectedLat || 0}
         longitude={selectedLng || 0}
       />
-      <div className="mb-3">
-        <Button variant="outline-danger text" onClick={() => navigate("/pilihlokasi")}>Pilih lokasi di Peta</Button>
-      </div>
     </>
   );
 }
