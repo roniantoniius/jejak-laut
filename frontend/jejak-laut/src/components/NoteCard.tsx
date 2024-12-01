@@ -1,9 +1,8 @@
-import { Stack, Card, Badge } from "react-bootstrap";
+import { Stack, Card, Badge, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Tag } from "../App";
 import styles from "../styles/NoteList.module.css";
 import '../styles/Note.css';
-
 
 export type SimplifiedNote = {
     tags: Tag[];
@@ -11,9 +10,10 @@ export type SimplifiedNote = {
     id: string;
     longitude: number;
     latitude: number;
+    gambar: string;
 };
 
-export function NoteCard({ id, title, tags, longitude, latitude }: SimplifiedNote) {
+export function NoteCard({ id, title, tags, longitude, latitude, gambar }: SimplifiedNote) {
   return (
     <Card
       as={Link}
@@ -21,23 +21,34 @@ export function NoteCard({ id, title, tags, longitude, latitude }: SimplifiedNot
       className={`h-100 text-reset text-decoration-none ${styles.card}`}
     >
       <Card.Body>
-        <Stack gap={2} className="align-items-start h-100">
-          <span className="fs-5 custom-medium">{title}</span>
-          {tags.length > 0 && (
-            <>
-              <Stack gap={2} direction="horizontal" className="flex-wrap">
-                {tags.map((tag) => (
-                  <Badge key={tag.id} className="custom-tag text-truncate">
-                    {tag.label}
-                  </Badge>
-                ))}
-              </Stack>
+        <Row className="align-items-center">
+          <Col xs={9}>
+            <Stack gap={2}>
+              <span className="fs-5 custom-medium">{title}</span>
+              {tags.length > 0 && (
+                <Stack gap={2} direction="horizontal" className="flex-wrap">
+                  {tags.map((tag) => (
+                    <Badge key={tag.id} className="custom-tag text-truncate">
+                      {tag.label}
+                    </Badge>
+                  ))}
+                </Stack>
+              )}
               <h5 className="fs-5 custom-very-small">
                 {latitude}, {longitude}
               </h5>
-            </>
-          )}
-        </Stack>
+            </Stack>
+          </Col>
+          <Col xs={3} className="d-flex justify-content-end">
+            {gambar && (
+              <img
+                src={gambar}
+                alt="Note"
+                className={`${styles.noteImage}`}
+              />
+            )}
+          </Col>
+        </Row>
       </Card.Body>
     </Card>
   );

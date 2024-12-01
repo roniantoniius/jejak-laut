@@ -1,4 +1,4 @@
-import { Badge, Col, Row, Stack } from "react-bootstrap";
+import { Badge, Button, Col, Row, Stack } from "react-bootstrap";
 import { useNote } from "../layouts/NoteLayout";
 import { Link, useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
@@ -39,7 +39,7 @@ export function Note({ onDelete }: NoteProps) {
           
         <Col xs="auto">
           <PopupCard
-            icon={<img src="/menu.svg" alt="Icon" style={{ width: 24, height: 24 }} />}
+            icon={<img src="/dot.svg" alt="Icon" style={{ width: 24, height: 24 }} />}
             // membuat variabel title beserta {note.title} beserta string Judul adalah
             title = {`Menu Untuk Catatan ${note.title}`}
             buttons={[
@@ -62,9 +62,20 @@ export function Note({ onDelete }: NoteProps) {
 
       <hr className={styles.horizontalDivider} />
 
-      <Row className="mt-3">
-        <Col>
-          <h1 className="custom-medium" style={{ fontSize: '3em', margin: 0 }}>{note.title}</h1>
+      <Row className="align-items-center mt-3">
+        <Col xs={3}>
+          {note.gambar && (
+            <img
+              src={note.gambar}
+              alt="Note"
+              style={{ width: '100%', height: 'auto', borderRadius: '10px' }}
+            />
+          )}
+        </Col>
+        <Col xs={9}>
+          <h1 className="custom-medium" style={{ fontSize: '3em', margin: 0 }}>
+            {note.title}
+          </h1>
           {note.tags.length > 0 && (
             <Stack gap={1} direction="horizontal" className="flex-wrap mt-2">
               {note.tags.map((tag) => (
@@ -76,6 +87,7 @@ export function Note({ onDelete }: NoteProps) {
           )}
         </Col>
       </Row>
+
 
       {/* Body (Markdown) */}
       <Row>
@@ -96,6 +108,24 @@ export function Note({ onDelete }: NoteProps) {
           </p>
         </Col>
       </Row>
+      
+      <div className="d-flex align-items-center mt-3">
+      <div className="flex-grow-1 me-2">
+        <Link to={`/${note.id}/ubah`} style={{ textDecoration: 'none' }}>
+          <Button variant="primary custom-button d-flex align-items-center justify-content-center w-100">
+            <img src="/christmas-stars.png" alt="stars" className="me-2" style={{ width: "20px", height: "20px" }} />
+            Selesaikan Dengan AI
+          </Button>
+        </Link>
+      </div>
+      <div>
+        <Link to={`/${note.id}/lokasi`} style={{ textDecoration: 'none' }}>
+          <Button variant="primary custom-button-2 text w-100">
+            Periksa Lokasi
+          </Button>
+        </Link>
+      </div>
+    </div>
     </>
   );
 }

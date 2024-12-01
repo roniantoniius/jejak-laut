@@ -21,6 +21,7 @@ export function NoteForm({
   tags = [],
   longitude = 0,
   latitude = 0,
+  gambar = "",
 }: NoteFormProps) {
   const titleRef = useRef<HTMLInputElement>(null);
   const markdownRef = useRef<HTMLTextAreaElement>(null);
@@ -31,6 +32,20 @@ export function NoteForm({
   const [lng, setLng] = useState<number>(longitude);
   const navigate = useNavigate();
 
+  const [fileBase64, setFileBase64] = useState<string>(gambar);
+
+  function handleFileChange(files: FileList | null) {
+    if (files) {
+      const fileRef = files[0];
+      const fileType: string = fileRef.type;
+      const reader = new FileReader();
+      reader.readAsBinaryString(fileRef);
+      reader.onload = (ev: any) => {
+        setFileBase64(`data:${fileType};base64,${btoa(ev.target.result)}`);
+      };
+    }
+  }
+
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
@@ -40,6 +55,7 @@ export function NoteForm({
       tags: selectedTags,
       longitude: lng,
       latitude: lat,
+      gambar: fileBase64,
     });
 
     navigate("..");
@@ -96,6 +112,16 @@ export function NoteForm({
               as="textarea"
               ref={markdownRef}
               rows={15}
+            />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group controlId="fileUpload" className="mb-3">
+            <Form.Label className="text custom-small">Upload Gambar</Form.Label>
+            <Form.Control
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleFileChange((e.target as HTMLInputElement).files)}
             />
           </Form.Group>
         </Col>

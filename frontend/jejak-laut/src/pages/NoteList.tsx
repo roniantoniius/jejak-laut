@@ -52,7 +52,7 @@ export function NoteList({
         </Col>
         <Col xs="auto">
           <PopupCard
-            icon={<img src="/menu.svg" alt="Icon" style={{ width: 24, height: 24 }} />}
+            icon={<img src="/dot.svg" alt="Icon" style={{ width: 24, height: 24 }} />}
             title="Menu Aksi Beranda"
             buttons={[
               {
@@ -108,7 +108,7 @@ export function NoteList({
       <Card className={`h-100 text-reset text-decoration-none ${styles.card} ${styles.guideCard}`}>
         <Card.Body>
           <Stack gap={4} className="align-items-center justify-content-center">
-            <span className="fs-5 custom-medium">Panduan Jejak Laut</span>
+            <span className="fs-2 custom-medium">Panduan Jejak Laut</span>
             <Row className="g-3 justify-content-center">
               <GuideStep stepNumber={1} imageSrc="/1.png" description="Buat Catatan Jejak Baru Kamu!" />
               <GuideStep stepNumber={2} imageSrc="/2.png" description="Format Kategori Yang Efisien" />
@@ -127,11 +127,11 @@ export function NoteList({
               tags={note.tags}
               latitude={note.latitude}
               longitude={note.longitude}
+              gambar={note.gambar}
             />
           </Col>
         ))}
       </Row>
-
       <EditTagsModal
         onUpdateTag={onUpdateTag}
         onDeleteTag={onDeleteTag}

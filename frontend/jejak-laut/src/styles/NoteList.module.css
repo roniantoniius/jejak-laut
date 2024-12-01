@@ -44,3 +44,11 @@
   width: 200px;
   height: auto;
 }
+
+.noteImage {
+  width: 150px;
+  height: auto;
+  min-width: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+}

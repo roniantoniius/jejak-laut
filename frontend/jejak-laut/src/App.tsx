@@ -26,6 +26,7 @@ export type RawNoteData = {
   tagIds: string[];
   longitude: number;
   latitude: number;
+  gambar: string;
 };
 
 export type NoteData = {
@@ -34,6 +35,7 @@ export type NoteData = {
   tags: Tag[];
   longitude: number;
   latitude: number;
+  gambar: string;
 };
 
 export type Tag = {

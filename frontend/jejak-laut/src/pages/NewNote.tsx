@@ -69,6 +69,7 @@ export function NewNote({ onSubmit, onAddTag, availableTags }: NewNoteProps) {
         availableTags={availableTags}
         latitude={selectedLat || 0}
         longitude={selectedLng || 0}
+        gambar=""
       />
     </>
   );
