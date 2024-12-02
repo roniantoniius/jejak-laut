@@ -24,7 +24,7 @@ export function NoteCard({ id, title, tags, longitude, latitude, gambar }: Simpl
         <Row className="align-items-center">
           <Col xs={9}>
             <Stack gap={2}>
-              <span className="fs-5 custom-medium">{title}</span>
+              <span className="fs-4 custom-medium">{title}</span>
               {tags.length > 0 && (
                 <Stack gap={2} direction="horizontal" className="flex-wrap">
                   {tags.map((tag) => (
