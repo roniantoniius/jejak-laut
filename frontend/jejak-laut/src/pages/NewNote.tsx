@@ -16,11 +16,9 @@ type NewNoteProps = {
 export function NewNote({ onSubmit, onAddTag, availableTags }: NewNoteProps) {
   const navigate = useNavigate();
   
-  // Use local storage for latitude and longitude
   const [selectedLat, setSelectedLat] = useLocalStorage<number | null>("selectedLatitude", null);
   const [selectedLng, setSelectedLng] = useLocalStorage<number | null>("selectedLongitude", null);
 
-  // Effect to retrieve stored latitude and longitude from local storage
   useEffect(() => {
     const storedLatitude = localStorage.getItem("selectedLatitude");
     const storedLongitude = localStorage.getItem("selectedLongitude");

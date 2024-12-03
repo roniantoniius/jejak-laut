@@ -6,7 +6,6 @@ import { Button } from "react-bootstrap";
 import L from "leaflet";
 import "../styles/NoteLokasi.css";
 
-// Custom marker icon
 const markerIcon = new L.Icon({
   iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png",
@@ -18,7 +17,6 @@ export function PickLocation() {
   const [position, setPosition] = useState<[number, number] | null>(null);
   const navigate = useNavigate();
 
-  // Handle map click to set the marker
   const MapClickHandler = () => {
     useMapEvents({
       click(e) {
@@ -30,7 +28,6 @@ export function PickLocation() {
 
   const handleSaveLocation = () => {
     if (position) {
-      // Simpan lokasi ke local storage dengan nama yang spesifik
       localStorage.setItem("selectedLatitude", JSON.stringify(position[0]));
       localStorage.setItem("selectedLongitude", JSON.stringify(position[1]));
       navigate("/baru", { state: { latitude: position[0], longitude: position[1] } }); // Redirect back to the NewNote page
