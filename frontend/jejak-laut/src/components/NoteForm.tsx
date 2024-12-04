@@ -34,15 +34,22 @@ export function NoteForm({
 
   const [fileBase64, setFileBase64] = useState<string>(gambar);
 
-  function handleFileChange(files: FileList | null) {
+  async function handleFileChange(files: FileList | null) {
     if (files) {
       const fileRef = files[0];
-      const fileType: string = fileRef.type;
-      const reader = new FileReader();
-      reader.readAsBinaryString(fileRef);
-      reader.onload = (ev: any) => {
-        setFileBase64(`data:${fileType};base64,${btoa(ev.target.result)}`);
-      };
+      const formData = new FormData();
+      formData.append('image', fileRef);
+  
+      try {
+        const response = await fetch('http://localhost:5001/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await response.json();
+        setFileBase64(data.imageUrl); // Simpan URL gambar
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
     }
   }
 
