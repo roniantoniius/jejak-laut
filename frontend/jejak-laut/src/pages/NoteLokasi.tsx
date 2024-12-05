@@ -11,11 +11,8 @@ import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import axios from "axios";
 import polyline from "@mapbox/polyline";
 import L from "leaflet";
+import { calculateDistance, Location } from "../components/calculateDistance";
 
-type Location = {
-    latitude: number;
-    longitude: number;
-}
 
 function MapFocus({ userLocation }: { userLocation: Location }) {
     const map = useMap();
@@ -39,8 +36,8 @@ export function NoteLokasi() {
     const note = useNote();
     const [userLocation, setUserLocation] = useState<Location | null>(null);
     const [distance, setDistance] = useState<string | null>(null);
-    const [isCardVisible, setIsCardVisible] = useState(true);
-    const [isMinimized, setIsMinimized] = useState(false);
+    const [isCardVisible, setIsCardVisible] = useState(false);
+    const [isMinimized, setIsMinimized] = useState(true);
     const [optimizedRoute, setOptimizedRoute] = useState<[number, number][]>([]);
     const [userAddress, setUserAddress] = useState<string | null>(null);
     const [noteAddress, setNoteAddress] = useState<string | null>(null);
@@ -104,24 +101,10 @@ export function NoteLokasi() {
         }
     }, [note.latitude, note.longitude]);
 
-    // Menghitung jarak antara userLocation dan note
     useEffect(() => {
         if (userLocation) {
-            const R = 6371; //radius bumi
-            const dLat = (note.latitude - userLocation.latitude) * (Math.PI / 180);
-            const dLon = (note.longitude - userLocation.longitude) * (Math.PI / 180);
-
-            // Rumus Haversine pada a untuk menghitung sudut antara dua titik
-            const a =
-                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(userLocation.latitude * (Math.PI / 180)) *
-                    Math.cos(note.latitude * (Math.PI / 180)) *
-                    Math.sin(dLon / 2) *
-                    Math.sin(dLon / 2);
-            
-            // Rumus Haversine pada c untuk menghitung jarak antara dua titik
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            setDistance((R * c).toFixed(2) + " km");
+          const distance = calculateDistance(userLocation, { latitude: note.latitude, longitude: note.longitude });
+          setDistance(distance);
         }
     }, [userLocation, note.latitude, note.longitude]);
 

@@ -11,9 +11,13 @@ export type SimplifiedNote = {
     longitude: number;
     latitude: number;
     gambar: string;
+    distance?: string | null;
 };
 
-export function NoteCard({ id, title, tags, longitude, latitude, gambar }: SimplifiedNote) {
+export function NoteCard({ id, title, tags, longitude, latitude, gambar, distance }: SimplifiedNote) {
+  // Tentukan apakah jarak (distance) perlu ditampilkan
+  const showDistance = longitude !== 0 && latitude !== 0 && distance;
+
   return (
     <Card
       as={Link}
@@ -26,7 +30,7 @@ export function NoteCard({ id, title, tags, longitude, latitude, gambar }: Simpl
             <Stack gap={2}>
               <span className="fs-4 custom-medium">{title}</span>
               {tags.length > 0 && (
-                <Stack gap={2} direction="horizontal" className="flex-wrap">
+                <Stack gap={2} direction="horizontal" className="flex-wrap mb-1">
                   {tags.map((tag) => (
                     <Badge key={tag.id} className="custom-tag text-truncate">
                       {tag.label}
@@ -34,6 +38,7 @@ export function NoteCard({ id, title, tags, longitude, latitude, gambar }: Simpl
                   ))}
                 </Stack>
               )}
+              {showDistance && <h6 className="custom-medium-abu">{distance}</h6>}
               <h5 className="fs-5 custom-very-small">
                 {latitude}, {longitude}
               </h5>

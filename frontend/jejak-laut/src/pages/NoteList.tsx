@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Row, Col, Stack, Form, Card } from "react-bootstrap";
 import ReactSelect from "react-select";
 import { Tag } from "../App";
@@ -9,6 +9,7 @@ import { EditTagsModal } from "../components/EditTagsModel";
 import { NoteCard, SimplifiedNote } from "../components/NoteCard";
 import { PopupCard } from "../components/PopupCard";
 import { useNavigate } from "react-router-dom";
+import { calculateDistance, Location } from "../components/calculateDistance";
 
 type NoteListProps = {
   availableTags: Tag[];
@@ -27,6 +28,23 @@ export function NoteList({
   const [title, setTitle] = useState("");
   const [editTagsModalIsOpen, setEditTagsModalIsOpen] = useState(false);
   const navigate = useNavigate();
+  const [userLocation, setUserLocation] = useState<Location | null>(null);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Gagal mendapatkan lokasi pengguna:", error);
+        }
+      );
+    }
+  }, []);
 
   const filteredNotes = useMemo(() => {
     return notes.filter((note) => {
@@ -119,18 +137,28 @@ export function NoteList({
       </Card>
 
       <Row className="g-3">
-        {filteredNotes.map((note) => (
-          <Col xs={12} key={note.id}>
-            <NoteCard
-              id={note.id}
-              title={note.title}
-              tags={note.tags}
-              latitude={note.latitude}
-              longitude={note.longitude}
-              gambar={note.gambar}
-            />
-          </Col>
-        ))}
+        {filteredNotes.map((note) => {
+          const distance = userLocation
+            ? calculateDistance(userLocation, {
+                latitude: note.latitude,
+                longitude: note.longitude,
+              })
+            : null;
+
+          return (
+            <Col xs={12} key={note.id}>
+              <NoteCard
+                id={note.id}
+                title={note.title}
+                tags={note.tags}
+                latitude={note.latitude}
+                longitude={note.longitude}
+                gambar={note.gambar}
+                distance={distance}
+              />
+            </Col>
+          );
+        })}
       </Row>
       <EditTagsModal
         onUpdateTag={onUpdateTag}

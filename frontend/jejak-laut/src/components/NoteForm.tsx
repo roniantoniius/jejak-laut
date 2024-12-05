@@ -39,7 +39,6 @@ export function NoteForm({
       const fileRef = files[0];
       const formData = new FormData();
       formData.append('image', fileRef);
-  
       try {
         const response = await fetch('http://localhost:5001/upload', {
           method: 'POST',
