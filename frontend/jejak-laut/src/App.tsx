@@ -18,6 +18,7 @@ export type Note = {
 
 export type RawNote = {
   id: string;
+  lastModified: string;
 } & RawNoteData;
 
 export type RawNoteData = {
@@ -36,6 +37,7 @@ export type NoteData = {
   longitude: number;
   latitude: number;
   gambar: string;
+  lastModified: string;
 };
 
 export type Tag = {
@@ -65,6 +67,7 @@ function App() {
         longitude,
         latitude,
         tagIds: tags.map((tag) => tag.id),
+        lastModified: new Date().toISOString(),
       },
     ]);
   }
@@ -77,6 +80,7 @@ function App() {
             ...note,
             ...data,
             tagIds: tags.map((tag) => tag.id),
+            lastModified: new Date().toISOString(),
           };
         } else {
           return note;

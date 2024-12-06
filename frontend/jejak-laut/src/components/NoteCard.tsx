@@ -12,11 +12,33 @@ export type SimplifiedNote = {
     latitude: number;
     gambar: string;
     distance?: string | null;
+    lastModified: string;
 };
 
-export function NoteCard({ id, title, tags, longitude, latitude, gambar, distance }: SimplifiedNote) {
+function formatTimeAgo(dateString: string): string {
+  const now = new Date();
+  const date = new Date(dateString);
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (diffInSeconds < 60) return `${diffInSeconds} detik yang lalu`;
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) return `${diffInMinutes} menit yang lalu`;
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) return `${diffInHours} jam yang lalu`;
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 30) return `${diffInDays} hari yang lalu`;
+  const diffInMonths = Math.floor(diffInDays / 30);
+  if (diffInMonths < 12) return `${diffInMonths} bulan yang lalu`;
+  const diffInYears = Math.floor(diffInMonths / 12);
+  return `${diffInYears} tahun yang lalu`;
+}
+
+export function NoteCard({ id, title, tags, longitude, latitude, gambar, distance, lastModified }: SimplifiedNote) {
   // Tentukan apakah jarak (distance) perlu ditampilkan
   const showDistance = longitude !== 0 && latitude !== 0 && distance;
+  const lastModifiedText = lastModified
+      ? formatTimeAgo(lastModified)
+      : "Tidak ada informasi waktu";
 
   return (
     <Card
@@ -38,10 +60,8 @@ export function NoteCard({ id, title, tags, longitude, latitude, gambar, distanc
                   ))}
                 </Stack>
               )}
-              {showDistance && <h6 className="custom-medium-abu">{distance}</h6>}
-              <h5 className="fs-5 custom-very-small">
-                {latitude}, {longitude}
-              </h5>
+              <h6 className="custom-medium mb-0">{lastModifiedText}</h6>
+              {showDistance && <h6 className="custom-medium-abu">{distance} | <a className="custom-very-small">{latitude}, {longitude}</a></h6>}
             </Stack>
           </Col>
           <Col xs={3} className="d-flex justify-content-end">

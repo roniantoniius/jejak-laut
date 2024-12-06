@@ -45,6 +45,7 @@ async def generate_token_endpoint():
     token = await generate_token()  # Tambahkan 'await' di sini
     return {"token": token}
 
+# Latest token yang secara global (user apapun bisa akses)
 @app.get("/api/session/redis/latest_token")
 async def get_latest_token():
     token_terbaru = await redis_client.get_latest_token()

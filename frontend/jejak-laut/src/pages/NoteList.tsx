@@ -155,6 +155,7 @@ export function NoteList({
                 longitude={note.longitude}
                 gambar={note.gambar}
                 distance={distance}
+                lastModified={note.lastModified}
               />
             </Col>
           );
