@@ -3,9 +3,9 @@ import { Button, Card, Stack } from "react-bootstrap";
 import styles from "../styles/PopupCard.module.css";
 
 type PopupCardProps = {
-  icon: React.ReactNode; // SVG icon atau gambar
-  title: string; // Judul pada popup
-  buttons: { label: string; onClick: () => void; className: string; }[]; // Konten tombol dalam popup
+  icon: React.ReactNode;
+  title: string;
+  buttons: { label: string; onClick: () => void; className: string; }[];
 };
 
 export function PopupCard({ icon, title, buttons }: PopupCardProps) {

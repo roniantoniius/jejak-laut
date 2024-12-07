@@ -6,6 +6,9 @@ import styles from "../styles/NoteList.module.css";
 import remarkGfm from "remark-gfm";
 import '../styles/Note.css';
 import { PopupCard } from "../components/PopupCard";
+import { JelaChat } from "../components/JelaChat";
+import { useEffect } from "react";
+
 
 type NoteProps = {
   onDelete: (id: string) => void;
@@ -14,6 +17,10 @@ type NoteProps = {
 export function Note({ onDelete }: NoteProps) {
   const note = useNote();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
@@ -87,9 +94,6 @@ export function Note({ onDelete }: NoteProps) {
           )}
         </Col>
       </Row>
-
-
-      {/* Body (Markdown) */}
       <Row>
         <Col>
           <div className="mb-3 mt-5">
@@ -99,32 +103,25 @@ export function Note({ onDelete }: NoteProps) {
           </div>
         </Col>
       </Row>
-
-      {/* Lokasi */}
       <Row>
         <Col>
           <p className="mb-1">
-            <strong>Latitude & Longitude:</strong> {note.latitude}, {note.longitude}
+            <strong>Latitude, Longitude:</strong> {note.latitude}, {note.longitude}
           </p>
         </Col>
       </Row>
+      <div>
+          <Link to={`/${note.id}/lokasi`} style={{ textDecoration: 'none' }}>
+            <Button variant="primary custom-button-2 text w-20">
+              Periksa Lokasi
+            </Button>
+          </Link>
+      </div>
       
       <div className="d-flex align-items-center mt-3">
-      <div className="flex-grow-1 me-2">
-        <Link to={`/${note.id}/ubah`} style={{ textDecoration: 'none' }}>
-          <Button variant="primary custom-button d-flex align-items-center justify-content-center w-100">
-            <img src="/christmas-stars.png" alt="stars" className="me-2" style={{ width: "20px", height: "20px" }} />
-            Selesaikan Dengan AI
-          </Button>
-        </Link>
-      </div>
-      <div>
-        <Link to={`/${note.id}/lokasi`} style={{ textDecoration: 'none' }}>
-          <Button variant="primary custom-button-2 text w-100">
-            Periksa Lokasi
-          </Button>
-        </Link>
-      </div>
+        <div className="flex-grow-1 me-2">
+          <JelaChat />
+        </div>
     </div>
     </>
   );
