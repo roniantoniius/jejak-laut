@@ -62,6 +62,7 @@ export function NoteForm({
       longitude: lng,
       latitude: lat,
       gambar: fileBase64,
+      lastModified: "",
     });
 
     navigate("..");

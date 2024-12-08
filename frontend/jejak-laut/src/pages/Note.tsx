@@ -8,6 +8,7 @@ import '../styles/Note.css';
 import { PopupCard } from "../components/PopupCard";
 import { JelaChat } from "../components/JelaChat";
 import { useEffect } from "react";
+import { ChatbotData } from "../App";
 
 
 type NoteProps = {
@@ -17,6 +18,10 @@ type NoteProps = {
 export function Note({ onDelete }: NoteProps) {
   const note = useNote();
   const navigate = useNavigate();
+
+  const onUpdateChatbotData = (noteId: string, data: Partial<ChatbotData>) => {
+    console.log(`Update chatbot data for note ${noteId}`, data);
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -120,7 +125,11 @@ export function Note({ onDelete }: NoteProps) {
       
       <div className="d-flex align-items-center mt-3">
         <div className="flex-grow-1 me-2">
-          <JelaChat />
+          <JelaChat 
+            noteId={note.id} 
+            onUpdateChatbotData={onUpdateChatbotData} 
+            chatbotData={{ ai_access: note.ai_access, daftar_token: note.daftar_token }} 
+          />
         </div>
     </div>
     </>

@@ -12,9 +12,14 @@ import { EditNote } from "./pages/EditNote";
 import { NoteLokasi } from "./pages/NoteLokasi";
 import { PickLocation } from "./pages/PickLocation";
 
+export type ChatbotData = {
+  ai_access: number;
+  daftar_token: Record<string, string>; // Key-nya adalah note.id, valuenya adalah token
+};
+
 export type Note = {
   id: string;
-} & NoteData;
+} & NoteData & ChatbotData;
 
 export type RawNote = {
   id: string;
@@ -29,6 +34,7 @@ export type RawNoteData = {
   latitude: number;
   gambar: string;
 };
+
 
 export type NoteData = {
   title: string;
@@ -54,6 +60,8 @@ function App() {
       return {
         ...note,
         tags: tags.filter((tag) => note.tagIds.includes(tag.id)),
+        ai_access: 0, // Nilai default untuk ai_access
+        daftar_token: {},
       };
     });
   }, [notes, tags]);

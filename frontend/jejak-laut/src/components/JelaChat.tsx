@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Button, Card, Form } from "react-bootstrap";
+import axios from "axios"; // Tambahkan axios untuk mengirim request ke backend
 import styles from "../styles/JelaChat.module.css";
+import { ChatbotData } from "../App";
 
 type ChatMessage = {
   id: number;
@@ -8,20 +10,53 @@ type ChatMessage = {
   message: string;
 };
 
-export function JelaChat() {
+export type JelaChatProps = {
+  noteId: string; // ID dari catatan yang sedang dibuka
+  onUpdateChatbotData: (noteId: string, data: Partial<ChatbotData>) => void; // Fungsi untuk memperbarui data chatbot di catatan
+  chatbotData: ChatbotData; // Data terkait sesi chatbot dari catatan
+};
+
+export function JelaChat({ noteId, onUpdateChatbotData, chatbotData }: JelaChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputText, setInputText] = useState<string>(""); 
-  const [isLocked, setIsLocked] = useState<boolean>(true); // Awalnya terkunci
-  const [jumlahPercobaanPrompt, setJumlahPercobaanPrompt] = useState<number>(0);
-  const [isInputDisabled, setIsInputDisabled] = useState<boolean>(false); // Status input terkunci
+  const [isLocked, setIsLocked] = useState<boolean>(true); 
+  const [isInputDisabled, setIsInputDisabled] = useState<boolean>(false); 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { ai_access, daftar_token } = chatbotData;
 
-  // Scroll ke bawah setiap kali ada pesan baru
+  // Scroll otomatis ke bawah setiap kali pesan baru masuk
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSendMessage = () => {
+  // Fungsi untuk mendapatkan token baru atau mengambil token dari daftar
+  const handleUnlockChat = async () => {
+    try {
+      let token: string;
+      if (!daftar_token[noteId]) {
+        // Buat token baru
+        const response = await axios.post("http://localhost:5212/api/session/redis/generate_token");
+        token = response.data.token;
+
+        // Perbarui data chatbot
+        onUpdateChatbotData(noteId, {
+          ai_access: ai_access + 1,
+          daftar_token: { ...daftar_token, [noteId]: token }
+        });
+      } else {
+        token = daftar_token[noteId];
+      }
+
+      setIsLocked(false);
+      setMessages([]); 
+      setIsInputDisabled(false); 
+    } catch (error) {
+      console.error("Gagal membuat token:", error);
+    }
+  };
+
+  // Fungsi untuk mengirim prompt ke AI
+  const handleSendMessage = async () => {
     if (!inputText.trim()) return;
 
     const newMessage: ChatMessage = {
@@ -33,30 +68,37 @@ export function JelaChat() {
     setMessages((prev) => [...prev, newMessage]);
     setInputText("");
 
-    // Hitung percobaan prompt dari user
-    setJumlahPercobaanPrompt((prev) => prev + 1);
+    const token = daftar_token[noteId];
+    try {
+      const response = await axios.post(
+        "http://localhost:5212/api/jela/chat",
+        {
+          judul: "Judul Catatan",
+          kategori: "Kategori",
+          catatan: "Isi catatan", 
+          query: inputText.trim(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    // Simulasikan respons dari Jela
-    const jelaResponse: ChatMessage = {
-      id: messages.length + 2,
-      role: "jela",
-      message: "Ini adalah balasan dari Jela, bantuannya sedang diproses...",
-    };
+      const jelaResponse: ChatMessage = {
+        id: messages.length + 2,
+        role: "jela",
+        message: response.data.response,
+      };
 
-    setTimeout(() => {
       setMessages((prev) => [...prev, jelaResponse]);
-      // Setelah 5 pesan dan respons diterima, disable input dan tombol kirim
-      if (jumlahPercobaanPrompt + 1 >= 5) {
-        setIsInputDisabled(true); // Menonaktifkan input teks
-      }
-    }, 1000);
-  };
 
-  const handleUnlockChat = () => {
-    setIsLocked(false);
-    setJumlahPercobaanPrompt(0); // Reset jumlah percobaan prompt
-    setMessages([]); // Reset chat
-    setIsInputDisabled(false); // Mengaktifkan kembali input
+      if (chatbotData.ai_access >= 5) {
+        setIsInputDisabled(true); 
+      }
+    } catch (error) {
+      console.error("Gagal mengirim prompt ke AI:", error);
+    }
   };
 
   return (
@@ -110,10 +152,9 @@ export function JelaChat() {
               </Button>
             </div>
             <Button 
-              variant="primary mb-3 mt-3" 
+              variant="primary custom-button d-flex align-items-center justify-content-center w-100" 
               className={styles.unlockButton} 
-              onClick={handleUnlockChat} 
-              disabled={jumlahPercobaanPrompt < 5} // Tombol ini hanya dikunci jika belum mencapai 5 percakapan
+              onClick={handleUnlockChat}
             >
               <img src="/christmas-stars.png" alt="stars" style={{ width: "20px", height: "20px" }} />
               Selesaikan Dengan AI
