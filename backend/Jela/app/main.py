@@ -15,13 +15,13 @@ app = FastAPI(
 
 API_KEY_HEADER = APIKeyHeader(name="Authorization", auto_error=True)
 
-origins = ["http://localhost:5212"]
+origins = ["http://localhost:5173"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["Content-Type"]
+    allow_headers=["*"]
 )
 
 def add_security_to_openapi():

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Button, Card, Form } from "react-bootstrap";
-import axios from "axios"; // Tambahkan axios untuk mengirim request ke backend
+import axios from "axios";
 import styles from "../styles/JelaChat.module.css";
 import { ChatbotData } from "../App";
 
@@ -11,9 +11,9 @@ type ChatMessage = {
 };
 
 export type JelaChatProps = {
-  noteId: string; // ID dari catatan yang sedang dibuka
-  onUpdateChatbotData: (noteId: string, data: Partial<ChatbotData>) => void; // Fungsi untuk memperbarui data chatbot di catatan
-  chatbotData: ChatbotData; // Data terkait sesi chatbot dari catatan
+  noteId: string;
+  onUpdateChatbotData: (noteId: string, data: Partial<ChatbotData>) => void;
+  chatbotData: ChatbotData;
 };
 
 export function JelaChat({ noteId, onUpdateChatbotData, chatbotData }: JelaChatProps) {
@@ -60,9 +60,9 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData }: JelaChatP
     if (!inputText.trim()) return;
 
     const newMessage: ChatMessage = {
-      id: messages.length + 1,
-      role: "user",
-      message: inputText.trim(),
+        id: messages.length + 1,
+        role: "user",
+        message: inputText.trim(),
     };
 
     setMessages((prev) => [...prev, newMessage]);
@@ -70,34 +70,41 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData }: JelaChatP
 
     const token = daftar_token[noteId];
     try {
-      const response = await axios.post(
-        "http://localhost:5212/api/jela/chat",
-        {
-          judul: "Judul Catatan",
-          kategori: "Kategori",
-          catatan: "Isi catatan", 
-          query: inputText.trim(),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const response = await axios.post(
+            "http://localhost:5212/api/jela/chat",
+            {
+                judul: "Judul Catatan",
+                kategori: "Kategori",
+                catatan: "Isi catatan", 
+                query: inputText.trim(),
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        // Ambil response dan result dari respons API
+        const { response: apiResponse } = response.data.response;
+        const { result } = response.data.response;
+
+        // Gabungkan apiResponse dan result menjadi satu string
+        const combinedMessage = `${apiResponse}\n\n${result}`;
+
+        const jelaResponse: ChatMessage = {
+            id: messages.length + 2,
+            role: "jela",
+            message: combinedMessage, // Gunakan combinedMessage di sini
+        };
+
+        setMessages((prev) => [...prev, jelaResponse]);
+
+        if (chatbotData.ai_access >= 5) {
+            setIsInputDisabled(true); 
         }
-      );
-
-      const jelaResponse: ChatMessage = {
-        id: messages.length + 2,
-        role: "jela",
-        message: response.data.response,
-      };
-
-      setMessages((prev) => [...prev, jelaResponse]);
-
-      if (chatbotData.ai_access >= 5) {
-        setIsInputDisabled(true); 
-      }
     } catch (error) {
-      console.error("Gagal mengirim prompt ke AI:", error);
+        console.error("Gagal mengirim prompt ke AI:", error);
     }
   };
 
@@ -152,7 +159,7 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData }: JelaChatP
               </Button>
             </div>
             <Button 
-              variant="primary custom-button d-flex align-items-center justify-content-center w-100" 
+              variant="primary custom-button d-flex align-items-center justify-content-center w-100 mt-3" 
               className={styles.unlockButton} 
               onClick={handleUnlockChat}
             >

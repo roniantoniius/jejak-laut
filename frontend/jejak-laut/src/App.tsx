@@ -14,7 +14,7 @@ import { PickLocation } from "./pages/PickLocation";
 
 export type ChatbotData = {
   ai_access: number;
-  daftar_token: Record<string, string>; // Key-nya adalah note.id, valuenya adalah token
+  daftar_token: Record<string, string>;
 };
 
 export type Note = {
