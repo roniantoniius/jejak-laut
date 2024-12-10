@@ -21,6 +21,7 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData }: JelaChatP
   const [inputText, setInputText] = useState<string>(""); 
   const [isLocked, setIsLocked] = useState<boolean>(true); 
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(false); 
+  const [jumlahResponsJela, setJumlahResponsJela] = useState<number>(0); // State untuk menghitung respons dari Jela
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { ai_access, daftar_token } = chatbotData;
 
@@ -50,6 +51,7 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData }: JelaChatP
       setIsLocked(false);
       setMessages([]); 
       setIsInputDisabled(false); 
+      setJumlahResponsJela(0); // Reset jumlah respons Jela saat chat dibuka
     } catch (error) {
       console.error("Gagal membuat token:", error);
     }
@@ -57,7 +59,7 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData }: JelaChatP
 
   // Fungsi untuk mengirim prompt ke AI
   const handleSendMessage = async () => {
-    if (!inputText.trim()) return;
+    if (!inputText.trim() || isInputDisabled) return; // Cek jika input dinonaktifkan
 
     const newMessage: ChatMessage = {
         id: messages.length + 1,
@@ -95,18 +97,23 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData }: JelaChatP
         const jelaResponse: ChatMessage = {
             id: messages.length + 2,
             role: "jela",
-            message: combinedMessage, // Gunakan combinedMessage di sini
+            message: combinedMessage,
         };
 
         setMessages((prev) => [...prev, jelaResponse]);
+        setJumlahResponsJela((prev) => prev + 1); // Tambah jumlah respons Jela
 
-        if (chatbotData.ai_access >= 5) {
-            setIsInputDisabled(true); 
+        // Cek jika jumlah respons Jela sudah mencapai 5
+        if (jumlahResponsJela + 1 >= 5) {
+            setIsInputDisabled(true); // Kunci input dan tombol kirim
         }
     } catch (error) {
         console.error("Gagal mengirim prompt ke AI:", error);
     }
   };
+
+  // Status tombol 'Selesaikan Dengan AI'
+  const isFinishButtonDisabled = isLocked || jumlahResponsJela < 5;
 
   return (
     <Card className={styles.chatContainer}>
@@ -162,6 +169,7 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData }: JelaChatP
               variant="primary custom-button d-flex align-items-center justify-content-center w-100 mt-3" 
               className={styles.unlockButton} 
               onClick={handleUnlockChat}
+              disabled={isFinishButtonDisabled} // Tombol ini hanya aktif jika sudah 5 respons
             >
               <img src="/christmas-stars.png" alt="stars" style={{ width: "20px", height: "20px" }} />
               Selesaikan Dengan AI
