@@ -129,6 +129,11 @@ export function Note({ onDelete }: NoteProps) {
             noteId={note.id} 
             onUpdateChatbotData={onUpdateChatbotData} 
             chatbotData={{ ai_access: note.ai_access, daftar_token: note.daftar_token }} 
+            noteData={{
+              title: note.title,
+              kategori: note.tags.map(tag => tag.label).join(", "),
+              catatan: note.markdown,
+            }}
           />
         </div>
     </div>

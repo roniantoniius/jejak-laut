@@ -14,9 +14,14 @@ export type JelaChatProps = {
   noteId: string;
   onUpdateChatbotData: (noteId: string, data: Partial<ChatbotData>) => void;
   chatbotData: ChatbotData;
+  noteData: {
+    title: string;
+    kategori: string;
+    catatan: string;
+  }
 };
 
-export function JelaChat({ noteId, onUpdateChatbotData, chatbotData }: JelaChatProps) {
+export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }: JelaChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputText, setInputText] = useState<string>(""); 
   const [isLocked, setIsLocked] = useState<boolean>(true); 
@@ -75,9 +80,9 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData }: JelaChatP
         const response = await axios.post(
             "http://localhost:5212/api/jela/chat",
             {
-                judul: "Judul Catatan",
-                kategori: "Kategori",
-                catatan: "Isi catatan", 
+                judul: noteData.title,
+                kategori: noteData.kategori,
+                catatan: noteData.catatan,
                 query: inputText.trim(),
             },
             {
