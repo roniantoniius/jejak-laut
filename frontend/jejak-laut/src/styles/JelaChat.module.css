@@ -60,7 +60,7 @@
   color: #000;
   padding: 10px;
   border-radius: 15px;
-  max-width: 70%;
+  max-width: 100%;
   margin-bottom: 10px;
   margin-right: auto; /* Ini kuncinya! Dorong ke kiri */
   text-align: left; /* Teks di dalam pesan juga rata kiri */
@@ -75,4 +75,14 @@
 
 .unlockButton {
   width: 100%;
+}
+
+.markdownContainer {
+  width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  hyphens: auto; /* Add this for Safari on iOS 4.2+ support */
+  max-width: 70%;
 }

@@ -3,6 +3,7 @@ import { Button, Card, Form } from "react-bootstrap";
 import axios from "axios";
 import styles from "../styles/JelaChat.module.css";
 import { ChatbotData } from "../App";
+import ReactMarkdown from "react-markdown";
 
 type ChatMessage = {
   id: number;
@@ -26,25 +27,21 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }:
   const [inputText, setInputText] = useState<string>(""); 
   const [isLocked, setIsLocked] = useState<boolean>(true); 
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(false); 
-  const [jumlahResponsJela, setJumlahResponsJela] = useState<number>(0); // State untuk menghitung respons dari Jela
+  const [jumlahResponsJela, setJumlahResponsJela] = useState<number>(0); 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { ai_access, daftar_token } = chatbotData;
 
-  // Scroll otomatis ke bawah setiap kali pesan baru masuk
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Fungsi untuk mendapatkan token baru atau mengambil token dari daftar
   const handleUnlockChat = async () => {
     try {
       let token: string;
       if (!daftar_token[noteId]) {
-        // Buat token baru
         const response = await axios.post("http://localhost:5212/api/session/redis/generate_token");
         token = response.data.token;
 
-        // Perbarui data chatbot
         onUpdateChatbotData(noteId, {
           ai_access: ai_access + 1,
           daftar_token: { ...daftar_token, [noteId]: token }
@@ -56,15 +53,14 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }:
       setIsLocked(false);
       setMessages([]); 
       setIsInputDisabled(false); 
-      setJumlahResponsJela(0); // Reset jumlah respons Jela saat chat dibuka
+      setJumlahResponsJela(0);
     } catch (error) {
       console.error("Gagal membuat token:", error);
     }
   };
 
-  // Fungsi untuk mengirim prompt ke AI
   const handleSendMessage = async () => {
-    if (!inputText.trim() || isInputDisabled) return; // Cek jika input dinonaktifkan
+    if (!inputText.trim() || isInputDisabled) return;
 
     const newMessage: ChatMessage = {
         id: messages.length + 1,
@@ -92,11 +88,9 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }:
             }
         );
 
-        // Ambil response dan result dari respons API
         const { response: apiResponse } = response.data.response;
         const { result } = response.data.response;
 
-        // Gabungkan apiResponse dan result menjadi satu string
         const combinedMessage = `${apiResponse}\n\n${result}`;
 
         const jelaResponse: ChatMessage = {
@@ -106,18 +100,16 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }:
         };
 
         setMessages((prev) => [...prev, jelaResponse]);
-        setJumlahResponsJela((prev) => prev + 1); // Tambah jumlah respons Jela
+        setJumlahResponsJela((prev) => prev + 1);
 
-        // Cek jika jumlah respons Jela sudah mencapai 5
         if (jumlahResponsJela + 1 >= 5) {
-            setIsInputDisabled(true); // Kunci input dan tombol kirim
+            setIsInputDisabled(true);
         }
     } catch (error) {
         console.error("Gagal mengirim prompt ke AI:", error);
     }
   };
 
-  // Status tombol 'Selesaikan Dengan AI'
   const isFinishButtonDisabled = isLocked || jumlahResponsJela < 5;
 
   return (
@@ -128,14 +120,20 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }:
             key={msg.id}
             className={msg.role === "user" ? styles.userMessage : styles.jelaMessage}
           >
-            {msg.role === "jela" && (
-              <img 
-                src="/dark-nobg.svg" 
-                alt="Jela Profile" 
-                className={styles.jelaProfilePic} 
-              />
+            {msg.role === "jela" ? (
+              <>
+                <img 
+                  src="/dark-nobg.svg" 
+                  alt="Jela Profile" 
+                  className={styles.jelaProfilePic} 
+                />
+                <div className={styles.markdownContainer}>
+                  <ReactMarkdown>{msg.message}</ReactMarkdown>
+                </div>
+              </>
+            ) : (
+              msg.message
             )}
-            {msg.message}
           </div>
         ))}
         <div ref={messagesEndRef} />
@@ -160,12 +158,12 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }:
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 className={styles.inputField}
-                disabled={isInputDisabled} // Menonaktifkan input ketika isInputDisabled true
+                disabled={isInputDisabled}
               />
               <Button
                 className={styles.floatingButton}
                 onClick={handleSendMessage}
-                disabled={isInputDisabled} // Menonaktifkan tombol kirim
+                disabled={isInputDisabled}
               >
                 <img src="/arrow-up-white.svg" alt="Icon" style={{ width: 24, height: 24 }} />
               </Button>
@@ -174,7 +172,7 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }:
               variant="primary custom-button d-flex align-items-center justify-content-center w-100 mt-3" 
               className={styles.unlockButton} 
               onClick={handleUnlockChat}
-              disabled={isFinishButtonDisabled} // Tombol ini hanya aktif jika sudah 5 respons
+              disabled={isFinishButtonDisabled}
             >
               <img src="/christmas-stars.png" alt="stars" style={{ width: "20px", height: "20px" }} />
               Selesaikan Dengan AI
