@@ -129,6 +129,10 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }:
                 />
                 <div className={styles.markdownContainer}>
                   <ReactMarkdown>{msg.message}</ReactMarkdown>
+                  <div className={styles.buttonContainer}>
+                    <Button variant="primary custom-button" className="mr-2">Ya</Button>
+                    <Button variant="outline-danger text" className="mr-2">Tidak</Button>
+                  </div>
                 </div>
               </>
             ) : (
