@@ -53,7 +53,7 @@ export function Note({ onDelete }: NoteProps) {
           <PopupCard
             icon={<img src="/dot.svg" alt="Icon" style={{ width: 24, height: 24 }} />}
             // membuat variabel title beserta {note.title} beserta string Judul adalah
-            title = {`Menu Untuk Catatan ${note.title}`}
+            title = {`Menu Untuk ${note.title}`}
             buttons={[
               {
                 label: "Ubah",

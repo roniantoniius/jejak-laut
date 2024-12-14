@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Button, Card, Form } from "react-bootstrap";
+import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import axios from "axios";
 import styles from "../styles/JelaChat.module.css";
 import { ChatbotData } from "../App";
@@ -9,6 +9,7 @@ type ChatMessage = {
   id: number;
   role: "user" | "jela";
   message: string;
+  buttonsDisabled?: boolean; // Untuk menandai apakah tombol-tombol sudah dikunci
 };
 
 export type JelaChatProps = {
@@ -97,9 +98,15 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }:
             id: messages.length + 2,
             role: "jela",
             message: combinedMessage,
+            buttonsDisabled: false  // Awalnya tombol tidak dikunci
         };
 
-        setMessages((prev) => [...prev, jelaResponse]);
+        setMessages((prev) => [...prev, jelaResponse].map(msg => {
+          if (msg.role === 'jela' && msg.id !== jelaResponse.id) {
+            return { ...msg, buttonsDisabled: true }; // Mengunci semua tombol dari respons sebelumnya
+          }
+          return msg;
+        }));
         setJumlahResponsJela((prev) => prev + 1);
 
         if (jumlahResponsJela + 1 >= 5) {
@@ -108,6 +115,17 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }:
     } catch (error) {
         console.error("Gagal mengirim prompt ke AI:", error);
     }
+  };
+
+  const handleButtonClick = (messageId: number, buttonType: 'change' | 'add' | 'reject') => {
+    // Logika tambahan berdasarkan jenis tombol yang diklik
+    console.log(`Button ${buttonType} clicked for message ${messageId}`);
+
+    setMessages(currentMessages => 
+      currentMessages.map(msg => 
+        msg.id === messageId ? { ...msg, buttonsDisabled: true } : msg
+      )
+    );
   };
 
   const isFinishButtonDisabled = isLocked || jumlahResponsJela < 5;
@@ -129,10 +147,38 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }:
                 />
                 <div className={styles.markdownContainer}>
                   <ReactMarkdown>{msg.message}</ReactMarkdown>
-                  <div className={styles.buttonContainer}>
-                    <Button variant="primary custom-button" className="mr-2">Ya</Button>
-                    <Button variant="outline-danger text" className="mr-2">Tidak</Button>
-                  </div>
+                  <Row className={styles.buttonContainer1}>
+                    <Col xs="auto">
+                      <Button 
+                        variant="primary custom-button" 
+                        className="mr-2" 
+                        onClick={() => handleButtonClick(msg.id, 'change')}
+                        disabled={msg.buttonsDisabled}
+                      >
+                        Ubah
+                      </Button>
+                    </Col>
+                    <Col xs="auto">
+                      <Button 
+                        variant="warning text" 
+                        className="mr-2" 
+                        onClick={() => handleButtonClick(msg.id, 'add')}
+                        disabled={msg.buttonsDisabled}
+                      >
+                        Tambah
+                      </Button>
+                    </Col>
+                    <Col xs="auto">
+                      <Button 
+                        variant="danger text" 
+                        className="mr-2" 
+                        onClick={() => handleButtonClick(msg.id, 'reject')}
+                        disabled={msg.buttonsDisabled}
+                      >
+                        Tidak
+                      </Button>
+                    </Col>
+                  </Row>
                 </div>
               </>
             ) : (

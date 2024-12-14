@@ -87,11 +87,7 @@
   max-width: 70%;
 }
 
-.buttonContainer {
+.buttonContainer1 {
   /* Misalnya, Anda ingin memberikan jarak lebih besar dari yang sudah ada dengan mr-2 */
   display: flex; /* Agar tombol berada di satu baris */
-}
-
-.buttonContainer Button:first-child {
-  margin-right: 10px; /* Atau sesuai kebutuhan */
 }
