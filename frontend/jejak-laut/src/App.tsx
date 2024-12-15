@@ -60,7 +60,7 @@ function App() {
       return {
         ...note,
         tags: tags.filter((tag) => note.tagIds.includes(tag.id)),
-        ai_access: 0, // Nilai default untuk ai_access
+        ai_access: 0,
         daftar_token: {},
       };
     });

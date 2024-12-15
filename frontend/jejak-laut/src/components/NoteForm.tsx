@@ -55,13 +55,15 @@ export function NoteForm({
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
+    const finalGambar = fileBase64 || gambar;
+
     onSubmit({
       title: titleRef.current!.value,
       markdown: markdownRef.current!.value,
       tags: selectedTags,
       longitude: lng,
       latitude: lat,
-      gambar: fileBase64,
+      gambar: finalGambar,
       lastModified: "",
     });
 

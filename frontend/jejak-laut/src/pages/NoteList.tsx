@@ -65,7 +65,7 @@ export function NoteList({
         <Col>
           <Stack direction="horizontal" gap={2}>
             <img src="/dark-nobg.svg" alt="Logo" style={{ width: '40px', height: '40px'}} />
-            <h2 style={{ margin: 0 }} className="custom-judul">Jejak Laut</h2>
+            <h2 style={{ margin: 0 }} className="custom-judul">Jejak Laut AI</h2>
           </Stack>
         </Col>
         <Col xs="auto">

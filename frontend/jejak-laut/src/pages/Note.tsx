@@ -23,6 +23,13 @@ export function Note({ onDelete }: NoteProps) {
     console.log(`Update chatbot data for note ${noteId}`, data);
   };
 
+  const onUpdateNote = (id: string, data: Partial<{ markdown: string }>) => {
+    console.log(`Update note with id ${id}:`, data);
+    // Logika pembaruan markdown di sini
+    note.markdown = data.markdown || note.markdown; 
+  };
+  
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -127,7 +134,8 @@ export function Note({ onDelete }: NoteProps) {
         <div className="flex-grow-1 me-2">
           <JelaChat 
             noteId={note.id} 
-            onUpdateChatbotData={onUpdateChatbotData} 
+            onUpdateChatbotData={onUpdateChatbotData}
+            onUpdateNote={onUpdateNote}
             chatbotData={{ ai_access: note.ai_access, daftar_token: note.daftar_token }} 
             noteData={{
               title: note.title,

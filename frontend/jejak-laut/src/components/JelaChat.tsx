@@ -9,12 +9,13 @@ type ChatMessage = {
   id: number;
   role: "user" | "jela";
   message: string;
-  buttonsDisabled?: boolean; // Untuk menandai apakah tombol-tombol sudah dikunci
+  buttonsDisabled?: boolean;
 };
 
 export type JelaChatProps = {
   noteId: string;
   onUpdateChatbotData: (noteId: string, data: Partial<ChatbotData>) => void;
+  onUpdateNote: (id: string, data: Partial<{ markdown: string }>) => void;
   chatbotData: ChatbotData;
   noteData: {
     title: string;
@@ -23,7 +24,7 @@ export type JelaChatProps = {
   }
 };
 
-export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }: JelaChatProps) {
+export function JelaChat({ noteId, onUpdateChatbotData, onUpdateNote, chatbotData, noteData }: JelaChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputText, setInputText] = useState<string>(""); 
   const [isLocked, setIsLocked] = useState<boolean>(true); 
@@ -64,9 +65,9 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }:
     if (!inputText.trim() || isInputDisabled) return;
 
     const newMessage: ChatMessage = {
-        id: messages.length + 1,
-        role: "user",
-        message: inputText.trim(),
+      id: messages.length + 1,
+      role: "user",
+      message: inputText.trim(),
     };
 
     setMessages((prev) => [...prev, newMessage]);
@@ -74,58 +75,72 @@ export function JelaChat({ noteId, onUpdateChatbotData, chatbotData, noteData }:
 
     const token = daftar_token[noteId];
     try {
-        const response = await axios.post(
-            "http://localhost:5212/api/jela/chat",
-            {
-                judul: noteData.title,
-                kategori: noteData.kategori,
-                catatan: noteData.catatan,
-                query: inputText.trim(),
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
-
-        const { response: apiResponse } = response.data.response;
-        const { result } = response.data.response;
-
-        const combinedMessage = `${apiResponse}\n\n${result}`;
-
-        const jelaResponse: ChatMessage = {
-            id: messages.length + 2,
-            role: "jela",
-            message: combinedMessage,
-            buttonsDisabled: false  // Awalnya tombol tidak dikunci
-        };
-
-        setMessages((prev) => [...prev, jelaResponse].map(msg => {
-          if (msg.role === 'jela' && msg.id !== jelaResponse.id) {
-            return { ...msg, buttonsDisabled: true }; // Mengunci semua tombol dari respons sebelumnya
-          }
-          return msg;
-        }));
-        setJumlahResponsJela((prev) => prev + 1);
-
-        if (jumlahResponsJela + 1 >= 5) {
-            setIsInputDisabled(true);
+      const response = await axios.post(
+        "http://localhost:5212/api/jela/chat",
+        {
+          judul: noteData.title,
+          kategori: noteData.kategori,
+          catatan: noteData.catatan,
+          query: inputText.trim(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
+
+      const { response: apiResponse, result } = response.data.response;
+
+      const jelaResponse: ChatMessage = {
+        id: messages.length + 2,
+        role: "jela",
+        message: `${apiResponse}\n\n${result}`,
+        buttonsDisabled: false  
+      };
+
+      setMessages((prev) => [...prev, jelaResponse].map(msg => {
+        if (msg.role === 'jela' && msg.id !== jelaResponse.id) {
+          return { ...msg, buttonsDisabled: true }; 
+        }
+        return msg;
+      }));
+      setJumlahResponsJela((prev) => prev + 1);
+
+      if (jumlahResponsJela + 1 >= 5) {
+        setIsInputDisabled(true);
+      }
     } catch (error) {
-        console.error("Gagal mengirim prompt ke AI:", error);
+      console.error("Gagal mengirim prompt ke AI:", error);
+      const errorJelaResponse: ChatMessage = {
+        id: messages.length + 2,
+        role: "jela",
+        message: "Maaf, kami mengalami kesulitan menghubungi Jela. Silakan coba lagi nanti.",
+        buttonsDisabled: true
+      };
+      setMessages(prev => [...prev, errorJelaResponse]);
     }
   };
 
   const handleButtonClick = (messageId: number, buttonType: 'change' | 'add' | 'reject') => {
-    // Logika tambahan berdasarkan jenis tombol yang diklik
-    console.log(`Button ${buttonType} clicked for message ${messageId}`);
+    const selectedMessage = messages.find(msg => msg.id === messageId);
+    if (!selectedMessage) return;
 
     setMessages(currentMessages => 
       currentMessages.map(msg => 
         msg.id === messageId ? { ...msg, buttonsDisabled: true } : msg
       )
     );
+
+    if (buttonType === 'change') {
+      const changeMarkdown = selectedMessage.message;
+      onUpdateNote(noteId, { markdown: changeMarkdown });
+    } else if (buttonType === 'add') {
+      const newMarkdown = noteData.catatan + '\n' + selectedMessage.message;
+      onUpdateNote(noteId, { markdown: newMarkdown });
+    } else if (buttonType === 'reject') {
+      return;
+    }
   };
 
   const isFinishButtonDisabled = isLocked || jumlahResponsJela < 5;
