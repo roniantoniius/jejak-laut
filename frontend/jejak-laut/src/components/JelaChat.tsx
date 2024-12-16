@@ -4,6 +4,7 @@ import axios from "axios";
 import styles from "../styles/JelaChat.module.css";
 import { ChatbotData } from "../App";
 import ReactMarkdown from "react-markdown";
+import { Alert } from "./Alert";
 
 type ChatMessage = {
   id: number;
@@ -30,6 +31,8 @@ export function JelaChat({ noteId, onUpdateChatbotData, onUpdateNote, chatbotDat
   const [isLocked, setIsLocked] = useState<boolean>(true); 
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(false); 
   const [jumlahResponsJela, setJumlahResponsJela] = useState<number>(0); 
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { ai_access, daftar_token } = chatbotData;
 
@@ -132,12 +135,12 @@ export function JelaChat({ noteId, onUpdateChatbotData, onUpdateNote, chatbotDat
       )
     );
 
-    if (buttonType === 'change') {
-      const changeMarkdown = selectedMessage.message;
-      onUpdateNote(noteId, { markdown: changeMarkdown });
-    } else if (buttonType === 'add') {
-      const newMarkdown = noteData.catatan + '\n' + selectedMessage.message;
-      onUpdateNote(noteId, { markdown: newMarkdown });
+    if (buttonType === 'change' || buttonType === 'add') {
+      const changeOrAddMarkdown = buttonType === 'change' ? selectedMessage.message : noteData.catatan + "\n" + selectedMessage.message;
+      onUpdateNote(noteId, { markdown: changeOrAddMarkdown });
+
+      setAlertMessage(`Proses ${buttonType === 'change' ? 'Ubah' : 'Tambah'} data berhasil!`);
+      setShowAlert(true); // Trigger the alert
     } else if (buttonType === 'reject') {
       return;
     }
@@ -245,6 +248,14 @@ export function JelaChat({ noteId, onUpdateChatbotData, onUpdateNote, chatbotDat
           </>
         )}
       </Card.Footer>
+      <Alert 
+        message={alertMessage} 
+        onNavigate={() => { 
+          setShowAlert(false);
+          window.location.href = '/'; 
+        }} 
+        show={showAlert} 
+      />
     </Card>
   );
 }

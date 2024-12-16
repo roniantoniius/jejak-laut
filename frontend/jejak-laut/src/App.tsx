@@ -11,6 +11,9 @@ import { NoteLayout } from "./layouts/NoteLayout";
 import { EditNote } from "./pages/EditNote";
 import { NoteLokasi } from "./pages/NoteLokasi";
 import { PickLocation } from "./pages/PickLocation";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export type ChatbotData = {
   ai_access: number;
@@ -126,47 +129,50 @@ function App() {
   }
 
   return (
-    <Container className="my-4">
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <NoteList
-              notes={notesWithTags}
-              availableTags={tags}
-              onUpdateTag={updateTag}
-              onDeleteTag={deleteTag}
-            />
-          }
-        />
-        <Route
-          path="/baru"
-          element={
-            <NewNote
-              onSubmit={onCreateNote}
-              onAddTag={addTag}
-              availableTags={tags}
-            />
-          }
-        />
-        <Route path="/:id" element={<NoteLayout notes={notesWithTags} />}>
-          <Route index element={<Note onDelete={onDeleteNote} />} />
+    <>
+      <Container className="my-4">
+        <Routes>
           <Route
-            path="ubah"
+            path="/"
             element={
-              <EditNote
-                onSubmit={onUpdateNote}
+              <NoteList
+                notes={notesWithTags}
+                availableTags={tags}
+                onUpdateTag={updateTag}
+                onDeleteTag={deleteTag}
+              />
+            }
+          />
+          <Route
+            path="/baru"
+            element={
+              <NewNote
+                onSubmit={onCreateNote}
                 onAddTag={addTag}
                 availableTags={tags}
               />
             }
           />
-          <Route path="lokasi" element={<NoteLokasi />} />
-        </Route>
-        <Route path="/pilihlokasi" element={<PickLocation />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </Container>
+          <Route path="/:id" element={<NoteLayout notes={notesWithTags} />}>
+            <Route index element={<Note onDelete={onDeleteNote} />} />
+            <Route
+              path="ubah"
+              element={
+                <EditNote
+                  onSubmit={onUpdateNote}
+                  onAddTag={addTag}
+                  availableTags={tags}
+                />
+              }
+            />
+            <Route path="lokasi" element={<NoteLokasi />} />
+          </Route>
+          <Route path="/pilihlokasi" element={<PickLocation />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Container>
+      <ToastContainer />
+    </>
   );
 }
 
