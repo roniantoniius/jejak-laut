@@ -29,6 +29,8 @@ def get_chatter():
       "result": Versi catatan sesuai dengan permintaan nelayan (query) yang ditampung pada key result, isinya berupa teks markdown laporan panjang berdasarkan informasi yang nelayan berikan dan kamu bisa melakukan improvement atau adaptasi dengan menambah beberapa hal untuk melengkapi catatan tersebut. Jika nelayan memasukkan suatu tabel atau hal lainnya, usahakan itu tetap ada.
     }
 
+    Pastikan ketika kamu menghasilkan output atau response, kamu jangan mengulang lagi informasi yang sudah ada pada catatan nelayan, tapi tambahkan informasi yang relevan dan penting untuk melengkapi catatan tersebut.
+
     Jika masukan tidak sesuai konteks, cukup dan selalu jawab bahwa kamu tidak mengerti pertanyaan tersebut."""
 
     def send_chat_request(

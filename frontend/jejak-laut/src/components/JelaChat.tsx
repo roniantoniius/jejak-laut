@@ -5,6 +5,7 @@ import styles from "../styles/JelaChat.module.css";
 import { ChatbotData } from "../App";
 import ReactMarkdown from "react-markdown";
 import { Alert } from "./Alert";
+import { useNavigate } from 'react-router-dom';
 
 type ChatMessage = {
   id: number;
@@ -32,9 +33,10 @@ export function JelaChat({ noteId, onUpdateChatbotData, onUpdateNote, chatbotDat
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(false); 
   const [jumlahResponsJela, setJumlahResponsJela] = useState<number>(0); 
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [alertMessage, setAlertMessage] = useState<string>("");
+  const [alertMessage] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { ai_access, daftar_token } = chatbotData;
+  const navigate = useNavigate();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -129,6 +131,7 @@ export function JelaChat({ noteId, onUpdateChatbotData, onUpdateNote, chatbotDat
     const selectedMessage = messages.find(msg => msg.id === messageId);
     if (!selectedMessage) return;
 
+    // Disable button pada pesan yang dipilih
     setMessages(currentMessages => 
       currentMessages.map(msg => 
         msg.id === messageId ? { ...msg, buttonsDisabled: true } : msg
@@ -136,11 +139,17 @@ export function JelaChat({ noteId, onUpdateChatbotData, onUpdateNote, chatbotDat
     );
 
     if (buttonType === 'change' || buttonType === 'add') {
-      const changeOrAddMarkdown = buttonType === 'change' ? selectedMessage.message : noteData.catatan + "\n" + selectedMessage.message;
+      const changeOrAddMarkdown = buttonType === 'change' 
+        ? selectedMessage.message 
+        : noteData.catatan + "\n" + selectedMessage.message;
+
+      // Panggil fungsi pembaruan catatan
       onUpdateNote(noteId, { markdown: changeOrAddMarkdown });
 
-      setAlertMessage(`Proses ${buttonType === 'change' ? 'Ubah' : 'Tambah'} data berhasil!`);
-      setShowAlert(true); // Trigger the alert
+      // Tunggu sebentar untuk memastikan pembaruan telah selesai
+      setTimeout(() => {
+        navigate(`/${noteId}/ubah`); // Arahkan ke halaman EditNote
+      }, 300); // Delay ini memberikan waktu bagi React untuk memperbarui state
     } else if (buttonType === 'reject') {
       return;
     }

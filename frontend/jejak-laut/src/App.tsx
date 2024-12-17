@@ -83,9 +83,9 @@ function App() {
     ]);
   }
 
-  function onUpdateNote(id: string, { tags, ...data }: NoteData) {
+  function onUpdateNote(id: string, { tags, ...data }: NoteData, callback?: () => void) {
     setNotes((prevNotes) => {
-      return prevNotes.map((note) => {
+      const updatedNotes = prevNotes.map((note) => {
         if (note.id === id) {
           return {
             ...note,
@@ -97,8 +97,13 @@ function App() {
           return note;
         }
       });
+  
+      // Jika callback disediakan, panggil callback setelah setNotes
+      if (callback) callback();
+  
+      return updatedNotes;
     });
-  }
+  }  
 
   function onDeleteNote(id: string) {
     setNotes((prevNotes) => {
