@@ -4,7 +4,7 @@
     "slug": "latihan1",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/dark-nobg.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -36,6 +36,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1fb7e5d0-2089-4c26-b3c7-f6ca5afaf18c"
+      }
+    },
+    "owner": "theoox23"
   }
 }
