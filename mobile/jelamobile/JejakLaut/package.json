@@ -1,5 +1,5 @@
 {
-  "name": "latihan1",
+  "name": "jejaklaut",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -22,7 +22,6 @@
     "expo": "~52.0.20",
     "expo-blur": "~14.0.1",
     "expo-constants": "~17.0.3",
-    "expo-dev-client": "~5.0.6",
     "expo-font": "~13.0.2",
     "expo-haptics": "~14.0.0",
     "expo-image": "~2.0.3",

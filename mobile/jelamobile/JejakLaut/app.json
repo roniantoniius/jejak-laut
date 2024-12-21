@@ -1,0 +1,63 @@
+{
+  "expo": {
+    "name": "JejakLaut",
+    "slug": "JejakLaut",
+    "assetBundlePatterns": [
+      "assets/fonts/*"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/dark-nobg.svg",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIFontFamilies": [
+          "Montserrat",
+          "Montserrat-Bold"
+        ],
+        "UIAppFonts": [
+          "assets/fonts/Montserrat-Regular.ttf",
+          "assets/fonts/Montserrat-Bold.ttf"
+        ]
+      }
+    },
+    "android": {
+      "font": [
+          {
+            "fontFamily": "Montserrat",
+            "file": "./assets/fonts/MontserratRegular.ttf"
+          },
+          {
+            "fontFamily": "Montserrat-Bold",
+            "file": "./assets/fonts/MontserratBold.ttf"
+          }
+        ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/dark-nobg.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/dark-nobg.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/dark-nobg.png",
+          "imageWidth": 200,
+          "resizeMode": "contain"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
