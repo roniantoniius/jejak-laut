@@ -28,7 +28,6 @@ export default function NewNoteScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Tambah Jejak Baru</Text>
       <NoteForm
         onSubmit={handleCreateNote}
         onAddTag={handleAddTag}

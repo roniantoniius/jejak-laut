@@ -8,7 +8,7 @@ export default function TabLayout() {
 
   const animateIcon = (focused: boolean) => {
     Animated.timing(scaleAnim, {
-      toValue: focused ? 1.2 : 1, // Perbesar jika focused
+      toValue: focused ? 1.2 : 1,
       duration: 300,
       useNativeDriver: true,
     }).start();
@@ -28,10 +28,10 @@ export default function TabLayout() {
         },
         tabBarStyle: {
           backgroundColor: 'white',
-          height: 70, // Tinggi tab bar
-          borderTopLeftRadius: 20, // Lengkungan pada tab bar
+          height: 70, 
+          borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-          position: 'absolute', // Agar tab bar tetap terlihat
+          position: 'absolute',
           left: 0,
           right: 0,
           bottom: 0,
@@ -41,7 +41,7 @@ export default function TabLayout() {
           shadowRadius: 5,
           elevation: 5,
         },
-        tabBarShowLabel: false, // Hilangkan teks label
+        tabBarShowLabel: false,
       }}
     >
       <Tabs.Screen
@@ -60,14 +60,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="newnote"
         options={{
-          title: 'Jejak Baru',
+          title: 'Tambah Jejak Baru',
           tabBarIcon: ({ focused }) => {
             animateIcon(focused);
             return (
               <View
                 style={{
                   position: 'absolute',
-                  bottom: 0, // Mengangkat ikon dari tab bar
+                  bottom: 0,
                   width: 80,
                   height: 80,
                   borderRadius: 40,

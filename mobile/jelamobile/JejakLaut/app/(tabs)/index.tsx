@@ -1,15 +1,14 @@
 import { View, StyleSheet } from 'react-native';
-
-import Button from '@/components/Button';
+import { NoteList } from '@/components/NoteList';
 
 export default function Index() {
   return (
     <View style={styles.container}>
       <View style={styles.footerContainer}>
-        <Button theme="primary" label="Choose a photo" />
-        <Button label="Use this photo" />
+        <NoteList />
       </View>
     </View>
+    
   );
 }
 
