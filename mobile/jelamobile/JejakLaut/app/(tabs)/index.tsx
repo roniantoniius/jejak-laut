@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { PopupCard } from '@/components/PopupCard';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NoteList } from '@/components/NoteList';
-import { useAsyncStorage } from '@/components/useAsyncStorage';
-import { Tag } from '@/components/types';
-import { EditTags } from '@/components/EditTags';
 
 // Definisikan tipe navigasi
 type RootStackParamList = {
@@ -14,18 +13,7 @@ type RootStackParamList = {
 };
 
 export default function Index() {
-  const [tags, setTags] = useAsyncStorage<Tag[]>('TAGS', []);
-  const [showEditTagsModal, setShowEditTagsModal] = useState(false);
-
-  const handleUpdateTag = (id: string, label: string) => {
-    setTags((prevTags) => 
-      prevTags.map((tag) => (tag.id === id ? { ...tag, label } : tag))
-    );
-  };
-
-  const handleDeleteTag = (id: string) => {
-    setTags((prevTags) => prevTags.filter((tag) => tag.id !== id));
-  };
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   return (
     <View style={styles.container}>
@@ -35,20 +23,12 @@ export default function Index() {
         title="Menu Aksi"
         buttons={[
           {
-            label: 'Ubah Kategori',
-            onPress: () => setShowEditTagsModal(true),
-            style: styles.editButton,
-            textStyle: styles.editButtonText,
+            label: 'Tambah Jejak Baru',
+            onPress: () => navigation.navigate('newnote'),
+            style: styles.addButton,
+            textStyle: styles.addButtonText,
           },
-
         ]}
-      />
-      <EditTags
-        show={showEditTagsModal}
-        tags={tags}
-        onClose={() => setShowEditTagsModal(false)}
-        onUpdateTag={handleUpdateTag}
-        onDeleteTag={handleDeleteTag}
       />
     </View>
   );
@@ -67,7 +47,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
   },
-  editButton: {
+  addButton: {
     backgroundColor: '#052844',
     padding: 12,
     borderRadius: 8,
@@ -75,7 +55,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 5,
   },
-  editButtonText: {
+  addButtonText: {
     fontFamily: 'Montserrat-Bold',
     color: 'white',
     fontSize: 16,

@@ -13,16 +13,16 @@ export default function NewNoteScreen() {
   const navigation = useNavigation();
 
   const handleCreateNote = (data: NoteData) => {
-    const newNote = { ...data, id: uuidV4() }; // Buat catatan baru dengan ID unik
-    setNotes([...notes, newNote]); // Update array catatan dengan catatan baru
+    const newNote = { ...data, id: uuidV4() };
+    setNotes([...notes, newNote]);
     
     console.log('Catatan baru berhasil disimpan:', newNote);
-    navigation.goBack(); // Kembali ke layar sebelumnya
+    navigation.goBack();
   };
 
   const handleAddTag = (tag: Tag) => {
     const updatedTags = [...tags, tag];
-    setTags(updatedTags); // Update tags global
+    setTags(updatedTags);
 
     Alert.alert('Berhasil!', `Tag: ${tag} baru berhasil ditambahkan.`);
     console.log('Tag baru berhasil ditambahkan:', tag);
@@ -33,7 +33,7 @@ export default function NewNoteScreen() {
       <NoteForm
         onSubmit={handleCreateNote}
         onAddTag={handleAddTag}
-        availableTags={tags} // Pastikan tag tetap sinkron
+        availableTags={tags}
       />
     </View>
   );
