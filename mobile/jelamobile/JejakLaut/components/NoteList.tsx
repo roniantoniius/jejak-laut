@@ -1,14 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import { useAsyncStorage } from './useAsyncStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NoteCard } from './NoteCard';
 import { NoteData } from './types';
+import { useFocusEffect } from '@react-navigation/native';
 
 export function NoteList() {
   const [notes, setNotes] = useAsyncStorage<NoteData[]>('NOTES', []);
 
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        const storedNotes = await AsyncStorage.getItem('NOTES');
+        if (storedNotes) {
+          setNotes(JSON.parse(storedNotes));
+        }
+      })();
+    }, [])
+  );
+
   const handlePressNote = (id: string) => {
-    // Navigasi atau aksi lain ketika catatan diklik
     console.log(`Note pressed: ${id}`);
   };
 
@@ -36,7 +48,6 @@ export function NoteList() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9f9f9',
-    padding: 16,
+    backgroundColor: 'white',
   },
 });

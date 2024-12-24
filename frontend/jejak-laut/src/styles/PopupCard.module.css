@@ -30,7 +30,6 @@
     filter: brightness(0) saturate(100%) invert(20%) sepia(15%) saturate(500%) hue-rotate(200deg) brightness(80%) contrast(90%);
 }
 
-
 .popup {
     position: absolute; /* Tetap absolute agar menempel pada container */
     top: 80px;

@@ -15,7 +15,7 @@ import {
 import DropDownPicker from 'react-native-dropdown-picker';
 import { NoteData, Tag } from './types';
 
-const COLOR_OPTIONS = ['#FF5733', '#33FF57', '#3357FF', '#FFC300', '#8E44AD'];
+const COLOR_OPTIONS = ['#FF5733', '#ed9e2f', '#052844', '#B6E5FF', '#18de8c'];
 
 type NoteFormProps = {
   onSubmit: (data: NoteData) => void;
@@ -85,7 +85,7 @@ export function NoteForm({
     const noteTags = tagOptions
       .filter((option) => selectedTags.includes(option.value))
       .map((option) => ({ id: option.value, label: option.label, color: option.color }));
-
+  
     onSubmit({
       title: noteTitle,
       markdown: noteMarkdown,
@@ -93,9 +93,17 @@ export function NoteForm({
       longitude: lng,
       latitude: lat,
       lastModified: new Date().toISOString(),
-      id: ''
+      id: '',
     });
+  
+    // Reset form setelah submit
+    setNoteTitle('');
+    setNoteMarkdown('');
+    setSelectedTags([]);
+    setLat(0);
+    setLng(0);
   };
+  
 
   return (
     <KeyboardAvoidingView
@@ -139,7 +147,9 @@ export function NoteForm({
           value={newTagText}
           onChangeText={setNewTagText}
         />
-        <Button title="Tambah" onPress={handleCreateTag} />
+        <TouchableOpacity style={styles.addButtonSmall} onPress={handleCreateTag}>
+          <Text style={styles.addButtonSmallText}>Tambah</Text>
+        </TouchableOpacity>
       </View>
 
       <Text style={styles.label}>Badan Catatan</Text>
@@ -166,15 +176,15 @@ export function NoteForm({
         onChangeText={(text) => setLng(parseFloat(text) || 0)}
       />
 
-      <View style={styles.buttonContainer}>
-        <Button title="Simpan" onPress={handleSubmit} />
-      </View>
+      <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
+        <Text style={styles.addButtonText}>Simpan</Text>
+      </TouchableOpacity>
 
       {/* Modal untuk memilih warna */}
       <Modal visible={isColorPickerVisible} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Pilih Warna Tag</Text>
+            <Text style={styles.modalTitle}>Pilih Warna Kategori</Text>
             <FlatList
               data={COLOR_OPTIONS}
               keyExtractor={(item) => item}
@@ -187,7 +197,9 @@ export function NoteForm({
               numColumns={3}
               contentContainerStyle={styles.colorGrid}
             />
-            <Button title="Batal" onPress={() => setIsColorPickerVisible(false)} />
+            <TouchableOpacity style={styles.addButton} onPress={() => setIsColorPickerVisible(false)}>
+              <Text style={styles.addButtonText}>Batal</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -203,6 +215,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginBottom: 8,
+    fontFamily: 'Montserrat-Bold',
   },
   input: {
     borderWidth: 1,
@@ -211,24 +224,25 @@ const styles = StyleSheet.create({
     padding: 8,
     marginBottom: 16,
     fontSize: 16,
-  },
-  buttonContainer: {
-    marginTop: 16,
+    fontFamily: 'Montserrat',
   },
   dropdown: {
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 4,
     marginBottom: 16,
+    fontFamily: 'Montserrat',
   },
   dropdownContainer: {
     borderWidth: 1,
     borderColor: '#ccc',
+    fontFamily: 'Montserrat',
   },
   newTagContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
+    fontFamily: 'Montserrat',
   },
   newTagInput: {
     flex: 1,
@@ -238,6 +252,7 @@ const styles = StyleSheet.create({
     padding: 8,
     marginRight: 8,
     fontSize: 16,
+    fontFamily: 'Montserrat',
   },
   tagColor: {
     width: 12,
@@ -248,7 +263,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
   },
   modalContent: {
     backgroundColor: 'white',
@@ -261,6 +276,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 16,
     color: '#000',
+    fontFamily: 'Montserrat-Bold',
   },
   colorGrid: {
     alignItems: 'center',
@@ -273,5 +289,33 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderWidth: 2,
     borderColor: '#fff',
+  },
+  addButton: {
+    backgroundColor: '#052844',
+    borderRadius: 4,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: '100%',
+  },
+  addButtonText: {
+    fontFamily: 'Montserrat-Bold',
+    color: 'white',
+    fontSize: 20,
+  },
+  addButtonSmall: {
+    backgroundColor: '#052844',
+    borderRadius: 4,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: '25%',
+  },
+  addButtonSmallText: {
+    fontFamily: 'Montserrat-Bold',
+    color: 'white',
+    fontSize: 16,
   },
 });

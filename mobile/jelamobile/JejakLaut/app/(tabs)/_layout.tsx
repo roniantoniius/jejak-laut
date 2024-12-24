@@ -55,12 +55,20 @@ export default function TabLayout() {
               color={color}
             />
           ),
+          headerTitleStyle: {
+            fontSize: 28,
+            fontFamily: 'Montserrat-Bold',
+          },
         }}
       />
       <Tabs.Screen
         name="newnote"
         options={{
           title: 'Tambah Jejak Baru',
+          headerTitleStyle: {
+            fontSize: 28,
+            fontFamily: 'Montserrat-Bold',
+          },
           tabBarIcon: ({ focused }) => {
             animateIcon(focused);
             return (
@@ -115,6 +123,10 @@ export default function TabLayout() {
         name="konfigurasi"
         options={{
           title: 'Konfigurasi Jejak Laut',
+          headerTitleStyle: {
+            fontSize: 28,
+            fontFamily: 'Montserrat-Bold',
+          },
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? 'settings' : 'settings-outline'}
