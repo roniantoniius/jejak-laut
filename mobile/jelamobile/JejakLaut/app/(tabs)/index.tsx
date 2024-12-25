@@ -1,30 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { PopupCard } from '@/components/PopupCard';
-import { useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NoteList } from '@/components/NoteList';
-
-// Definisikan tipe navigasi
-type RootStackParamList = {
-  index: undefined;
-  newnote: undefined; // Sesuaikan dengan Tabs.Screen
-  konfigurasi: undefined;
-};
+import { useAsyncStorage } from '@/components/useAsyncStorage';
+import { Tag } from '@/components/types';
+import { EditTagsModal } from '@/components/EditTagsModal';
+import { PopupCard } from '@/components/PopupCard';
 
 export default function Index() {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const [tags, setTags] = useAsyncStorage<Tag[]>('TAGS', []);
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const handleUpdateTag = (id: string, label: string) => {
+    const updatedTags = tags.map((tag) =>
+      tag.id === id ? { ...tag, label } : tag
+    );
+    setTags(updatedTags);
+  };
+
+  const handleDeleteTag = (id: string) => {
+    const filteredTags = tags.filter((tag) => tag.id !== id);
+    setTags(filteredTags);
+  };
 
   return (
     <View style={styles.container}>
       <NoteList />
+      <EditTagsModal
+        visible={isModalVisible}
+        onClose={() => setModalVisible(false)}
+        tags={tags}
+        onUpdateTag={handleUpdateTag}
+        onDeleteTag={handleDeleteTag}
+      />
       <PopupCard
         icon={<Text style={styles.iconText}>+</Text>}
         title="Menu Aksi"
         buttons={[
           {
-            label: 'Tambah Jejak Baru',
-            onPress: () => navigation.navigate('newnote'),
+            label: 'Edit Tags',
+            onPress: () => setModalVisible(true),
             style: styles.addButton,
             textStyle: styles.addButtonText,
           },
