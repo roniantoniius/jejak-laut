@@ -137,6 +137,7 @@ export function NoteForm({
         searchable={true}
         style={styles.dropdown}
         dropDownContainerStyle={styles.dropdownContainer}
+        placeholderStyle={styles.placeholder}
       />
 
       {/* Input untuk tag baru */}
@@ -216,6 +217,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 8,
     fontFamily: 'Montserrat-Bold',
+    color: '#052844',
   },
   input: {
     borderWidth: 1,
@@ -317,5 +319,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     color: 'white',
     fontSize: 16,
+  },
+  placeholder: {
+    fontFamily: 'Montserrat',
+    color: '#052844',
   },
 });

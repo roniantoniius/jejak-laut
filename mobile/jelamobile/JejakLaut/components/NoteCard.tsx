@@ -49,16 +49,20 @@ const styles = StyleSheet.create({
   card: {
     padding: 16,
     backgroundColor: 'white',
-    borderRadius: 4,
-    marginBottom: 16,
+    borderRadius: 10, // Increased for a softer look
+    marginBottom: 18,
     marginRight: 10,
     marginLeft: 10,
-    shadowColor: 'black',
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
-    shadowOffset: { width: 10, height: 2 },
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8, // For Android, this gives a z-depth effect
     borderWidth: 1,
-    borderColor: '#a7b0b8',
+    borderColor: '#e4e4e4', // Softer border color
   },
   longlat: {
     fontSize: 12,

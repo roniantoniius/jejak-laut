@@ -1,25 +1,14 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
-import { useAsyncStorage } from './useAsyncStorage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NoteCard } from './NoteCard';
-import { NoteData } from './types';
-import { useFocusEffect } from '@react-navigation/native';
+import { NoteData, Tag } from './types';
 
-export function NoteList() {
-  const [notes, setNotes] = useAsyncStorage<NoteData[]>('NOTES', []);
+type NoteListProps = {
+  tags: Tag[];
+  notes: NoteData[]; // Add this line
+};
 
-  useFocusEffect(
-    useCallback(() => {
-      (async () => {
-        const storedNotes = await AsyncStorage.getItem('NOTES');
-        if (storedNotes) {
-          setNotes(JSON.parse(storedNotes));
-        }
-      })();
-    }, [])
-  );
-
+export function NoteList({ tags, notes }: NoteListProps) {
   const handlePressNote = (id: string) => {
     console.log(`Note pressed: ${id}`);
   };
@@ -27,7 +16,7 @@ export function NoteList() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={notes}
+        data={notes} // Use the notes prop directly
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <NoteCard
@@ -49,5 +38,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    marginBottom: 63,
   },
 });

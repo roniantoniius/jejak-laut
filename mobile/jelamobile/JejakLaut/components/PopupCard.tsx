@@ -56,14 +56,14 @@ export function PopupCard({ icon, title, buttons }: PopupCardProps) {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: -60,
+    top: -55,
     right: 10,
     zIndex: 1100,
   },
   floatingButton: {
     backgroundColor: '#052844',
-    width: 50,
-    height: 50,
+    width: 45,
+    height: 45,
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
@@ -93,10 +93,11 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 22,
     marginBottom: 15,
     textAlign: 'center',
+    fontFamily: 'Montserrat-Bold',
+    color: '#052844',
   },
   button: {
     backgroundColor: '#052844',
@@ -109,6 +110,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Montserrat-Bold',
   },
 });

@@ -1,43 +1,29 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { NoteList } from '@/components/NoteList';
-import { useAsyncStorage } from '@/components/useAsyncStorage';
-import { Tag } from '@/components/types';
 import { EditTagsModal } from '@/components/EditTagsModal';
 import { PopupCard } from '@/components/PopupCard';
+import { useTags } from '@/components/TagContext';
+import { useNotes } from '@/components/NoteContext';
 
 export default function Index() {
-  const [tags, setTags] = useAsyncStorage<Tag[]>('TAGS', []);
+  const { tags } = useTags();
+  const { notes } = useNotes();
   const [isModalVisible, setModalVisible] = useState(false);
-
-  const handleUpdateTag = (id: string, label: string) => {
-    const updatedTags = tags.map((tag) =>
-      tag.id === id ? { ...tag, label } : tag
-    );
-    setTags(updatedTags);
-  };
-
-  const handleDeleteTag = (id: string) => {
-    const filteredTags = tags.filter((tag) => tag.id !== id);
-    setTags(filteredTags);
-  };
 
   return (
     <View style={styles.container}>
-      <NoteList />
+      <NoteList tags={tags} notes={notes} />
       <EditTagsModal
         visible={isModalVisible}
         onClose={() => setModalVisible(false)}
-        tags={tags}
-        onUpdateTag={handleUpdateTag}
-        onDeleteTag={handleDeleteTag}
       />
       <PopupCard
         icon={<Text style={styles.iconText}>+</Text>}
-        title="Menu Aksi"
+        title="Menu Jejak Laut"
         buttons={[
           {
-            label: 'Edit Tags',
+            label: 'Ubah Kategori',
             onPress: () => setModalVisible(true),
             style: styles.addButton,
             textStyle: styles.addButtonText,
@@ -52,8 +38,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    position: 'relative',
-    paddingTop: 20,
   },
   iconText: {
     fontSize: 24,

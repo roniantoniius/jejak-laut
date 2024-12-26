@@ -1,39 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
-import { Tag } from './types';
+import { useTags } from './TagContext';
 
 type EditTagsModalProps = {
   visible: boolean;
   onClose: () => void;
-  tags: Tag[];
-  onUpdateTag: (id: string, label: string) => void;
-  onDeleteTag: (id: string) => void;
 };
 
-export const EditTagsModal: React.FC<EditTagsModalProps> = ({ visible, onClose, tags, onUpdateTag, onDeleteTag }) => {
-  const [localTags, setLocalTags] = useState<Tag[]>(tags);
-
-  useEffect(() => {
-    setLocalTags(tags);
-  }, [tags]);
+export const EditTagsModal: React.FC<EditTagsModalProps> = ({ visible, onClose }) => {
+  const { tags, updateTag, deleteTag } = useTags();
 
   const handleUpdateTag = (id: string, label: string) => {
-    setLocalTags((prev) => prev.map(tag => (tag.id === id ? { ...tag, label } : tag)));
-    onUpdateTag(id, label);
+    updateTag(id, label);
   };
 
   const handleDeleteTag = (id: string) => {
-    setLocalTags((prev) => prev.filter(tag => tag.id !== id));
-    onDeleteTag(id);
+    deleteTag(id);
   };
 
   return (
     <Modal visible={visible} transparent={true} animationType="slide">
       <View style={styles.modalBackground}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Edit Tags</Text>
+          <Text style={styles.modalTitle}>Ubah Kategori</Text>
           <FlatList
-            data={localTags}
+            data={tags}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={styles.tagRow}>
@@ -49,7 +40,7 @@ export const EditTagsModal: React.FC<EditTagsModalProps> = ({ visible, onClose, 
             )}
           />
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Text style={styles.closeButtonText}>Close</Text>
+            <Text style={styles.closeButtonText}>Kembali</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -70,8 +61,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 22,
+    fontFamily: 'Montserrat-Bold',
+    color: '#052844',
     marginBottom: 10,
   },
   tagRow: {
@@ -85,25 +77,32 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     padding: 10,
+    fontFamily: 'Montserrat',
+    color: '#052844',
   },
   deleteButton: {
     marginLeft: 10,
     backgroundColor: 'red',
     padding: 10,
     borderRadius: 5,
+    fontFamily: 'Montserrat',
+    color: '#052844',
   },
   deleteButtonText: {
+    fontFamily: 'Montserrat-Bold',
     color: 'white',
-    fontWeight: 'bold',
   },
   closeButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: 'blue',
-    borderRadius: 5,
+    backgroundColor: '#052844',
+    padding: 12,
+    borderRadius: 8,
+    width: '100%',
+    alignItems: 'center',
+    marginVertical: 5,
   },
   closeButtonText: {
+    fontFamily: 'Montserrat-Bold',
     color: 'white',
-    textAlign: 'center',
+    fontSize: 16,
   },
 });
