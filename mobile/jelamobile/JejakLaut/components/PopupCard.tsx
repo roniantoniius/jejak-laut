@@ -5,9 +5,10 @@ type PopupCardProps = {
   icon: React.ReactNode;
   title: string;
   buttons: { label: string; onPress: () => void; style?: object; textStyle?: object }[];
+  children?: React.ReactNode; // Add this to accept child components
 };
 
-export function PopupCard({ icon, title, buttons }: PopupCardProps) {
+export function PopupCard({ icon, title, buttons, children }: PopupCardProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -32,6 +33,7 @@ export function PopupCard({ icon, title, buttons }: PopupCardProps) {
             <TouchableWithoutFeedback>
               <View style={styles.popup}>
                 <Text style={styles.title}>{title}</Text>
+                {children} {/* Add children here to display custom content */}
                 {buttons.map((button, index) => (
                   <TouchableOpacity
                     key={index}
