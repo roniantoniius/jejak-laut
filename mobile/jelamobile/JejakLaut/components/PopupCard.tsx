@@ -38,7 +38,7 @@ export function PopupCard({ icon, title, buttons }: PopupCardProps) {
                     style={[styles.button, button.style]}
                     onPress={() => {
                       button.onPress();
-                      setIsOpen(false); // Close popup after button is pressed
+                      setIsOpen(false);
                     }}
                   >
                     <Text style={[styles.buttonText, button.textStyle]}>{button.label}</Text>
