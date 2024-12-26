@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 type GuideStepProps = {
     stepNumber: number;
@@ -16,5 +16,22 @@ export const GuideStep: React.FC<GuideStepProps> = ({ stepNumber, imageSrc, desc
             />
             <Text style={styles.text}>{`${stepNumber}. ${description}`}</Text>
         </View>
-    )
-}
+    );
+};
+
+const styles = StyleSheet.create({
+    stepContainer: {
+        alignItems: 'center',
+        padding: 16,
+    },
+    image: {
+        width: 100,
+        height: 100,
+        marginBottom: 10,
+    },
+    text: {
+        fontSize: 16,
+        fontFamily: 'Montserrat-Bold',
+        textAlign: 'center',
+    },
+});
