@@ -1,26 +1,26 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, ImageSourcePropType } from 'react-native';
-import { Asset } from 'expo-asset';
+import { View, Text, Image, StyleSheet } from 'react-native';
+
+// Define the images as static requires
+const images = {
+  '1.png': require('../assets/images/1.png'),
+  '2.png': require('../assets/images/2.png'),
+  '3.png': require('../assets/images/3.png'),
+};
 
 type GuideStepProps = {
   stepNumber: number;
-  imageSrc: string;
+  imageSrc: keyof typeof images; // Ensure imageSrc matches one of our keys
   description: string;
 };
 
 export const GuideStep: React.FC<GuideStepProps> = ({ stepNumber, imageSrc, description }) => {
-  // Use expo-asset to load the image dynamically
-  const imageAsset = Asset.fromModule(require(`../assets/images/${imageSrc}`));
-  
-  // Ensure we have an image source that matches ImageSourcePropType
-  const source: ImageSourcePropType = imageAsset.localUri 
-    ? { uri: imageAsset.localUri } 
-    : require(`../assets/images/${imageSrc}`);
+  const imageSource = images[imageSrc];
 
   return (
     <View style={styles.stepContainer}>
       <Image 
-        source={source}
+        source={imageSource}
         style={styles.image}
       />
       <Text style={styles.text}>{`${stepNumber}. ${description}`}</Text>
