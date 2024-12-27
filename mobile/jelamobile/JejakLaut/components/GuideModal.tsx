@@ -23,23 +23,28 @@ const steps: Step[] = [
   {
     id: '1',
     imageSrc: '1.png',
-    title: 'Buat Catatan Jejak Baru Kamu!',
-    details:
-      'Panduan ini membantu kamu membuat catatan jejak baru. Kamu dapat memulai dengan menambahkan detail seperti lokasi, jenis kapal, alat tangkap yang digunakan, dan hasil tangkapan.',
+    title: 'Mulai Catatan Jejak Laut Baru',
+    details: `Jejak Laut adalah aplikasi sederhana yang memungkinkan para nelayan untuk mencatat kegiatan mereka di laut, seperti jenis kapal, alat tangkap yang digunakan, lokasi (garis bujur dan lintang), serta hasil tangkapan. Dengan menggunakan Jejak Laut, nelayan dapat dengan mudah merekam informasi penting yang dapat digunakan untuk analisis dan pengelolaan kegiatan perikanan.
+
+    Untuk memulai, Anda perlu membuat catatan jejak baru. Caranya cukup mudah: klik tombol + yang terletak di tengah bawah layar. Setelah itu, Anda dapat mulai mengisi data-data yang diperlukan, seperti lokasi, jenis kapal yang digunakan, alat tangkap yang dipakai, serta hasil tangkapan. Setiap catatan yang Anda buat akan memudahkan Anda dalam melacak aktivitas perikanan di masa depan.`,
   },
   {
     id: '2',
     imageSrc: '2.png',
-    title: 'Format Kategori Yang Efisien',
+    title: 'Format Kategori yang Efisien',
     details:
-      'Pelajari cara mengorganisasi data catatan kamu dengan format kategori yang efisien. Ini akan mempermudah pengelolaan data untuk diakses kembali di kemudian hari.',
+      `Mengorganisir data dalam format kategori yang efisien sangat penting untuk memudahkan pencarian dan pengelolaan catatan Anda. Dengan format yang tepat, Anda bisa dengan cepat menemukan informasi yang dibutuhkan dan menghindari kebingungan saat mencatat aktivitas perikanan.
+
+      Sebagai contoh, Anda bisa mengatur urutan kategori dalam catatan Anda mulai dari komoditas yang ditangkap, waktu tangkapan, alat tangkap yang digunakan, dan hasil tangkapan. Alternatif lainnya adalah mengelompokkan data berdasarkan kapal yang digunakan. Pengaturan ini akan membantu Anda mengakses data lebih cepat, baik untuk analisis atau sekadar melihat catatan lama.`,
   },
   {
     id: '3',
     imageSrc: '3.png',
-    title: 'Gunakan AI Untuk Melengkapi Catatan Jejak Laut Kamu!',
+    title: 'AI Mendampingi Jejak Laut Kamu!',
     details:
-      'Manfaatkan fitur AI untuk memberikan saran otomatis terkait informasi yang perlu kamu tambahkan ke catatan. Ini membantu memastikan catatanmu lengkap dan akurat.',
+      `Salah satu fitur utama Jejak Laut adalah penggunaan Generative AI untuk membantu Anda melengkapi catatan yang belum lengkap dan membuat catatan Anda lebih informatif. Dengan bantuan AI, Anda bisa mendapatkan saran otomatis tentang informasi apa yang perlu ditambahkan, seperti waktu tangkapan, alat tangkap yang lebih spesifik, atau lokasi yang lebih akurat.
+
+      Bayangkan Anda baru saja mencatat hasil tangkapan, namun beberapa detail seperti alat tangkap yang digunakan atau lokasi tangkapan terlupakan. Generative AI akan memberikan saran untuk melengkapi informasi tersebut, sehingga catatan Anda menjadi lebih lengkap dan akurat. Fitur ini sangat berguna untuk memastikan bahwa setiap catatan yang Anda buat dapat memberikan informasi yang maksimal dan bermanfaat untuk analisis atau referensi di masa depan.`,
   },
 ];
 

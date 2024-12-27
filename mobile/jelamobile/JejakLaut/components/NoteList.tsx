@@ -38,42 +38,35 @@ export function NoteList({ tags, notes }: NoteListProps) {
   }, []);
 
   return (
-    <View style={styles.container}>
-      {/* SearchBar Component */}
-      <SearchBar
-        searchTitle={searchTitle}
-        setSearchTitle={setSearchTitle}
-        searchTag={searchTag}
-        setSearchTag={setSearchTag}
-      />
-
-      {/* FlatList for Notes */}
-      <FlatList
-        data={filteredNotes}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <NoteCard
-            id={item.id}
-            title={item.title}
-            tags={item.tags}
-            longitude={item.longitude}
-            latitude={item.latitude}
-            lastModified={item.lastModified}
-            onPress={handlePressNote}
-          />
-        )}
-        keyboardShouldPersistTaps="handled"
-        style={styles.list}
-      />
-    </View>
+    <FlatList
+      data={filteredNotes}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <NoteCard
+          id={item.id}
+          title={item.title}
+          tags={item.tags}
+          longitude={item.longitude}
+          latitude={item.latitude}
+          lastModified={item.lastModified}
+          onPress={handlePressNote}
+        />
+      )}
+      ListHeaderComponent={
+        <SearchBar
+          searchTitle={searchTitle}
+          setSearchTitle={setSearchTitle}
+          searchTag={searchTag}
+          setSearchTag={setSearchTag}
+        />
+      }
+      keyboardShouldPersistTaps="handled"
+      style={styles.list}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
   list: {
     padding: 10,
   },
