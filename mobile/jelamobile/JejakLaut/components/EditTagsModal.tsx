@@ -19,7 +19,7 @@ export const EditTagsModal: React.FC<EditTagsModalProps> = ({ visible, onClose }
   };
 
   return (
-    <Modal visible={visible} transparent={true} animationType="slide">
+    <Modal visible={visible} transparent={true} animationType="fade">
       <View style={styles.modalBackground}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Ubah Kategori</Text>

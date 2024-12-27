@@ -36,17 +36,18 @@ export default function Index() {
         title="Menu Jejak Laut"
         buttons={[
           {
-            label: 'Ubah Kategori',
-            onPress: () => setEditTagsVisible(true),
-            style: styles.addButton,
-            textStyle: styles.addButtonText,
-          },
-          {
             label: 'Panduan',
             onPress: () => setGuideVisible(true),
             style: styles.guideButton,
             textStyle: styles.addButtonText,
           },
+          {
+            label: 'Ubah Kategori',
+            onPress: () => setEditTagsVisible(true),
+            style: styles.addButton,
+            textStyle: styles.addButtonText,
+          },
+
         ]}
       />
     </View>

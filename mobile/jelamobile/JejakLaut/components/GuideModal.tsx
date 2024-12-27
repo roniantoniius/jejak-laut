@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 
 const images = {
@@ -14,17 +14,42 @@ type GuideModalProps = {
 
 type Step = {
   id: string;
-  imageSrc: keyof typeof images; // Ensures imageSrc matches a key in images
-  description: string;
+  imageSrc: keyof typeof images;
+  title: string;
+  details: string;
 };
 
 const steps: Step[] = [
-  { id: '1', imageSrc: '1.png', description: 'Buat Catatan Jejak Baru Kamu!' },
-  { id: '2', imageSrc: '2.png', description: 'Format Kategori Yang Efisien' },
-  { id: '3', imageSrc: '3.png', description: 'Gunakan AI Untuk Melengkapi Catatan Jejak Laut Kamu!' },
+  {
+    id: '1',
+    imageSrc: '1.png',
+    title: 'Buat Catatan Jejak Baru Kamu!',
+    details:
+      'Panduan ini membantu kamu membuat catatan jejak baru. Kamu dapat memulai dengan menambahkan detail seperti lokasi, jenis kapal, alat tangkap yang digunakan, dan hasil tangkapan.',
+  },
+  {
+    id: '2',
+    imageSrc: '2.png',
+    title: 'Format Kategori Yang Efisien',
+    details:
+      'Pelajari cara mengorganisasi data catatan kamu dengan format kategori yang efisien. Ini akan mempermudah pengelolaan data untuk diakses kembali di kemudian hari.',
+  },
+  {
+    id: '3',
+    imageSrc: '3.png',
+    title: 'Gunakan AI Untuk Melengkapi Catatan Jejak Laut Kamu!',
+    details:
+      'Manfaatkan fitur AI untuk memberikan saran otomatis terkait informasi yang perlu kamu tambahkan ke catatan. Ini membantu memastikan catatanmu lengkap dan akurat.',
+  },
 ];
 
 export const GuideModal: React.FC<GuideModalProps> = ({ visible, onClose }) => {
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  const toggleAccordion = (id: string) => {
+    setExpanded(expanded === id ? null : id);
+  };
+
   return (
     <Modal visible={visible} transparent={true} animationType="slide">
       <View style={styles.modalBackground}>
@@ -34,9 +59,19 @@ export const GuideModal: React.FC<GuideModalProps> = ({ visible, onClose }) => {
             data={steps}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <View style={styles.stepContainer}>
-                <Image source={images[item.imageSrc]} style={styles.image} />
-                <Text style={styles.stepText}>{`${item.id}. ${item.description}`}</Text>
+              <View style={styles.accordionContainer}>
+                <TouchableOpacity
+                  onPress={() => toggleAccordion(item.id)}
+                  style={styles.accordionHeader}
+                >
+                  <Image source={images[item.imageSrc]} style={styles.image} />
+                  <Text style={styles.stepTitle}>{item.title}</Text>
+                </TouchableOpacity>
+                {expanded === item.id && (
+                  <View style={styles.accordionContent}>
+                    <Text style={styles.detailsText}>{item.details}</Text>
+                  </View>
+                )}
               </View>
             )}
           />
@@ -69,18 +104,37 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
   },
-  stepContainer: {
+  accordionContainer: {
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  accordionHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15,
+    padding: 10,
+    backgroundColor: '#f9f9f9',
+  },
+  accordionContent: {
+    padding: 10,
+    backgroundColor: '#fff',
   },
   image: {
-    width: 100,
-    height: 100,
-    marginBottom: 10,
+    width: 50,
+    height: 50,
+    marginRight: 10,
   },
-  stepText: {
+  stepTitle: {
     fontSize: 16,
-    textAlign: 'center',
+    fontFamily: 'Montserrat-Bold',
+    color: '#052844',
+  },
+  detailsText: {
+    fontSize: 14,
+    fontFamily: 'Montserrat',
+    color: '#333',
   },
   closeButton: {
     backgroundColor: '#052844',
