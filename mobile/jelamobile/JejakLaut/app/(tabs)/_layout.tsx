@@ -57,6 +57,7 @@ export default function TabLayout() {
                 <Ionicons
                   name={focused ? 'home-sharp' : 'home-outline'}
                   size={24}
+                  style={{ marginBottom: -23 }}
                   color={color}
                 />
               ),
@@ -137,6 +138,7 @@ export default function TabLayout() {
                   name={focused ? 'settings' : 'settings-outline'}
                   size={24}
                   color={color}
+                  style={{ marginBottom: -23 }}
                 />
               ),
             }}

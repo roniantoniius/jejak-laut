@@ -33,7 +33,6 @@ export function PopupCard({ icon, title, buttons, children }: PopupCardProps) {
             <TouchableWithoutFeedback>
               <View style={styles.popup}>
                 <Text style={styles.title}>{title}</Text>
-                {children} {/* Add children here to display custom content */}
                 {buttons.map((button, index) => (
                   <TouchableOpacity
                     key={index}

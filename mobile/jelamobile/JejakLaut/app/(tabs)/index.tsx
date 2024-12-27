@@ -32,7 +32,7 @@ export default function Index() {
 
       {/* Unified Popup Card */}
       <PopupCard
-        icon={<Text style={styles.iconText}>+</Text>}
+        icon={<Text style={styles.iconText}>?</Text>}
         title="Menu Jejak Laut"
         buttons={[
           {
