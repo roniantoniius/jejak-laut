@@ -143,6 +143,18 @@ export default function TabLayout() {
               ),
             }}
           />
+          <Tabs.Screen
+            name="note/[id]"
+            options={{
+              title: 'Detail Catatan',
+              headerTitleStyle: {
+                fontSize: 24,
+                fontFamily: 'Montserrat-Bold',
+              },
+              headerTintColor: '#052844',
+              tabBarButton: () => null,
+            }}
+          />
         </Tabs>
       </TagProvider>
     </NoteProvider>

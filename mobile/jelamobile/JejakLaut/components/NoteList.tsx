@@ -3,6 +3,7 @@ import { FlatList, View, StyleSheet } from 'react-native';
 import { NoteCard } from './NoteCard';
 import { NoteData, Tag } from './types';
 import { SearchBar } from './SearchBar';
+import { useNavigation } from 'expo-router';
 
 type NoteListProps = {
   tags: Tag[];
@@ -12,6 +13,7 @@ type NoteListProps = {
 export function NoteList({ tags, notes }: NoteListProps) {
   const [searchTitle, setSearchTitle] = useState('');
   const [searchTag, setSearchTag] = useState('');
+  const navigation = useNavigation<any>();
 
   // Filter Notes Using useMemo
   const filteredNotes = useMemo(() => {
@@ -32,11 +34,13 @@ export function NoteList({ tags, notes }: NoteListProps) {
       );
   }, [notes, searchTitle, searchTag]);
 
-  // Handle Note Press
-  const handlePressNote = useCallback((id: string) => {
-    console.log(`Note pressed: ${id}`);
-  }, []);
-
+  const handlePressNote = useCallback(
+    (id: string) => {
+      navigation.navigate('NoteDetail', { id }); // Navigasi ke NoteDetail dengan ID
+    },
+    [navigation]
+  );
+  
   return (
     <FlatList
       data={filteredNotes}
