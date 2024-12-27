@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from 'react';
-import { FlatList, View, StyleSheet, TextInput } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState, useMemo, useCallback } from 'react';
+import { FlatList, View, StyleSheet } from 'react-native';
 import { NoteCard } from './NoteCard';
 import { NoteData, Tag } from './types';
+import { SearchBar } from './SearchBar';
 
 type NoteListProps = {
   tags: Tag[];
@@ -13,10 +13,7 @@ export function NoteList({ tags, notes }: NoteListProps) {
   const [searchTitle, setSearchTitle] = useState('');
   const [searchTag, setSearchTag] = useState('');
 
-  const handlePressNote = (id: string) => {
-    console.log(`Note pressed: ${id}`);
-  };
-
+  // Filter Notes Using useMemo
   const filteredNotes = useMemo(() => {
     return notes
       .filter((note) => {
@@ -35,43 +32,25 @@ export function NoteList({ tags, notes }: NoteListProps) {
       );
   }, [notes, searchTitle, searchTag]);
 
-  const renderHeader = () => (
-    <View style={styles.searchContainer}>
-      <View style={styles.iconInputContainer}>
-        <Ionicons name="search" size={20} color="#052844" style={styles.icon} />
-        <TextInput
-          style={styles.input}
-          placeholder="Cari Judul..."
-          onChangeText={setSearchTitle}
-          value={searchTitle}
-          placeholderTextColor="#052844"
-        />
-      </View>
-      <View style={styles.iconInputContainer}>
-        <Ionicons
-          name="pricetag-outline"
-          size={20}
-          color="#052844"
-          style={styles.icon}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Cari Tag..."
-          onChangeText={setSearchTag}
-          value={searchTag}
-          placeholderTextColor="#052844"
-        />
-      </View>
-    </View>
-  );
+  // Handle Note Press
+  const handlePressNote = useCallback((id: string) => {
+    console.log(`Note pressed: ${id}`);
+  }, []);
 
   return (
     <View style={styles.container}>
+      {/* SearchBar Component */}
+      <SearchBar
+        searchTitle={searchTitle}
+        setSearchTitle={setSearchTitle}
+        searchTag={searchTag}
+        setSearchTag={setSearchTag}
+      />
+
+      {/* FlatList for Notes */}
       <FlatList
         data={filteredNotes}
         keyExtractor={(item) => item.id}
-        style={styles.lisTo}
-        ListHeaderComponent={renderHeader}
         renderItem={({ item }) => (
           <NoteCard
             id={item.id}
@@ -83,6 +62,8 @@ export function NoteList({ tags, notes }: NoteListProps) {
             onPress={handlePressNote}
           />
         )}
+        keyboardShouldPersistTaps="handled"
+        style={styles.list}
       />
     </View>
   );
@@ -92,31 +73,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    marginBottom: 63,
   },
-  searchContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  iconInputContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    margin: 12,
-    borderWidth: 1,
-    borderColor: '#e4e4e4',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-  },
-  icon: {
-    marginRight: 8,
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    color: '#052844',
-  },
-  lisTo: {
+  list: {
     padding: 10,
   },
 });
