@@ -3,7 +3,8 @@ import { FlatList, View, StyleSheet } from 'react-native';
 import { NoteCard } from './NoteCard';
 import { NoteData, Tag } from './types';
 import { SearchBar } from './SearchBar';
-import { useNavigation } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
+
 
 type NoteListProps = {
   tags: Tag[];
@@ -34,12 +35,12 @@ export function NoteList({ tags, notes }: NoteListProps) {
       );
   }, [notes, searchTitle, searchTag]);
 
-  const handlePressNote = useCallback(
-    (id: string) => {
-      navigation.navigate('NoteDetail', { id }); // Navigasi ke NoteDetail dengan ID
-    },
-    [navigation]
-  );
+  const handlePressNote = useCallback((id: string) => {
+    router.push({
+      pathname: '/note/[id]', // Sesuai struktur folder dynamic route
+      params: { id }, // Kirim parameter id
+    });
+  }, []);
   
   return (
     <FlatList
@@ -53,7 +54,7 @@ export function NoteList({ tags, notes }: NoteListProps) {
           longitude={item.longitude}
           latitude={item.latitude}
           lastModified={item.lastModified}
-          onPress={handlePressNote}
+          onPress={() => handlePressNote(item.id)}
         />
       )}
       ListHeaderComponent={
