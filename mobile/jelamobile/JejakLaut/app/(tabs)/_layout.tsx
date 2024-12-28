@@ -1,19 +1,55 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs, useRouter } from 'expo-router';
 import { View, Text, Animated } from 'react-native';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { TagProvider } from '../../components/TagContext';
 import { NoteProvider } from '@/components/NoteContext';
+import { PopupCard } from '@/components/PopupCard';
+import { EditTagsModal } from '@/components/EditTagsModal';
+import { GuideModal } from '@/components/GuideModal';
+import React from 'react';
 
 export default function TabLayout() {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const router = useRouter();
+  const [isEditTagsVisible, setEditTagsVisible] = useState(false);
+  const [isGuideVisible, setGuideVisible] = useState(false);
+  
   const animateIcon = (focused: boolean) => {
     Animated.timing(scaleAnim, {
       toValue: focused ? 1.2 : 1,
       duration: 300,
       useNativeDriver: true,
     }).start();
+  };
+
+  const styles = {
+    guideButton: {
+      backgroundColor: '#4CAF50', // Green button for guide
+      padding: 12,
+      borderRadius: 8,
+      width: '100%',
+      alignItems: 'center',
+      marginVertical: 5,
+    },
+    iconText: {
+      fontSize: 24,
+      color: 'white',
+      fontFamily: 'Montserrat-Bold',
+    },
+    addButton: {
+      backgroundColor: '#052844',
+      padding: 12,
+      borderRadius: 8,
+      width: '100%',
+      alignItems: 'center',
+      marginVertical: 5,
+    },
+    addButtonText: {
+      fontFamily: 'Montserrat-Bold',
+      color: 'white',
+      fontSize: 16,
+    },
   };
 
   return (
@@ -65,6 +101,26 @@ export default function TabLayout() {
                 fontSize: 28,
                 fontFamily: 'Montserrat-Bold',
               },
+              headerRight: () => (
+                <PopupCard
+                  icon={<Text style={styles.iconText}>?</Text>}
+                  title="Menu Jejak Laut"
+                  buttons={[
+                    {
+                      label: 'Panduan',
+                      onPress: () => setGuideVisible(true),
+                      style: styles.guideButton,
+                      textStyle: styles.addButtonText,
+                    },
+                    {
+                      label: 'Ubah Kategori',
+                      onPress: () => setEditTagsVisible(true),
+                      style: styles.addButton,
+                      textStyle: styles.addButtonText,
+                    },
+                  ]}
+                />
+              ),
             }}
           />
           <Tabs.Screen
@@ -159,21 +215,46 @@ export default function TabLayout() {
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
                   <Ionicons
                     name="arrow-back"
-                    size={24}
+                    size={35}
                     color={tintColor || '#052844'}
                     onPress={() => router.back()}
                   />
                   <Text
                     style={{
                       marginLeft: 8,
-                      fontSize: 16,
+                      fontSize: 28,
                       color: tintColor || '#052844',
+                      fontFamily: 'Montserrat-Bold',
                     }}
                     onPress={() => router.back()}
                   >
                     Kembali
                   </Text>
                 </View>
+              ),
+              headerRight: () => (
+                <>
+                  <PopupCard
+                    icon={<Text style={styles.iconText}>?</Text>}
+                    title="Menu Jejak Laut"
+                    buttons={[
+                      {
+                        label: 'Debugging',
+                        onPress: () => {}, // Add your function here
+                        style: { ...styles.addButton, backgroundColor: '#4CAF50' },
+                        textStyle: styles.addButtonText,
+                      },
+                    ]}
+                  />
+                  <EditTagsModal
+                    visible={isEditTagsVisible}
+                    onClose={() => setEditTagsVisible(false)}
+                  />
+                  <GuideModal
+                    visible={isGuideVisible}
+                    onClose={() => setGuideVisible(false)}
+                  />
+                </>
               ),
             }}
           />

@@ -43,7 +43,7 @@ export default function NoteDetail() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 16, paddingBottom: 100 },
+  container: { padding: 16 },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 8 },
   tagContainer: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 16 },
   tag: { padding: 8, borderRadius: 4, marginRight: 8, marginBottom: 8 },

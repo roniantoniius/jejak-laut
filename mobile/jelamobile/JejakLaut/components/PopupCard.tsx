@@ -57,7 +57,6 @@ export function PopupCard({ icon, title, buttons, children }: PopupCardProps) {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: -55,
     right: 10,
     zIndex: 1100,
   },

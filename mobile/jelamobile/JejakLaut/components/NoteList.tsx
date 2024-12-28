@@ -74,5 +74,6 @@ export function NoteList({ tags, notes }: NoteListProps) {
 const styles = StyleSheet.create({
   list: {
     padding: 10,
+    marginBottom: 70,
   },
 });
