@@ -239,6 +239,18 @@ export default function TabLayout() {
                     title="Menu Jejak Laut"
                     buttons={[
                       {
+                        label: 'Ubah',
+                        onPress: () => {}, // Add your function here
+                        style: { ...styles.addButton, backgroundColor: '#052844' },
+                        textStyle: styles.addButtonText,
+                      },
+                      {
+                        label: 'Hapus',
+                        onPress: () => {}, // Add your function here
+                        style: { ...styles.addButton, backgroundColor: 'red' },
+                        textStyle: styles.addButtonText,
+                      },
+                      {
                         label: 'Debugging',
                         onPress: () => {}, // Add your function here
                         style: { ...styles.addButton, backgroundColor: '#4CAF50' },
