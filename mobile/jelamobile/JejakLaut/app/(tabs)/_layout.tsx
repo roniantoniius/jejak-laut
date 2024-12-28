@@ -129,7 +129,7 @@ export default function TabLayout() {
                   />
                   <Text style={{ 
                     marginLeft: 8, 
-                    fontSize: 25, 
+                    fontSize: 30, 
                     fontFamily: 'Montserrat-Bold', 
                     color: '#052844',
                   }}>

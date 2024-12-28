@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNotes } from '@/components/NoteContext';
 import { useLocalSearchParams } from 'expo-router';
 
@@ -37,19 +37,36 @@ export default function NoteDetail() {
         <Text style={styles.location}>
           Longitude: {note.longitude}, Latitude: {note.latitude}
         </Text>
+        <TouchableOpacity style={styles.closeButton}>
+            <Text style={styles.closeButtonText}>Periksa Lokasi</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 16, backgroundColor: 'white' },
-  title: { fontSize: 38, fontWeight: 'bold', marginBottom: 18, fontFamily: 'Montserrat-Bold', color: '#052844', textAlign: 'center' },
-  tagContainer: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 24, justifyContent: 'center' },
-  tag: { padding: 8, borderRadius: 4, marginRight: 8, marginBottom: 8, fontFamily: 'Montserrat-Bold', color: 'white' },
-  markdown: { fontSize: 16, marginBottom: 16, fontFamily: 'Montserrat-Medium' },
-  locationContainer: { marginTop: 0, marginBottom: 46 },
-  location: { fontSize: 14, fontFamily: 'Montserrat-Bold', color: '#052844' },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  error: { fontSize: 18, color: 'red', fontFamily: 'Montserrat-Bold' },
+    container: { padding: 16, backgroundColor: 'white' },
+    title: { fontSize: 38, marginBottom: 18, fontFamily: 'Montserrat-Bold', color: '#052844', textAlign: 'center' },
+    tagContainer: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 24, justifyContent: 'center' },
+    tag: { fontSize: 16, padding: 8, borderRadius: 4, marginRight: 8, marginBottom: 8, fontFamily: 'Montserrat-Bold', color: 'white' },
+    markdown: { fontSize: 16, marginBottom: 16, fontFamily: 'Montserrat-Medium' },
+    locationContainer: { marginTop: 0, marginBottom: 46 },
+    location: { fontSize: 14, fontFamily: 'Montserrat-Bold', color: '#052844' },
+    center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    error: { fontSize: 18, color: 'red', fontFamily: 'Montserrat-Bold' },
+    closeButton: {
+        backgroundColor: '#B6E5FF',
+        padding: 12,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginTop: 10,
+        borderColor: '#052844',
+        borderWidth: 1,
+    },
+    closeButtonText: {
+      fontFamily: 'Montserrat-Bold',
+      color: '#052844',
+      fontSize: 20,
+    },
 });
