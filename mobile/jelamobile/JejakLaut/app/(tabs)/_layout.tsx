@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs, useRouter } from 'expo-router';
-import { View, Text, Animated } from 'react-native';
+import { View, Text, Animated, Image } from 'react-native';
 import { useRef, useState } from 'react';
 import { TagProvider } from '../../components/TagContext';
 import { NoteProvider } from '@/components/NoteContext';
@@ -88,7 +88,7 @@ export default function TabLayout() {
           <Tabs.Screen
             name="index"
             options={{
-              title: 'Beranda',
+              title: '',
               tabBarIcon: ({ color, focused }) => (
                 <Ionicons
                   name={focused ? 'home-sharp' : 'home-outline'}
@@ -120,6 +120,22 @@ export default function TabLayout() {
                     },
                   ]}
                 />
+              ),
+              headerLeft: () => (
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 18 }}>
+                  <Image
+                    source={require('../../assets/images/dark-nobg.png')} 
+                    style={{ width: 45, height: 45 }}
+                  />
+                  <Text style={{ 
+                    marginLeft: 8, 
+                    fontSize: 25, 
+                    fontFamily: 'Montserrat-Bold', 
+                    color: '#052844',
+                  }}>
+                    Jejak Laut AI
+                  </Text>
+                </View>
               ),
             }}
           />
@@ -235,7 +251,7 @@ export default function TabLayout() {
               headerRight: () => (
                 <>
                   <PopupCard
-                    icon={<Text style={styles.iconText}>?</Text>}
+                    icon={<Text style={styles.iconText}>+</Text>}
                     title="Menu Jejak Laut"
                     buttons={[
                       {

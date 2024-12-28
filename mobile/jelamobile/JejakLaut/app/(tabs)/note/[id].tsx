@@ -35,7 +35,7 @@ export default function NoteDetail() {
       <Text style={styles.markdown}>{note.markdown}</Text>
       <View style={styles.locationContainer}>
         <Text style={styles.location}>
-          Latitude: {note.latitude}, Longitude: {note.longitude}
+          Longitude: {note.longitude}, Latitude: {note.latitude}
         </Text>
       </View>
     </ScrollView>
@@ -43,9 +43,9 @@ export default function NoteDetail() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 16 },
-  title: { fontSize: 35, fontWeight: 'bold', marginBottom: 8, fontFamily: 'Montserrat-Bold', color: '#052844' },
-  tagContainer: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 14 },
+  container: { padding: 16, backgroundColor: 'white' },
+  title: { fontSize: 38, fontWeight: 'bold', marginBottom: 18, fontFamily: 'Montserrat-Bold', color: '#052844', textAlign: 'center' },
+  tagContainer: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 24, justifyContent: 'center' },
   tag: { padding: 8, borderRadius: 4, marginRight: 8, marginBottom: 8, fontFamily: 'Montserrat-Bold', color: 'white' },
   markdown: { fontSize: 16, marginBottom: 16, fontFamily: 'Montserrat-Medium' },
   locationContainer: { marginTop: 0, marginBottom: 46 },
