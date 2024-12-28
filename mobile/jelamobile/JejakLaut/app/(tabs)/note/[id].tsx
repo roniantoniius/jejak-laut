@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextStyle } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNotes } from '@/components/NoteContext';
 import { useLocalSearchParams } from 'expo-router';
 import MarkDown from 'react-native-markdown-display';
@@ -10,50 +10,6 @@ export default function NoteDetail() {
 
   const note = notes.find((note) => note.id === id);
 
-  interface MarkdownNode {
-    key: string;
-    // Add other properties if known
-  }
-  
-  type MarkdownChildren = React.ReactNode;
-  
-  interface MarkdownParent {
-    // Define properties if needed
-  }
-  
-  interface MarkdownStyles {
-    [key: string]: TextStyle;
-  }
-  
-  // Then update your customRules:
-  
-  const customRules = {
-    heading1: (node: MarkdownNode, children: MarkdownChildren, parent: MarkdownParent, styles: MarkdownStyles) => (
-      <Text key={node.key} style={{fontSize: 32, fontFamily: 'Montserrat-Bold', color: '#052844'}}>
-        {children}
-      </Text>
-    ),
-    heading2: (node: MarkdownNode, children: MarkdownChildren, parent: MarkdownParent, styles: MarkdownStyles) => (
-      <Text key={node.key} style={{fontSize: 24, fontFamily: 'Montserrat-Bold', color: '#052844'}}>
-        {children}
-      </Text>
-    ),
-    heading3: (node: MarkdownNode, children: MarkdownChildren, parent: MarkdownParent, styles: MarkdownStyles) => (
-      <Text key={node.key} style={{fontSize: 18, fontFamily: 'Montserrat-SemiBold', color: '#052844'}}>
-        {children}
-      </Text>
-    ),
-    strong: (node: MarkdownNode, children: MarkdownChildren, parent: MarkdownParent, styles: MarkdownStyles) => (
-      <Text key={node.key} style={{fontFamily: 'Montserrat-Bold'}}>
-        {children}
-      </Text>
-    ),
-    em: (node: MarkdownNode, children: MarkdownChildren, parent: MarkdownParent, styles: MarkdownStyles) => (
-      <Text key={node.key} style={{fontStyle: 'italic', fontFamily: 'Montserrat-Italic'}}>
-        {children}
-      </Text>
-    ),
-  };
   if (!note) {
     return (
       <View style={styles.center}>
@@ -97,6 +53,7 @@ const styles = StyleSheet.create({
     title: { fontSize: 38, marginBottom: 18, fontFamily: 'Montserrat-Bold', color: '#052844', textAlign: 'center' },
     tagContainer: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 24, justifyContent: 'center' },
     tag: { fontSize: 16, padding: 8, borderRadius: 4, marginRight: 8, marginBottom: 8, fontFamily: 'Montserrat-Bold', color: 'white' },
+    markdown: { fontSize: 16, marginBottom: 16, fontFamily: 'Montserrat-Medium' },
     locationContainer: { marginTop: 0, marginBottom: 46 },
     location: { fontSize: 14, fontFamily: 'Montserrat-Bold', color: '#052844' },
     center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
@@ -118,5 +75,28 @@ const styles = StyleSheet.create({
 });
 
 const markdownStyle = StyleSheet.create({
-  body: {fontFamily: 'Montserrat', color: '#052844'},
-});
+    body: {
+      fontSize: 16,
+      color: '#333',
+    },
+    heading1: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 10,
+    },
+    heading2: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginBottom: 8,
+    },
+    paragraph: {
+      marginBottom: 10,
+    },
+    strong: {
+      fontWeight: 'bold',
+    },
+    em: {
+      fontStyle: 'italic',
+    },
+    // Add more styles for other markdown elements as needed
+  });
