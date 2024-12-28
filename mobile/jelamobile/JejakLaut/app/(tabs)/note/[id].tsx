@@ -44,12 +44,12 @@ export default function NoteDetail() {
 
 const styles = StyleSheet.create({
   container: { padding: 16 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 8 },
-  tagContainer: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 16 },
-  tag: { padding: 8, borderRadius: 4, marginRight: 8, marginBottom: 8 },
-  markdown: { fontSize: 16, marginBottom: 16 },
+  title: { fontSize: 35, fontWeight: 'bold', marginBottom: 8, fontFamily: 'Montserrat-Bold', color: '#052844' },
+  tagContainer: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 14 },
+  tag: { padding: 8, borderRadius: 4, marginRight: 8, marginBottom: 8, fontFamily: 'Montserrat-Bold', color: 'white' },
+  markdown: { fontSize: 16, marginBottom: 16, fontFamily: 'Montserrat-Medium' },
   locationContainer: { marginTop: 0, marginBottom: 46 },
-  location: { fontSize: 14, color: '#555' },
+  location: { fontSize: 14, fontFamily: 'Montserrat-Bold', color: '#052844' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  error: { fontSize: 18, color: 'red' },
+  error: { fontSize: 18, color: 'red', fontFamily: 'Montserrat-Bold' },
 });

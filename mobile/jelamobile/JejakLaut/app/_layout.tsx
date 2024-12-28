@@ -11,6 +11,8 @@ export default function RootLayout() {
       await Font.loadAsync({
         'Montserrat': require('../assets/fonts/MontserratRegular.ttf'),
         'Montserrat-Bold': require('../assets/fonts/MontserratBold.ttf'),
+        'Montserrat-SemiBold': require('../assets/fonts/MontserratSemiBold.ttf'),
+        'Montserrat-Medium': require('../assets/fonts/MontserratMedium.ttf'),
       });
       setFontLoaded(true);
     }

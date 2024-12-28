@@ -222,7 +222,7 @@ export default function TabLayout() {
                   <Text
                     style={{
                       marginLeft: 8,
-                      fontSize: 28,
+                      fontSize: 24,
                       color: tintColor || '#052844',
                       fontFamily: 'Montserrat-Bold',
                     }}
