@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
+import { Tabs, useRouter } from 'expo-router';
 import { View, Text, Animated } from 'react-native';
 import { useRef } from 'react';
 import { TagProvider } from '../../components/TagContext';
@@ -7,7 +7,7 @@ import { NoteProvider } from '@/components/NoteContext';
 
 export default function TabLayout() {
   const scaleAnim = useRef(new Animated.Value(1)).current;
-
+  const router = useRouter();
   const animateIcon = (focused: boolean) => {
     Animated.timing(scaleAnim, {
       toValue: focused ? 1.2 : 1,
@@ -146,12 +146,35 @@ export default function TabLayout() {
           <Tabs.Screen
             name="note/[id]"
             options={{
-              title: 'Detail Catatan',
+              title: '',
               headerTitleStyle: {
                 fontSize: 24,
                 fontFamily: 'Montserrat-Bold',
               },
+              
+              tabBarStyle: { display: 'none' },
               tabBarButton: () => null,
+              tabBarItemStyle: { display: 'none' },
+              headerLeft: ({ tintColor }) => (
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
+                  <Ionicons
+                    name="arrow-back"
+                    size={24}
+                    color={tintColor || '#052844'}
+                    onPress={() => router.back()}
+                  />
+                  <Text
+                    style={{
+                      marginLeft: 8,
+                      fontSize: 16,
+                      color: tintColor || '#052844',
+                    }}
+                    onPress={() => router.back()}
+                  >
+                    Kembali
+                  </Text>
+                </View>
+              ),
             }}
           />
         </Tabs>

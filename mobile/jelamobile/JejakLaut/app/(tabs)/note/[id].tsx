@@ -43,12 +43,12 @@ export default function NoteDetail() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 16 },
+  container: { padding: 16, paddingBottom: 100 },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 8 },
   tagContainer: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 16 },
   tag: { padding: 8, borderRadius: 4, marginRight: 8, marginBottom: 8 },
   markdown: { fontSize: 16, marginBottom: 16 },
-  locationContainer: { marginTop: 16 },
+  locationContainer: { marginTop: 0, marginBottom: 46 },
   location: { fontSize: 14, color: '#555' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   error: { fontSize: 18, color: 'red' },
