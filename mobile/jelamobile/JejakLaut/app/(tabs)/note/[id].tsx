@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { useNotes } from '@/components/NoteContext';
 import { useLocalSearchParams } from 'expo-router';
 import MarkDown from 'react-native-markdown-display';
-import { Jela } from '@/components/Jela';
+import { PopupBawah } from '@/components/PopupBawah';
 
 export default function NoteDetail() {
   const { notes } = useNotes();
@@ -20,56 +20,40 @@ export default function NoteDetail() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>{note.title}</Text>
-      {note.tags.length > 0 && (
-        <View style={styles.tagContainer}>
-          {note.tags.map((tag) => (
-            <Text
-              key={tag.id}
-              style={[styles.tag, { backgroundColor: tag.color }]}
-            >
-              {tag.label}
-            </Text>
-          ))}
-        </View>
-      )}
-      <MarkDown style={markdownStyle}>
-        {note.markdown}
-      </MarkDown>
-      <View style={styles.locationContainer}>
-        <Text style={styles.location}>
-          Longitude: {note.longitude}, Latitude: {note.latitude}
-        </Text>
-        <TouchableOpacity style={styles.closeButton}>
+    <>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.title}>{note.title}</Text>
+        {note.tags.length > 0 && (
+          <View style={styles.tagContainer}>
+            {note.tags.map((tag) => (
+              <Text
+                key={tag.id}
+                style={[styles.tag, { backgroundColor: tag.color }]}
+              >
+                {tag.label}
+              </Text>
+            ))}
+          </View>
+        )}
+        <MarkDown style={markdownStyle}>
+          {note.markdown}
+        </MarkDown>
+        <View style={styles.locationContainer}>
+          <Text style={styles.location}>
+            Longitude: {note.longitude}, Latitude: {note.latitude}
+          </Text>
+          <TouchableOpacity style={styles.closeButton}>
             <Text style={styles.closeButtonText}>Periksa Lokasi</Text>
-        </TouchableOpacity>
-      </View>
-      <Jela
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+      <PopupBawah
         icon={<Text style={styles.iconText}>AI</Text>}
         title="Menu Jejak Laut"
-        buttons={[
-          {
-            label: 'Ubah',
-            onPress: () => {}, // Add your function here
-            style: { ...styles.closeButton, backgroundColor: '#052844' },
-            textStyle: styles.closeButtonText,
-          },
-          {
-            label: 'Hapus',
-            onPress: () => {}, // Add your function here
-            style: { ...styles.closeButton, backgroundColor: 'red' },
-            textStyle: styles.closeButtonText,
-          },
-          {
-            label: 'Debugging',
-            onPress: () => {}, // Add your function here
-            style: { ...styles.closeButton, backgroundColor: '#4CAF50' },
-            textStyle: styles.closeButtonText,
-          },
-        ]}
-      />
-    </ScrollView>
+      >
+        <Text style={styles.placeholderText}>Ini adalah tempat kosong untuk komponen tambahan.</Text>
+      </PopupBawah>
+    </>
   );
 }
 
@@ -101,6 +85,11 @@ const styles = StyleSheet.create({
       fontSize: 24,
       color: 'white',
       fontFamily: 'Montserrat-Bold',
+    },
+    placeholderText: {
+      textAlign: 'center',
+      color: 'gray',
+      fontFamily: 'Montserrat-Medium',
     },
 });
 
