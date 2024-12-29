@@ -22,11 +22,20 @@ export function JelaChat({}: JelaChatProps) {
       text: text,
       role: 'user',
     };
-    setMessages(prevMessages => [...prevMessages, newMessage, { id: (Date.now() + 1).toString(), text: 'Jela Jela Jela!', role: 'jela', actionButtons: [
-      { label: 'Ubah', onPress: () => console.log('Ubah clicked') },
-      { label: 'Tambah', onPress: () => console.log('Tambah clicked') },
-      { label: 'Tolak', onPress: () => console.log('Tolak clicked') },
-    ] }]);
+    setMessages(prevMessages => [
+      ...prevMessages,
+      newMessage,
+      {
+        id: (Date.now() + 1).toString(),
+        text: 'Jela Jela Jela!',
+        role: 'jela',
+        actionButtons: [
+          { label: 'Ubah', onPress: () => console.log('Ubah clicked') },
+          { label: 'Tambah', onPress: () => console.log('Tambah clicked') },
+          { label: 'Tolak', onPress: () => console.log('Tolak clicked') },
+        ],
+      },
+    ]);
     setInputText('');
   };
 
@@ -46,12 +55,21 @@ export function JelaChat({}: JelaChatProps) {
 
   // Render item untuk FlatList
   const renderItem = ({ item }: { item: Message }) => (
-    <View style={[styles.messageContainer, item.role === 'user' ? styles.userMessage : styles.jelaMessage]}>
+    <View
+      style={[
+        styles.messageContainer,
+        item.role === 'user' ? styles.userMessage : styles.jelaMessage,
+      ]}
+    >
       <Text style={styles.messageText}>{item.text}</Text>
       {item.actionButtons && (
         <View style={styles.actionButtonContainer}>
           {item.actionButtons.map((button, index) => (
-            <TouchableOpacity key={index} style={styles.actionButton} onPress={button.onPress}>
+            <TouchableOpacity
+              key={index}
+              style={styles.actionButton}
+              onPress={button.onPress}
+            >
               <Text style={styles.actionButtonText}>{button.label}</Text>
             </TouchableOpacity>
           ))}
@@ -61,80 +79,95 @@ export function JelaChat({}: JelaChatProps) {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={styles.chatContainer}>
       <FlatList
         ref={flatListRef}
         data={messages}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        contentContainerStyle={styles.chatContainer}
+        contentContainerStyle={styles.chatBody}
       />
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={inputText}
-          onChangeText={setInputText}
-          placeholder="Ketik pesan Anda..."
-          onSubmitEditing={sendMessage}
-        />
-        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-          <Text style={styles.sendButtonText}>Kirim</Text>
-        </TouchableOpacity>
+      <View style={styles.chatFooter}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.inputField}
+            value={inputText}
+            onChangeText={setInputText}
+            placeholder="Ketik pesan Anda..."
+            onSubmitEditing={sendMessage}
+          />
+          <TouchableOpacity
+            style={styles.sendButton}
+            onPress={sendMessage}
+          >
+            <Text style={styles.sendButtonText}>Kirim</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
+  chatContainer: {
+    maxHeight: 400,
+    display: 'flex',
+    flexDirection: 'column',
+    borderRadius: 10,
     backgroundColor: '#f5f5f5',
   },
-  chatContainer: {
+  chatBody: {
+    flexGrow: 1,
+    overflowY: 'auto',
     padding: 10,
   },
   messageContainer: {
     marginBottom: 10,
     padding: 10,
     borderRadius: 8,
+    maxWidth: '70%',
   },
   userMessage: {
     alignSelf: 'flex-end',
     backgroundColor: '#DCF8C6',
-    maxWidth: '70%',
+    width: 'fit-content',
   },
   jelaMessage: {
     alignSelf: 'flex-start',
     backgroundColor: '#E0E0E0',
-    maxWidth: '70%',
+    width: 'fit-content',
   },
   messageText: {
     fontSize: 16,
   },
-  inputContainer: {
-    flexDirection: 'row',
+  chatFooter: {
     padding: 10,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#ddd',
   },
-  input: {
-    flex: 1,
-    padding: 10,
+  inputContainer: {
+    display: 'flex',
+    position: 'relative',
+    flexDirection: 'row',
+  },
+  inputField: {
+    flexGrow: 1,
+    padding: 12,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 5,
     marginRight: 10,
+    backgroundColor: '#fff',
   },
   sendButton: {
-    padding: 10,
+    padding: 12,
     backgroundColor: '#052844',
     borderRadius: 5,
     justifyContent: 'center',
   },
   sendButtonText: {
-    color: 'white',
+    color: '#fff',
     fontWeight: 'bold',
   },
   actionButtonContainer: {
