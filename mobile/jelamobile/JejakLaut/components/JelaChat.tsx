@@ -109,80 +109,77 @@ export function JelaChat({}: JelaChatProps) {
 }
 
 const styles = StyleSheet.create({
-  chatContainer: {
-    maxHeight: 400,
-    display: 'flex',
-    flexDirection: 'column',
-    borderRadius: 10,
-    backgroundColor: '#f5f5f5',
-  },
-  chatBody: {
-    flexGrow: 1,
-    overflowY: 'auto',
-    padding: 10,
-  },
-  messageContainer: {
-    marginBottom: 10,
-    padding: 10,
-    borderRadius: 8,
-    maxWidth: '70%',
-  },
-  userMessage: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#DCF8C6',
-    width: 'fit-content',
-  },
-  jelaMessage: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#E0E0E0',
-    width: 'fit-content',
-  },
-  messageText: {
-    fontSize: 16,
-  },
-  chatFooter: {
-    padding: 10,
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#ddd',
-  },
-  inputContainer: {
-    display: 'flex',
-    position: 'relative',
-    flexDirection: 'row',
-  },
-  inputField: {
-    flexGrow: 1,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
-    marginRight: 10,
-    backgroundColor: '#fff',
-  },
-  sendButton: {
-    padding: 12,
-    backgroundColor: '#052844',
-    borderRadius: 5,
-    justifyContent: 'center',
-  },
-  sendButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  actionButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 5,
-  },
-  actionButton: {
-    padding: 5,
-    backgroundColor: '#052844',
-    borderRadius: 5,
-    marginRight: 5,
-  },
-  actionButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-});
+    chatContainer: {
+      maxHeight: 400,
+      flexDirection: 'column',
+      borderRadius: 10,
+      backgroundColor: '#f5f5f5',
+    },
+    chatBody: {
+      flexGrow: 1,
+      padding: 10,
+    },
+    messageContainer: {
+      marginBottom: 10,
+      padding: 10,
+      borderRadius: 8,
+      maxWidth: '70%',
+    },
+    userMessage: {
+      alignSelf: 'flex-end',
+      backgroundColor: '#DCF8C6',
+      width: 'fit-content',
+    },
+    jelaMessage: {
+      alignSelf: 'flex-start',
+      backgroundColor: '#E0E0E0',
+      width: 'fit-content',
+    },
+    messageText: {
+      fontSize: 16,
+    },
+    chatFooter: {
+      padding: 10,
+      backgroundColor: '#fff',
+      borderTopWidth: 1,
+      borderTopColor: '#ddd',
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      position: 'relative',
+    },
+    inputField: {
+      flexGrow: 1,
+      padding: 12,
+      borderWidth: 1,
+      borderColor: '#ddd',
+      borderRadius: 5,
+      marginRight: 10,
+      backgroundColor: '#fff',
+    },
+    sendButton: {
+      padding: 12,
+      backgroundColor: '#052844',
+      borderRadius: 5,
+      justifyContent: 'center',
+    },
+    sendButtonText: {
+      color: '#fff',
+      fontWeight: 'bold',
+    },
+    actionButtonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      marginTop: 5,
+    },
+    actionButton: {
+      padding: 5,
+      backgroundColor: '#052844',
+      borderRadius: 5,
+      marginRight: 5,
+    },
+    actionButtonText: {
+      color: 'white',
+      fontWeight: 'bold',
+    },
+  });
