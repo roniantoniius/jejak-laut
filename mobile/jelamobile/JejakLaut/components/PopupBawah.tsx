@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, TouchableWithoutFeedback, FlatList, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 
 type PopupBawahProps = {
   icon: React.ReactNode;
   title: string;
   children: React.ReactNode;
+  onClose: () => void; // Menambahkan onClose prop
 };
 
-export function PopupBawah({ icon, title, children }: PopupBawahProps) {
+export function PopupBawah({ icon, title, children, onClose }: PopupBawahProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Fungsi untuk menutup modal
+  const handleClose = () => {
+    setIsOpen(false);
+    onClose(); // Memanggil onClose yang diteruskan dari parent
+  };
 
   return (
     <View style={styles.container}>
       {/* Floating Button */}
       <TouchableOpacity 
         style={styles.floatingButton} 
-        onPress={() => setIsOpen(!isOpen)}
+        onPress={() => setIsOpen(true)}
       >
         <View style={styles.buttonShape}>
           {icon}
@@ -30,16 +37,19 @@ export function PopupBawah({ icon, title, children }: PopupBawahProps) {
         visible={isOpen}
         transparent={true}
         animationType="fade"
-        onRequestClose={() => setIsOpen(false)}
+        onRequestClose={handleClose} // Menggunakan handleClose di sini
       >
-        <TouchableWithoutFeedback onPress={() => setIsOpen(false)}>
-          <View style={styles.modalBackground}>
-            <View style={styles.modalContent}>
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContent}>
+            <View style={styles.header}>
               <Text style={styles.modalTitle}>{title}</Text>
-              {children}
+              <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+                <Text style={styles.closeButtonText}>X</Text>
+              </TouchableOpacity>
             </View>
+            {children}
           </View>
-        </TouchableWithoutFeedback>
+        </View>
       </Modal>
     </View>
   );
@@ -77,16 +87,16 @@ const styles = StyleSheet.create({
   },
   modalBackground: {
     flex: 1,
-    justifyContent: 'center', // Mengubah ini untuk memusatkan modal
-    alignItems: 'center', // Mengubah ini untuk memusatkan modal
-    backgroundColor: 'rgba(0,0,0,0.5)', // Background semi-transparan untuk modal
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContent: {
     backgroundColor: 'white',
     borderRadius: 8,
     padding: 20,
-    width: '80%', // Lebar modal sesuai dengan kebutuhan, di sini 80% dari lebar layar
-    maxWidth: 400, // Maksimal lebar modal
+    width: '80%',
+    maxWidth: 400,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -94,12 +104,26 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 5,
   },
+  header: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
   modalTitle: {
     fontSize: 22,
-    marginBottom: 15,
     textAlign: 'center',
     fontFamily: 'Montserrat-Bold',
     color: '#052844',
+  },
+  closeButton: {
+    padding: 5,
+  },
+  closeButtonText: {
+    fontSize: 20,
+    color: '#052844',
+    fontFamily: 'Montserrat-Bold',
   },
   content: {
     marginBottom: 15,

@@ -4,6 +4,7 @@ import { useNotes } from '@/components/NoteContext';
 import { useLocalSearchParams } from 'expo-router';
 import MarkDown from 'react-native-markdown-display';
 import { PopupBawah } from '@/components/PopupBawah';
+import { JelaChat } from '@/components/JelaChat';
 
 export default function NoteDetail() {
   const { notes } = useNotes();
@@ -49,9 +50,10 @@ export default function NoteDetail() {
       </ScrollView>
       <PopupBawah
         icon={<Text style={styles.iconText}>AI</Text>}
-        title="Menu Jejak Laut"
+        title="Jela"
+        onClose={() => console.log('Popup closed')}
       >
-        <Text style={styles.placeholderText}>Ini adalah tempat kosong untuk komponen tambahan.</Text>
+        <JelaChat noteId={id} />
       </PopupBawah>
     </>
   );
