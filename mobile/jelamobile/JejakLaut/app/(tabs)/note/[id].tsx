@@ -53,7 +53,7 @@ export default function NoteDetail() {
         title="Jela"
         onClose={() => console.log('Popup closed')}
       >
-        <JelaChat noteId={id} />
+        <JelaChat />
       </PopupBawah>
     </>
   );
