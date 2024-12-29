@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { useNotes } from '@/components/NoteContext';
 import { useLocalSearchParams } from 'expo-router';
 import MarkDown from 'react-native-markdown-display';
+import { Jela } from '@/components/Jela';
 
 export default function NoteDetail() {
   const { notes } = useNotes();
@@ -44,6 +45,30 @@ export default function NoteDetail() {
             <Text style={styles.closeButtonText}>Periksa Lokasi</Text>
         </TouchableOpacity>
       </View>
+      <Jela
+        icon={<Text style={styles.iconText}>AI</Text>}
+        title="Menu Jejak Laut"
+        buttons={[
+          {
+            label: 'Ubah',
+            onPress: () => {}, // Add your function here
+            style: { ...styles.closeButton, backgroundColor: '#052844' },
+            textStyle: styles.closeButtonText,
+          },
+          {
+            label: 'Hapus',
+            onPress: () => {}, // Add your function here
+            style: { ...styles.closeButton, backgroundColor: 'red' },
+            textStyle: styles.closeButtonText,
+          },
+          {
+            label: 'Debugging',
+            onPress: () => {}, // Add your function here
+            style: { ...styles.closeButton, backgroundColor: '#4CAF50' },
+            textStyle: styles.closeButtonText,
+          },
+        ]}
+      />
     </ScrollView>
   );
 }
@@ -60,7 +85,7 @@ const styles = StyleSheet.create({
     error: { fontSize: 18, color: 'red', fontFamily: 'Montserrat-Bold' },
     closeButton: {
         backgroundColor: '#B6E5FF',
-        padding: 12,
+        padding: 6,
         borderRadius: 8,
         alignItems: 'center',
         marginTop: 10,
@@ -70,7 +95,12 @@ const styles = StyleSheet.create({
     closeButtonText: {
       fontFamily: 'Montserrat-Bold',
       color: '#052844',
-      fontSize: 20,
+      fontSize: 18,
+    },
+    iconText: {
+      fontSize: 24,
+      color: 'white',
+      fontFamily: 'Montserrat-Bold',
     },
 });
 
@@ -98,5 +128,4 @@ const markdownStyle = StyleSheet.create({
     em: {
       fontStyle: 'italic',
     },
-    // Add more styles for other markdown elements as needed
   });
