@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, TouchableWithoutFeedback, FlatList, TextInput } from 'react-native';
 
 type PopupBawahProps = {
   icon: React.ReactNode;
@@ -28,18 +28,16 @@ export function PopupBawah({ icon, title, children }: PopupBawahProps) {
       {/* Popup Modal */}
       <Modal
         visible={isOpen}
-        transparent
+        transparent={true}
         animationType="fade"
         onRequestClose={() => setIsOpen(false)}
       >
         <TouchableWithoutFeedback onPress={() => setIsOpen(false)}>
           <View style={styles.modalBackground}>
-            <TouchableWithoutFeedback>
-              <View style={styles.popup}>
-                <Text style={styles.title}>{title}</Text>
-                {children && <View style={styles.content}>{children}</View>}
-              </View>
-            </TouchableWithoutFeedback>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>{title}</Text>
+              {children}
+            </View>
           </View>
         </TouchableWithoutFeedback>
       </Modal>
@@ -57,7 +55,6 @@ const styles = StyleSheet.create({
   floatingButton: {
     width: 60,
     height: 60,
-    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
@@ -65,31 +62,31 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 5,
+    borderRadius: 15,
   },
   buttonShape: {
     backgroundColor: '#052844',
     width: 60,
     height: 60,
-    // Mengatur borderRadius untuk membentuk bentuk yang diinginkan
-    borderTopLeftRadius: 30, // Sudut kiri atas bulat
-    borderTopRightRadius: 30, // Sudut kanan atas bulat
-    borderBottomLeftRadius: 30, // Sudut kiri bawah bulat
-    borderBottomRightRadius: 8, // Sudut kanan bawah hampir persegi
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalBackground: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
-    marginTop: 60,
-    marginRight: 10,
+    justifyContent: 'center', // Mengubah ini untuk memusatkan modal
+    alignItems: 'center', // Mengubah ini untuk memusatkan modal
+    backgroundColor: 'rgba(0,0,0,0.5)', // Background semi-transparan untuk modal
   },
-  popup: {
+  modalContent: {
     backgroundColor: 'white',
     borderRadius: 8,
     padding: 20,
-    width: 220,
+    width: '80%', // Lebar modal sesuai dengan kebutuhan, di sini 80% dari lebar layar
+    maxWidth: 400, // Maksimal lebar modal
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -97,7 +94,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 5,
   },
-  title: {
+  modalTitle: {
     fontSize: 22,
     marginBottom: 15,
     textAlign: 'center',
