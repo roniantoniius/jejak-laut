@@ -128,12 +128,10 @@ const styles = StyleSheet.create({
     userMessage: {
       alignSelf: 'flex-end',
       backgroundColor: '#DCF8C6',
-      width: 'fit-content',
     },
     jelaMessage: {
       alignSelf: 'flex-start',
       backgroundColor: '#E0E0E0',
-      width: 'fit-content',
     },
     messageText: {
       fontSize: 16,
