@@ -60,6 +60,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
+    backgroundColor: '#052844',
+    fontFamily: 'Montserrat-Bold',
     bottom: 20,
     left: 20,
     right: 20,
