@@ -5,6 +5,7 @@ import { useAsyncStorage } from './useAsyncStorage';
 type NoteContextType = {
   notes: NoteData[];
   addNote: (note: NoteData) => void;
+  updateNote: (id: string, updatedNote: NoteData) => void;
 };
 
 const NoteContext = createContext<NoteContextType | undefined>(undefined);
@@ -17,8 +18,13 @@ export const NoteProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setNotes(updatedNotes);
   };
 
+  const updateNote = (id: string, updatedNote: NoteData) => {
+    const updatedNotes = notes.map(note => note.id === id ? updatedNote : note);
+    setNotes(updatedNotes);
+  };
+
   return (
-    <NoteContext.Provider value={{ notes, addNote }}>
+    <NoteContext.Provider value={{ notes, addNote, updateNote }}>
       {children}
     </NoteContext.Provider>
   );

@@ -5,10 +5,14 @@ import { useLocalSearchParams } from 'expo-router';
 import MarkDown from 'react-native-markdown-display';
 import { PopupBawah } from '@/components/PopupBawah';
 import { JelaChat } from '@/components/JelaChat';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
+import { RootStackParamList } from '@/components/types';
 
 export default function NoteDetail() {
   const { notes } = useNotes();
   const { id } = useLocalSearchParams(); // Ambil parameter "id" dari route
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const note = notes.find((note) => note.id === id);
 
@@ -19,6 +23,10 @@ export default function NoteDetail() {
       </View>
     );
   }
+
+  const handleEdit = () => {
+    navigation.navigate('edit/[id]', { id: note.id });
+  };
 
   return (
     <>
@@ -47,6 +55,9 @@ export default function NoteDetail() {
             <Text style={styles.closeButtonText}>Periksa Lokasi</Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={handleEdit} style={styles.editButton}>
+          <Text style={styles.editButtonText}>Edit</Text>
+        </TouchableOpacity>
       </ScrollView>
       <PopupBawah
         icon={<Text style={styles.iconText}>AI</Text>}
@@ -95,6 +106,17 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       color: 'gray',
       fontFamily: 'Montserrat-Medium',
+    },
+    editButton: {
+      backgroundColor: '#052844',
+      padding: 10,
+      borderRadius: 5,
+      marginTop: 10,
+      alignItems: 'center',
+    },
+    editButtonText: {
+      color: 'white',
+      fontSize: 16,
     },
 });
 

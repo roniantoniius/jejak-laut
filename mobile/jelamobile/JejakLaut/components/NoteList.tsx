@@ -11,10 +11,9 @@ type NoteListProps = {
   notes: NoteData[];
 };
 
-export function NoteList({ tags, notes }: NoteListProps) {
+export function NoteList({ notes }: NoteListProps) {
   const [searchTitle, setSearchTitle] = useState('');
   const [searchTag, setSearchTag] = useState('');
-  const navigation = useNavigation<any>();
 
   // Filter Notes Using useMemo
   const filteredNotes = useMemo(() => {

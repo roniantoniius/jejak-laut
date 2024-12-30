@@ -321,6 +321,41 @@ export default function TabLayout() {
               ),
             }}
           />
+          <Tabs.Screen
+            name="edit/[id]"
+            options={{
+              title: '',
+              headerTitleStyle: {
+                fontSize: 24,
+                fontFamily: 'Montserrat-Bold',
+              },
+              
+              tabBarStyle: { display: 'none' },
+              tabBarButton: () => null,
+              tabBarItemStyle: { display: 'none' },
+              headerLeft: ({ tintColor }) => (
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
+                  <Ionicons
+                    name="arrow-back"
+                    size={35}
+                    color={tintColor || '#052844'}
+                    onPress={() => router.back()}
+                  />
+                  <Text
+                    style={{
+                      marginLeft: 8,
+                      fontSize: 24,
+                      color: tintColor || '#052844',
+                      fontFamily: 'Montserrat-Bold',
+                    }}
+                    onPress={() => router.back()}
+                  >
+                    Kembali
+                  </Text>
+                </View>
+              ),
+            }}
+          />
         </Tabs>
       </TagProvider>
     </NoteProvider>

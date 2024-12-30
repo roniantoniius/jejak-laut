@@ -25,8 +25,14 @@ export interface NewNoteRouteParams {
     longitude?: number;
 }
 
+export interface EditNoteRouteParams {
+    id: string;
+}
+
 export type RootStackParamList = {
     newnote: NewNoteRouteParams;
-  };
-  
+    ['edit/[id]']: EditNoteRouteParams; // Add this line for the dynamic route
+};
+
 export type NewNoteRouteProp = RouteProp<RootStackParamList, 'newnote'>;
+export type EditNoteRouteProp = RouteProp<RootStackParamList, 'edit/[id]'>;
