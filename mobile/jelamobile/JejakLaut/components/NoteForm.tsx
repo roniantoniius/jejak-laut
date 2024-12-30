@@ -48,13 +48,28 @@ export function NoteForm({
   const [pendingTag, setPendingTag] = useState<Tag | null>(null);
 
   const route = useRoute<NewNoteRouteProp>(); // Menangkap route params
+  const [params, setParams] = useState(route.params);
 
   useEffect(() => {
-    if (route.params?.latitude !== undefined && route.params?.longitude !== undefined) {
-      setLat(route.params.latitude);
-      setLng(route.params.longitude);
-    }
+      setParams(route.params);
   }, [route.params]);
+
+  useEffect(() => {
+      if (
+          params?.latitude !== undefined &&
+          params?.longitude !== undefined &&
+          (lat !== params.latitude || lng !== params.longitude)
+      ) {
+          setLat(params.latitude);
+          setLng(params.longitude);
+      }
+  }, [params, lat, lng]);
+
+  useEffect(() => {
+      console.log('Route params:', route.params);
+      console.log('Latitude state:', lat);
+      console.log('Longitude state:', lng);
+  }, [route.params, lat, lng]);
 
   const handleCreateTag = () => {
     if (!newTagText.trim()) {

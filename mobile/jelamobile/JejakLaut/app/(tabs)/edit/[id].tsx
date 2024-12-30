@@ -2,16 +2,17 @@ import { useNotes } from '@/components/NoteContext';
 import { useLocalSearchParams } from 'expo-router';
 import { NoteForm } from '@/components/NoteForm';
 import { NoteData, Tag } from '@/components/types';
-import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTags } from '@/components/TagContext';
 
 export default function EditNoteScreen() {
   const { notes, updateNote } = useNotes();
-  const { id } = useLocalSearchParams();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const navigation = useNavigation();
 
-  // Find the note to edit
   const noteToEdit = notes.find((note) => note.id === id);
+  const { tags, addTag } = useTags();
 
   if (!noteToEdit) {
     return (
@@ -21,29 +22,34 @@ export default function EditNoteScreen() {
     );
   }
 
-  // Function to handle the update of the note
+  // Here we're preparing the data for the NoteForm
+  const preloadedData = {
+    title: noteToEdit.title,
+    markdown: noteToEdit.markdown,
+    tags: noteToEdit.tags,
+    latitude: noteToEdit.latitude,
+    longitude: noteToEdit.longitude,
+  };
+
   const handleUpdateNote = (data: NoteData) => {
     updateNote(id as string, {
       ...noteToEdit,
       ...data,
       lastModified: new Date().toISOString(),
     });
-    // After updating, navigate back (assuming navigation prop is passed down)
-    // navigation.goBack();
+    navigation.goBack();
   };
 
   return (
     <View style={styles.container}>
-      <NoteForm 
+      <NoteForm
         onSubmit={handleUpdateNote}
-        onAddTag={() => {}} // You might want to implement this if needed for editing
-        availableTags={[]} // Assuming you're not adding new tags while editing
-        title={noteToEdit.title}
-        markdown={noteToEdit.markdown}
-        tags={noteToEdit.tags}
+        onAddTag={(tag) => addTag(tag)}
+        availableTags={tags} // This should be populated if tags aren't part of the note directly
+        {...preloadedData}
+        navigation={navigation}
         latitude={noteToEdit.latitude}
         longitude={noteToEdit.longitude}
-        navigation={useNavigation()} // Assuming you're using react-navigation
       />
     </View>
   );
@@ -60,7 +66,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   error: {
-    fontSize: 18,
+    fontSize: 20,
     color: 'red',
   },
 });
