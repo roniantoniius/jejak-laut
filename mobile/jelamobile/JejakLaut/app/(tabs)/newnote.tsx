@@ -1,24 +1,29 @@
+// app/(tabs)/newnote.tsx
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTags } from '../../components/TagContext';
-import { useNotes } from '../../components/NoteContext'; // Import the new context
+import { useNotes } from '../../components/NoteContext';
 import { NoteForm } from '../../components/NoteForm';
-import { NoteData } from '../../components/types';
+import { NoteData, NewNoteRouteProp } from '../../components/types'; // Update path if necessary
 import { v4 as uuidV4 } from 'uuid';
 import 'react-native-get-random-values';
 
 export default function NewNoteScreen() {
   const { tags, addTag } = useTags();
-  const { addNote } = useNotes(); // Use the new context for adding notes
+  const { addNote } = useNotes();
   const navigation = useNavigation();
+  const route = useRoute<NewNoteRouteProp>(); // Use the defined RouteProp type here
 
   const handleCreateNote = (data: NoteData) => {
     const newNote = { ...data, id: uuidV4() };
-    addNote(newNote); // Add the note via context
+    addNote(newNote);
     console.log('Catatan baru berhasil disimpan:', newNote);
     navigation.goBack();
   };
+
+  const latitude = route.params?.latitude || 0;
+  const longitude = route.params?.longitude || 0;
 
   return (
     <View style={styles.container}>
@@ -26,10 +31,14 @@ export default function NewNoteScreen() {
         onSubmit={handleCreateNote}
         onAddTag={(tag) => addTag(tag)} 
         availableTags={tags}
+        latitude={latitude}
+        longitude={longitude}
+        navigation={navigation}
       />
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

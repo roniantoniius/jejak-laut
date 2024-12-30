@@ -286,6 +286,20 @@ export default function TabLayout() {
               ),
             }}
           />
+          <Tabs.Screen
+            name="pilihlokasi"
+            options={{
+              title: '',
+              headerTitleStyle: {
+                fontSize: 24,
+                fontFamily: 'Montserrat-Bold',
+              },
+              
+              tabBarStyle: { display: 'none' },
+              tabBarButton: () => null,
+              tabBarItemStyle: { display: 'none' },
+            }}
+          />
         </Tabs>
       </TagProvider>
     </NoteProvider>

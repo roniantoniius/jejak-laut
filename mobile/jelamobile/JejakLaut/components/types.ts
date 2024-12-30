@@ -1,3 +1,5 @@
+import { RouteProp } from '@react-navigation/native';
+
 export type Note = {
     id: string;
 } & NoteData;
@@ -17,3 +19,15 @@ export type Tag = {
     label: string;
     color: string;
 };
+
+export interface NewNoteRouteParams {
+    latitude?: number;
+    longitude?: number;
+}
+
+export type RootStackParamList = {
+    newnote: NewNoteRouteParams;
+    // Add other routes here if needed
+  };
+  
+  export type NewNoteRouteProp = RouteProp<RootStackParamList, 'newnote'>;

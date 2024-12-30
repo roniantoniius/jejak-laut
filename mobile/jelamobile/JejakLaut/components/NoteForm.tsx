@@ -1,17 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Alert,
-  TouchableOpacity,
-  Modal,
-  FlatList,
-  Platform,
-} from 'react-native';
+import { View, Text, TextInput, KeyboardAvoidingView, StyleSheet, Alert, TouchableOpacity, Modal, FlatList, Platform} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { NoteData, Tag } from './types';
 
@@ -26,6 +14,7 @@ type NoteFormProps = {
   tags?: Tag[];
   latitude?: number;
   longitude?: number;
+  navigation?: any;
 };
 
 export function NoteForm({
@@ -37,6 +26,7 @@ export function NoteForm({
   tags = [],
   latitude = 0,
   longitude = 0,
+  navigation,
 }: NoteFormProps) {
   const [noteTitle, setNoteTitle] = useState(title);
   const [noteMarkdown, setNoteMarkdown] = useState(markdown);
@@ -46,8 +36,10 @@ export function NoteForm({
   const [tagOptions, setTagOptions] = useState(
     availableTags.map((tag) => ({ label: tag.label, value: tag.id, color: tag.color }))
   );
-  const [lat, setLat] = useState(latitude);
-  const [lng, setLng] = useState(longitude);
+  const initialLat = latitude ?? 0;
+  const initialLng = longitude ?? 0;
+  const [lat, setLat] = useState(initialLat);
+  const [lng, setLng] = useState(initialLng);
 
   const [isTagPickerOpen, setIsTagPickerOpen] = useState(false);
   const [newTagText, setNewTagText] = useState(''); // State untuk tag baru
@@ -105,8 +97,11 @@ export function NoteForm({
   };
 
   const handlePickLocation = () => {
-    // Implementasi logika untuk memilih lokasi
-    Alert.alert('Pilih Lokasi', 'Fitur ini belum diimplementasikan.');
+    if (navigation) {
+      navigation.navigate('pilihlokasi');
+    } else {
+      Alert.alert('Error', 'Navigation not available.');
+    }
   };
 
   return (
