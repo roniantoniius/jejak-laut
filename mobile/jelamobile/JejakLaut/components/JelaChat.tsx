@@ -46,6 +46,15 @@ export function JelaChat({}: JelaChatProps) {
     }
   };
 
+  useEffect(() => {
+    // Inisialisasi pesan default dari 'jela' saat komponen dimount
+    setMessages([{
+      id: 'welcome',
+      text: 'Selamat datang 😁! Kamu lagi ngobrol sama Jela ⛵, yang siap bantu optimalkan catatanmu serta menemani selama diskusi ini.',
+      role: 'jela',
+    }]);
+  }, []); // Array kosong sebagai kedua parameter berarti efek ini hanya berjalan sekali saat mount
+
   // Efek untuk scroll otomatis ke pesan terbaru
   useEffect(() => {
     if (flatListRef.current) {
@@ -110,49 +119,56 @@ export function JelaChat({}: JelaChatProps) {
 
 const styles = StyleSheet.create({
     chatContainer: {
-      maxHeight: 400,
-      flexDirection: 'column',
+      maxHeight: 550,
       borderRadius: 10,
       backgroundColor: '#f5f5f5',
     },
     chatBody: {
-      flexGrow: 1,
       padding: 10,
+      flexGrow: 1,
+      fontFamily: 'Montserrat',
     },
     messageContainer: {
       marginBottom: 10,
       padding: 10,
       borderRadius: 8,
-      maxWidth: '70%',
+      maxWidth: '82%',
+      fontFamily: 'Montserrat',
     },
     userMessage: {
       alignSelf: 'flex-end',
       backgroundColor: '#DCF8C6',
+      fontFamily: 'Montserrat',
     },
     jelaMessage: {
       alignSelf: 'flex-start',
       backgroundColor: '#E0E0E0',
+      fontFamily: 'Montserrat',
     },
     messageText: {
       fontSize: 16,
+      fontFamily: 'Montserrat-Medium',
     },
     chatFooter: {
       padding: 10,
       backgroundColor: '#fff',
       borderTopWidth: 1,
       borderTopColor: '#ddd',
+      fontFamily: 'Montserrat',
     },
     inputContainer: {
       flexDirection: 'row',
+      fontFamily: 'Montserrat',
       position: 'relative',
     },
     inputField: {
-      flexGrow: 1,
+      flex: 1,
       padding: 12,
       borderWidth: 1,
       borderColor: '#ddd',
       borderRadius: 5,
       marginRight: 10,
+      fontFamily: 'Montserrat-Medium',
       backgroundColor: '#fff',
     },
     sendButton: {
@@ -160,24 +176,29 @@ const styles = StyleSheet.create({
       backgroundColor: '#052844',
       borderRadius: 5,
       justifyContent: 'center',
+      fontFamily: 'Montserrat',
     },
     sendButtonText: {
       color: '#fff',
       fontWeight: 'bold',
+      fontFamily: 'Montserrat-Medium',
     },
     actionButtonContainer: {
       flexDirection: 'row',
       justifyContent: 'space-around',
       marginTop: 5,
+      fontFamily: 'Montserrat',
     },
     actionButton: {
       padding: 5,
       backgroundColor: '#052844',
       borderRadius: 5,
       marginRight: 5,
+      fontFamily: 'Montserrat-Medium',
     },
     actionButtonText: {
       color: 'white',
       fontWeight: 'bold',
+      fontFamily: 'Montserrat',
     },
   });

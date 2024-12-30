@@ -53,7 +53,9 @@ export default function NoteDetail() {
         title="Jela"
         onClose={() => console.log('Popup closed')}
       >
-        <JelaChat />
+        <View style={{ width: '100%' }}>
+          <JelaChat />
+        </View>
       </PopupBawah>
     </>
   );
