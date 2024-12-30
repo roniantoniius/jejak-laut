@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, KeyboardAvoidingView, StyleSheet, Alert, TouchableOpacity, Modal, FlatList, Platform} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { NoteData, Tag } from './types';
+import { NewNoteRouteProp, NoteData, Tag } from './types';
+import { useRoute } from '@react-navigation/native';
 
 const COLOR_OPTIONS = ['#FF5733', '#ed9e2f', '#052844', '#B6E5FF', '#18de8c'];
 
@@ -45,6 +46,15 @@ export function NoteForm({
   const [newTagText, setNewTagText] = useState(''); // State untuk tag baru
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
   const [pendingTag, setPendingTag] = useState<Tag | null>(null);
+
+  const route = useRoute<NewNoteRouteProp>(); // Menangkap route params
+
+  useEffect(() => {
+    if (route.params?.latitude !== undefined && route.params?.longitude !== undefined) {
+      setLat(route.params.latitude);
+      setLng(route.params.longitude);
+    }
+  }, [route.params]);
 
   const handleCreateTag = () => {
     if (!newTagText.trim()) {
@@ -103,6 +113,18 @@ export function NoteForm({
       Alert.alert('Error', 'Navigation not available.');
     }
   };
+
+  useEffect(() => {
+    // Mengisi state dengan data yang dikirim dari PickLocation
+    if (navigation && navigation.getParam) {
+      const lat = navigation.getParam('latitude');
+      const lng = navigation.getParam('longitude');
+      if (lat !== undefined && lng !== undefined) {
+        setLat(lat);
+        setLng(lng);
+      }
+    }
+  }, [navigation]);
 
   return (
     <KeyboardAvoidingView

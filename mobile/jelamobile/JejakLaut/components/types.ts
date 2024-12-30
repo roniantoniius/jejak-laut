@@ -27,7 +27,6 @@ export interface NewNoteRouteParams {
 
 export type RootStackParamList = {
     newnote: NewNoteRouteParams;
-    // Add other routes here if needed
   };
   
-  export type NewNoteRouteProp = RouteProp<RootStackParamList, 'newnote'>;
+export type NewNoteRouteProp = RouteProp<RootStackParamList, 'newnote'>;

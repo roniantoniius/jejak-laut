@@ -5,7 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTags } from '../../components/TagContext';
 import { useNotes } from '../../components/NoteContext';
 import { NoteForm } from '../../components/NoteForm';
-import { NoteData, NewNoteRouteProp } from '../../components/types'; // Update path if necessary
+import { NoteData, NewNoteRouteProp } from '../../components/types';
 import { v4 as uuidV4 } from 'uuid';
 import 'react-native-get-random-values';
 
@@ -13,7 +13,7 @@ export default function NewNoteScreen() {
   const { tags, addTag } = useTags();
   const { addNote } = useNotes();
   const navigation = useNavigation();
-  const route = useRoute<NewNoteRouteProp>(); // Use the defined RouteProp type here
+  const route = useRoute<NewNoteRouteProp>();
 
   const handleCreateNote = (data: NoteData) => {
     const newNote = { ...data, id: uuidV4() };

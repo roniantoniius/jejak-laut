@@ -1,11 +1,18 @@
 import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, Button, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from './types';
 
-const PickLocation = ({ navigation }: any) => {
+// Menambahkan tipe navigasi
+type NavigationProps = StackNavigationProp<RootStackParamList, 'newnote'>;
+
+const PickLocation = () => {
+  const navigation = useNavigation<NavigationProps>();
   const [selectedLocation, setSelectedLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 
-  const onMapPress = useCallback((event: any) => {
+  const onMapPress = useCallback((event: { nativeEvent: { coordinate: { latitude: number; longitude: number } } }) => {
     setSelectedLocation({
       latitude: event.nativeEvent.coordinate.latitude,
       longitude: event.nativeEvent.coordinate.longitude,
@@ -22,16 +29,14 @@ const PickLocation = ({ navigation }: any) => {
       Alert.alert('Lokasi Belum Dipilih', 'Silakan pilih lokasi terlebih dahulu.');
     }
   };
-  
-
   return (
     <View style={styles.container}>
       <MapView 
         style={styles.map}
         onPress={onMapPress}
         initialRegion={{
-          latitude: -2.5,
-          longitude: 118,
+          latitude: -7.25,
+          longitude: 115.33,
           latitudeDelta: 10,
           longitudeDelta: 10,
         }}
@@ -40,7 +45,6 @@ const PickLocation = ({ navigation }: any) => {
       </MapView>
       <View style={styles.buttonContainer}>
         <Button title="Simpan Lokasi" onPress={saveLocationHandler} />
-        <Button title="Batal" onPress={() => navigation.goBack()} />
       </View>
     </View>
   );
@@ -51,12 +55,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   map: {
-    flex: 1,
+    width: '100%',
+    height: '100%',
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10,
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
   },
 });
 
