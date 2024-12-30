@@ -4,11 +4,12 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 type PopupBawahProps = {
   icon: React.ReactNode;
   title: string;
+  subtitle: string;
   children: React.ReactNode;
   onClose: () => void; // Menambahkan onClose prop
 };
 
-export function PopupBawah({ icon, title, children, onClose }: PopupBawahProps) {
+export function PopupBawah({ icon, title, subtitle, children, onClose }: PopupBawahProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   // Fungsi untuk menutup modal
@@ -42,7 +43,7 @@ export function PopupBawah({ icon, title, children, onClose }: PopupBawahProps) 
         <View style={styles.modalBackground}>
           <View style={styles.modalContent}>
             <View style={styles.header}>
-              <Text style={styles.modalTitle}>{title}</Text>
+              <Text style={styles.modalTitle}>{title}, <Text style={styles.modalSubTitle}>{subtitle}</Text></Text>
               <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
                 <Text style={styles.closeButtonText}>X</Text>
               </TouchableOpacity>
@@ -116,6 +117,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Montserrat-Bold',
     color: '#052844',
+  },
+  modalSubTitle: {
+    fontSize: 18,
+    textAlign: 'center',
+    fontFamily: 'Montserrat',
+    color: '#E6E9E9',
   },
   closeButton: {
     padding: 5,

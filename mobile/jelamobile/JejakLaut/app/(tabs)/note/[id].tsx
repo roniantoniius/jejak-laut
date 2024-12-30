@@ -51,6 +51,7 @@ export default function NoteDetail() {
       <PopupBawah
         icon={<Text style={styles.iconText}>AI</Text>}
         title="Jela"
+        subtitle='Gemini 2.0 Flash'
         onClose={() => console.log('Popup closed')}
       >
         <View style={{ width: '100%' }}>

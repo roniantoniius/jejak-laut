@@ -103,7 +103,11 @@ export function NoteForm({
     setLat(0);
     setLng(0);
   };
-  
+
+  const handlePickLocation = () => {
+    // Implementasi logika untuk memilih lokasi
+    Alert.alert('Pilih Lokasi', 'Fitur ini belum diimplementasikan.');
+  };
 
   return (
     <KeyboardAvoidingView
@@ -161,21 +165,31 @@ export function NoteForm({
         onChangeText={setNoteMarkdown}
       />
 
-      <Text style={styles.label}>Latitude</Text>
-      <TextInput
-        style={styles.input}
-        keyboardType="numeric"
-        value={String(lat)}
-        onChangeText={(text) => setLat(parseFloat(text) || 0)}
-      />
+      <View style={styles.locationContainer}>
+        <View style={styles.locationInputContainer}>
+          <Text style={styles.label}>Longitude</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            value={String(lng)}
+            onChangeText={(text) => setLng(parseFloat(text) || 0)}
+          />
+        </View>
 
-      <Text style={styles.label}>Longitude</Text>
-      <TextInput
-        style={styles.input}
-        keyboardType="numeric"
-        value={String(lng)}
-        onChangeText={(text) => setLng(parseFloat(text) || 0)}
-      />
+        <View style={styles.locationInputContainer}>
+          <Text style={styles.label}>Latitude</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            value={String(lat)}
+            onChangeText={(text) => setLat(parseFloat(text) || 0)}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.pickLocationButton} onPress={handlePickLocation}>
+          <Text style={styles.pickLocationButtonText}>Lokasi</Text>
+        </TouchableOpacity>
+      </View>
 
       <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
         <Text style={styles.addButtonText}>Simpan</Text>
@@ -323,5 +337,29 @@ const styles = StyleSheet.create({
   placeholder: {
     fontFamily: 'Montserrat',
     color: '#052844',
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  locationInputContainer: {
+    flex: 1,
+    marginRight: 8,
+  },
+  pickLocationButton: {
+    backgroundColor: '#052844',
+    borderRadius: 4,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: '25%',
+    marginTop: 14,
+  },
+  pickLocationButtonText: {
+    fontFamily: 'Montserrat-Bold',
+    color: 'white',
+    fontSize: 16,
   },
 });
