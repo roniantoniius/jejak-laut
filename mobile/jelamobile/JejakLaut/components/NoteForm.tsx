@@ -51,21 +51,23 @@ export function NoteForm({
 
   const route = useRoute<NewNoteRouteProp>(); // Menangkap route params
   const [params, setParams] = useState(route.params);
+  const [hasReceivedLocation, setHasReceivedLocation] = useState(false);
 
   useEffect(() => {
       setParams(route.params);
   }, [route.params]);
 
   useEffect(() => {
-      if (
-          params?.latitude !== undefined &&
-          params?.longitude !== undefined &&
-          (lat !== params.latitude || lng !== params.longitude)
-      ) {
-          setLat(params.latitude);
-          setLng(params.longitude);
-      }
-  }, [params, lat, lng]);
+    if (
+      route.params?.latitude !== undefined &&
+      route.params?.longitude !== undefined &&
+      !hasReceivedLocation
+    ) {
+      setLat(route.params.latitude);
+      setLng(route.params.longitude);
+      setHasReceivedLocation(true);
+    }
+  }, [route.params, hasReceivedLocation]);
 
   useEffect(() => {
       console.log('Route params:', route.params);
@@ -122,25 +124,18 @@ export function NoteForm({
       latitude: lat,
       longitude: lng,
       lastModified: new Date().toISOString(),
-      id: ''
+      id: '',
     });
-  
+
     // Reset form setelah submit
     setNoteTitle('');
     setNoteMarkdown('');
     setSelectedTags([]);
     setLat(0);
     setLng(0);
+    setHasReceivedLocation(false); // Reset state ini juga
   };
-
-  const handlePickLocation = () => {
-    if (navigation) {
-      navigation.navigate('pilihlokasi');
-    } else {
-      Alert.alert('Error', 'Navigation not available.');
-    }
-  };
-
+  
   useEffect(() => {
     // Mengisi state dengan data yang dikirim dari PickLocation
     if (navigation && navigation.getParam) {
@@ -172,7 +167,9 @@ export function NoteForm({
         items={availableTags.map((tag) => ({
           label: tag.label,
           value: tag.id,
-          key: tag.id, // Gunakan key unik
+          icon: () => (
+            <View style={[styles.tagColor, { backgroundColor: tag.color }]} />
+          ),
         }))}
         value={selectedTags}
         setValue={setSelectedTags}
@@ -228,7 +225,7 @@ export function NoteForm({
           />
         </View>
 
-        <TouchableOpacity style={styles.pickLocationButton} onPress={handlePickLocation}>
+        <TouchableOpacity style={styles.pickLocationButton} onPress={() => navigation.navigate('pilihlokasi')}>
           <Text style={styles.pickLocationButtonText}>Lokasi</Text>
         </TouchableOpacity>
       </View>
