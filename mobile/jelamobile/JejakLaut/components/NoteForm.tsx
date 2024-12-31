@@ -16,9 +16,11 @@ type NoteFormProps = {
   latitude?: number;
   longitude?: number;
   navigation?: any;
+  mode?: 'create' | 'edit';
 };
 
 export function NoteForm({
+  mode = 'create',
   onSubmit,
   onAddTag,
   availableTags,
@@ -98,19 +100,29 @@ export function NoteForm({
     setIsColorPickerVisible(false);
   };
 
+  useEffect(() => {
+    if (mode === 'edit') {
+      setNoteTitle(title);
+      setNoteMarkdown(markdown);
+      setSelectedTags(tags.map((tag) => tag.id));
+      setLat(latitude);
+      setLng(longitude);
+    }
+  }, [title, markdown, tags, latitude, longitude, mode]);
+
   const handleSubmit = () => {
-    const noteTags = tagOptions
-      .filter((option) => selectedTags.includes(option.value))
-      .map((option) => ({ id: option.value, label: option.label, color: option.color }));
-  
+    const noteTags = availableTags
+      .filter((tag) => selectedTags.includes(tag.id))
+      .map((tag) => ({ id: tag.id, label: tag.label, color: tag.color }));
+
     onSubmit({
       title: noteTitle,
       markdown: noteMarkdown,
       tags: noteTags,
-      longitude: lng,
       latitude: lat,
+      longitude: lng,
       lastModified: new Date().toISOString(),
-      id: '',
+      id: ''
     });
   
     // Reset form setelah submit
@@ -157,12 +169,10 @@ export function NoteForm({
       <DropDownPicker
         open={isTagPickerOpen}
         setOpen={setIsTagPickerOpen}
-        items={tagOptions.map((tag) => ({
+        items={availableTags.map((tag) => ({
           label: tag.label,
-          value: tag.value,
-          icon: () => (
-            <View style={[styles.tagColor, { backgroundColor: tag.color }]} />
-          ),
+          value: tag.id,
+          key: tag.id, // Gunakan key unik
         }))}
         value={selectedTags}
         setValue={setSelectedTags}
@@ -224,7 +234,9 @@ export function NoteForm({
       </View>
 
       <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
-        <Text style={styles.addButtonText}>Simpan</Text>
+        <Text style={styles.addButtonText}>
+          {mode === 'edit' ? 'Perbarui Catatan' : 'Buat Catatan'}
+        </Text>
       </TouchableOpacity>
 
       {/* Modal untuk memilih warna */}

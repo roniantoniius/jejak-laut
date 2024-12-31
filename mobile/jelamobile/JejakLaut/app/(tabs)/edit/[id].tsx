@@ -1,18 +1,20 @@
 import { useNotes } from '@/components/NoteContext';
 import { useLocalSearchParams } from 'expo-router';
 import { NoteForm } from '@/components/NoteForm';
-import { NoteData, Tag } from '@/components/types';
+import { NoteData, RootStackParamList, Tag } from '@/components/types';
 import { View, StyleSheet, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useTags } from '@/components/TagContext';
+import { useEffect, useState } from 'react';
 
 export default function EditNoteScreen() {
   const { notes, updateNote } = useNotes();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const noteToEdit = notes.find((note) => note.id === id);
   const { tags, addTag } = useTags();
+  const [preloadedData, setPreloadedData] = useState<NoteData | null>(null);
 
   if (!noteToEdit) {
     return (
@@ -22,14 +24,30 @@ export default function EditNoteScreen() {
     );
   }
 
-  // Here we're preparing the data for the NoteForm
-  const preloadedData = {
-    title: noteToEdit.title,
-    markdown: noteToEdit.markdown,
-    tags: noteToEdit.tags,
-    latitude: noteToEdit.latitude,
-    longitude: noteToEdit.longitude,
-  };
+  useEffect(() => {
+    const noteToEdit = notes.find((note) => note.id === id);
+    if (noteToEdit) {
+      setPreloadedData({
+        id: noteToEdit.id,
+        title: noteToEdit.title,
+        markdown: noteToEdit.markdown,
+        tags: noteToEdit.tags,
+        latitude: noteToEdit.latitude,
+        longitude: noteToEdit.longitude,
+        lastModified: noteToEdit.lastModified,
+      });
+    } else {
+      setPreloadedData(null);
+    }
+  }, [id, notes]);
+
+  if (!preloadedData) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.error}>Catatan tidak ditemukan</Text>
+      </View>
+    );
+  }
 
   const handleUpdateNote = (data: NoteData) => {
     updateNote(id as string, {
@@ -43,6 +61,7 @@ export default function EditNoteScreen() {
   return (
     <View style={styles.container}>
       <NoteForm
+        mode="edit"
         onSubmit={handleUpdateNote}
         onAddTag={(tag) => addTag(tag)}
         availableTags={tags} // This should be populated if tags aren't part of the note directly

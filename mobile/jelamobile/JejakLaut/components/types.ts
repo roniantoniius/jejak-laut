@@ -31,7 +31,7 @@ export interface EditNoteRouteParams {
 
 export type RootStackParamList = {
     newnote: NewNoteRouteParams;
-    ['edit/[id]']: EditNoteRouteParams; // Add this line for the dynamic route
+    ['edit/[id]']: EditNoteRouteParams;
 };
 
 export type NewNoteRouteProp = RouteProp<RootStackParamList, 'newnote'>;
