@@ -19,10 +19,16 @@ export const NoteProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const updateNote = (id: string, updatedNote: NoteData) => {
-    const updatedNotes = notes.map(note => note.id === id ? updatedNote : note);
-    setNotes(updatedNotes);
+    const noteIndex = notes.findIndex(note => note.id === id);
+    if (noteIndex !== -1) {
+      const updatedNotes = [...notes];
+      updatedNotes[noteIndex] = {
+        ...updatedNote,
+        id: id // Ensure ID remains the same
+      };
+      setNotes(updatedNotes);
+    }
   };
-
   return (
     <NoteContext.Provider value={{ notes, addNote, updateNote }}>
       {children}

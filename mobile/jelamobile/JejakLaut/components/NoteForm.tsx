@@ -118,22 +118,24 @@ export function NoteForm({
       .map((tag) => ({ id: tag.id, label: tag.label, color: tag.color }));
 
     onSubmit({
+      id: mode === 'edit' ? title : '', // Keep existing ID in edit mode
       title: noteTitle,
       markdown: noteMarkdown,
       tags: noteTags,
       latitude: lat,
       longitude: lng,
       lastModified: new Date().toISOString(),
-      id: '',
     });
 
-    // Reset form setelah submit
-    setNoteTitle('');
-    setNoteMarkdown('');
-    setSelectedTags([]);
-    setLat(0);
-    setLng(0);
-    setHasReceivedLocation(false); // Reset state ini juga
+    // Only reset form if it's not in edit mode
+    if (mode !== 'edit') {
+      setNoteTitle('');
+      setNoteMarkdown('');
+      setSelectedTags([]);
+      setLat(0);
+      setLng(0);
+      setHasReceivedLocation(false);
+    }
   };
   
   useEffect(() => {

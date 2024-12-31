@@ -11,37 +11,32 @@ export default function EditNoteScreen() {
   const { notes, updateNote } = useNotes();
   const { id } = useLocalSearchParams<{ id: string }>();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
-  const noteToEdit = notes.find((note) => note.id === id);
   const { tags, addTag } = useTags();
+
   const [preloadedData, setPreloadedData] = useState<NoteData | null>(null);
+  const [noteToEdit, setNoteToEdit] = useState<NoteData | null>(null);
 
-  if (!noteToEdit) {
-    return (
-      <View style={styles.center}>
-        <Text style={styles.error}>Catatan tidak ditemukan</Text>
-      </View>
-    );
-  }
-
+  // Gunakan useEffect untuk memuat data dengan aman
   useEffect(() => {
-    const noteToEdit = notes.find((note) => note.id === id);
-    if (noteToEdit) {
+    const foundNote = notes.find((note) => note.id === id);
+    setNoteToEdit(foundNote || null);
+
+    if (foundNote) {
       setPreloadedData({
-        id: noteToEdit.id,
-        title: noteToEdit.title,
-        markdown: noteToEdit.markdown,
-        tags: noteToEdit.tags,
-        latitude: noteToEdit.latitude,
-        longitude: noteToEdit.longitude,
-        lastModified: noteToEdit.lastModified,
+        id: foundNote.id,
+        title: foundNote.title,
+        markdown: foundNote.markdown,
+        tags: foundNote.tags,
+        latitude: foundNote.latitude,
+        longitude: foundNote.longitude,
+        lastModified: foundNote.lastModified,
       });
     } else {
       setPreloadedData(null);
     }
   }, [id, notes]);
 
-  if (!preloadedData) {
+  if (!noteToEdit || !preloadedData) {
     return (
       <View style={styles.center}>
         <Text style={styles.error}>Catatan tidak ditemukan</Text>
@@ -50,9 +45,9 @@ export default function EditNoteScreen() {
   }
 
   const handleUpdateNote = (data: NoteData) => {
-    updateNote(id as string, {
-      ...noteToEdit,
+    updateNote(id, {
       ...data,
+      id: id, // Ensure we're using the correct ID
       lastModified: new Date().toISOString(),
     });
     navigation.goBack();
@@ -64,7 +59,7 @@ export default function EditNoteScreen() {
         mode="edit"
         onSubmit={handleUpdateNote}
         onAddTag={(tag) => addTag(tag)}
-        availableTags={tags} // This should be populated if tags aren't part of the note directly
+        availableTags={tags}
         {...preloadedData}
         navigation={navigation}
         latitude={noteToEdit.latitude}
@@ -74,10 +69,12 @@ export default function EditNoteScreen() {
   );
 }
 
+// style
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    padding: 16,
+    backgroundColor: '#fff',
   },
   center: {
     flex: 1,
@@ -85,7 +82,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   error: {
-    fontSize: 20,
+    fontSize: 16,
     color: 'red',
   },
 });
