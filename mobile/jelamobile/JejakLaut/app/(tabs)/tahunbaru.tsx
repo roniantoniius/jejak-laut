@@ -1,40 +1,37 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function KonfigurasiScreen() {
-    // async adalah keyword yang digunakan untuk membuat fungsi menjadi asynchronous, bertujuan untuk menghindari blocking pada aplikasi
-    const deleteMemori = async () => {
+export default function TahunBaruScreen() {
+    const pencetTombol = async () => {
         try {
-            await AsyncStorage.clear();
-            console.log('Data cleared, logged out.');
+            console.log("Selamat Tahun Baru 2025!");
         } catch(e) {
-            console.error('Error during logout:', e);
+            console.log("Waduh error di tahun baru :((", e);
         }
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.text}>Konfigurasi jejak Laut</Text>
-            <TouchableOpacity style={styles.addButtonSmall} onPress={deleteMemori}>
-                <Text style={styles.addButtonSmallText}>Hapus</Text>
+        <View style={styles.kontainer}>
+            <Text style={styles.teks}>Tahun Baru 2025</Text>
+            <TouchableOpacity style={styles.tombol} onPress={pencetTombol}>
+                <Text style={styles.teksTombol}>Klik</Text>
             </TouchableOpacity>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
+    kontainer: {
         flex: 1,
         backgroundColor: "white",
         alignItems: "center",
         justifyContent: "center"
     },
-    text: {
+    teks: {
         color: "#052844",
         fontFamily: 'Montserrat', // Use the font family name you've specified
         fontWeight: 'normal' // If you want to use different weights, specify here
     },
-    addButtonSmall: {
+    tombol: {
         backgroundColor: '#052844',
         borderRadius: 4,
         height: 40,
@@ -43,7 +40,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: '25%',
     },
-    addButtonSmallText: {
+    teksTombol: {
       fontFamily: 'Montserrat-Bold',
       color: 'white',
       fontSize: 16,

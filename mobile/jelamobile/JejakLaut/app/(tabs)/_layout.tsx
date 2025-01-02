@@ -216,6 +216,25 @@ export default function TabLayout() {
             }}
           />
           <Tabs.Screen
+            name="tahunbaru"
+            options={{
+              title: 'Tahun Baru 2025',
+              headerTitleStyle: {
+                fontSize: 28,
+                fontFamily: 'Montserrat-Bold',
+              },
+              tabBarIcon: ({ color, focused }) => (
+                  <Ionicons
+                    name={focused ? 'calendar' : 'calendar-outline'}
+                    size={24}
+                    color={color}
+                    style={{ marginBottom: -23 }}
+                  />
+                ),
+              }
+            }
+          />
+          <Tabs.Screen
             name="note/[id]"
             options={{
               title: '',
