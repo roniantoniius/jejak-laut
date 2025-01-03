@@ -78,8 +78,8 @@ export default function PeriksaLokasiScreen() {
           longitudeDelta: 0.1,
         }}
       >
-        {currentLocation && <Marker coordinate={currentLocation} title="Lokasi Anda" />}
-        <Marker coordinate={{ latitude: note.latitude, longitude: note.longitude }} title={note.title} />
+        {currentLocation && <Marker coordinate={currentLocation} style={styles.mylokasi} pinColor='blue' title="Lokasi Anda" />}
+        <Marker coordinate={{ latitude: note.latitude, longitude: note.longitude }} title={note.title} style={styles.lokasi} pinColor='orange' />
         {routeCoordinates.length > 0 && <Polyline coordinates={routeCoordinates} strokeColor="#0000FF" strokeWidth={3} />}
       </MapView>
       <SlidingUpPanel>
@@ -140,4 +140,12 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 16,
   },
+  mylokasi: {
+    color: 'blue',
+    backgroundColor: 'blue',
+  },
+  lokasi: {
+    color: 'orange',
+    backgroundColor: 'orange',
+  }
 });

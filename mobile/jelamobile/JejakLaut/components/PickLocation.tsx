@@ -25,6 +25,7 @@ const PickLocation = () => {
         latitude: selectedLocation.latitude,
         longitude: selectedLocation.longitude,
       });
+      setSelectedLocation(null);
     } else {
       Alert.alert('Lokasi Belum Dipilih', 'Silakan pilih lokasi terlebih dahulu.');
     }
