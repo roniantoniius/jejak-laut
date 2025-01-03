@@ -216,25 +216,6 @@ export default function TabLayout() {
             }}
           />
           <Tabs.Screen
-            name="tahunbaru"
-            options={{
-              title: 'Tahun Baru 2025',
-              headerTitleStyle: {
-                fontSize: 28,
-                fontFamily: 'Montserrat-Bold',
-              },
-              tabBarIcon: ({ color, focused }) => (
-                  <Ionicons
-                    name={focused ? 'calendar' : 'calendar-outline'}
-                    size={24}
-                    color={color}
-                    style={{ marginBottom: -23 }}
-                  />
-                ),
-              }
-            }
-          />
-          <Tabs.Screen
             name="note/[id]"
             options={{
               title: '',
@@ -342,6 +323,41 @@ export default function TabLayout() {
           />
           <Tabs.Screen
             name="edit/[id]"
+            options={{
+              title: '',
+              headerTitleStyle: {
+                fontSize: 24,
+                fontFamily: 'Montserrat-Bold',
+              },
+              
+              tabBarStyle: { display: 'none' },
+              tabBarButton: () => null,
+              tabBarItemStyle: { display: 'none' },
+              headerLeft: ({ tintColor }) => (
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
+                  <Ionicons
+                    name="arrow-back"
+                    size={35}
+                    color={tintColor || '#052844'}
+                    onPress={() => router.back()}
+                  />
+                  <Text
+                    style={{
+                      marginLeft: 8,
+                      fontSize: 24,
+                      color: tintColor || '#052844',
+                      fontFamily: 'Montserrat-Bold',
+                    }}
+                    onPress={() => router.back()}
+                  >
+                    Kembali
+                  </Text>
+                </View>
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="periksalokasi/[id]"
             options={{
               title: '',
               headerTitleStyle: {

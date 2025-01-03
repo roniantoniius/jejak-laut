@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, Button, Alert } from 'react-native';
+import { View, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './types';
+import { Text } from 'react-native';
 
-// Menambahkan tipe navigasi
 type NavigationProps = StackNavigationProp<RootStackParamList, 'newnote'>;
 
 const PickLocation = () => {
@@ -44,7 +44,9 @@ const PickLocation = () => {
         {selectedLocation && <Marker coordinate={selectedLocation} />}
       </MapView>
       <View style={styles.buttonContainer}>
-        <Button title="Simpan Lokasi" onPress={saveLocationHandler} />
+        <TouchableOpacity style={styles.addButton} onPress={saveLocationHandler}>
+          <Text style={styles.addButtonText}>Simpan Lokasi</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -65,6 +67,20 @@ const styles = StyleSheet.create({
     bottom: 20,
     left: 20,
     right: 20,
+  },
+  addButton: {
+    backgroundColor: '#052844',
+    borderRadius: 4,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: '100%',
+  },
+  addButtonText: {
+    fontFamily: 'Montserrat-Bold',
+    color: 'white',
+    fontSize: 20,
   },
 });
 

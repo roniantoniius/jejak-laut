@@ -28,6 +28,10 @@ export default function NoteDetail() {
     navigation.navigate('edit/[id]', { id: note.id });
   };
 
+  const handlePeriksaLokasi = () => {
+    navigation.navigate('periksalokasi/[id]', { id: note.id });
+  };
+
   return (
     <>
       <ScrollView contentContainerStyle={styles.container}>
@@ -51,7 +55,7 @@ export default function NoteDetail() {
           <Text style={styles.location}>
             Longitude: {note.longitude}, Latitude: {note.latitude}
           </Text>
-          <TouchableOpacity style={styles.closeButton}>
+          <TouchableOpacity style={styles.closeButton} onPress={handlePeriksaLokasi}>
             <Text style={styles.closeButtonText}>Periksa Lokasi</Text>
           </TouchableOpacity>
         </View>
@@ -62,8 +66,8 @@ export default function NoteDetail() {
       <PopupBawah
         icon={<Text style={styles.iconText}>AI</Text>}
         title="Jela"
-        subtitle='Gemini 2.0 Flash'
-        onClose={() => console.log('Popup closed')}
+        subtitle="Gemini 2.0 Flash"
+        onClose={() => {}}
       >
         <View style={{ width: '100%' }}>
           <JelaChat />
