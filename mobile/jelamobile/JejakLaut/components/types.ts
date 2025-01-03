@@ -29,10 +29,16 @@ export interface EditNoteRouteParams {
     id: string;
 }
 
+export interface PeriksaLokasiRouteParams {
+    id: string;
+}
+
 export type RootStackParamList = {
     newnote: NewNoteRouteParams;
     ['edit/[id]']: EditNoteRouteParams;
+    ['periksalokasi/[id]']: PeriksaLokasiRouteParams;
 };
 
 export type NewNoteRouteProp = RouteProp<RootStackParamList, 'newnote'>;
 export type EditNoteRouteProp = RouteProp<RootStackParamList, 'edit/[id]'>;
+export type PeriksaLokasiRouteProp = RouteProp<RootStackParamList, 'periksalokasi/[id]'>;
