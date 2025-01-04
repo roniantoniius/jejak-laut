@@ -27,6 +27,8 @@ export interface NewNoteRouteParams {
 
 export interface EditNoteRouteParams {
     id: string;
+    latitude?: number;
+    longitude?: number;
 }
 
 export interface PeriksaLokasiRouteParams {

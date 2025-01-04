@@ -6,38 +6,53 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './types';
 import { Text } from 'react-native';
 
-type NavigationProps = StackNavigationProp<RootStackParamList, 'newnote'>;
+type NavigationProps = StackNavigationProp<RootStackParamList, 'newnote' | 'edit/[id]'>
 
-const PickLocation = () => {
+interface PickLocationProps {
+  mode: 'create' | 'edit';
+  noteId?: string;
+  initialLat?: number;
+  initialLng?: number;
+}
+
+const PickLocation: React.FC<PickLocationProps> = ({ mode, noteId, initialLat = -7.25, initialLng = 115.33 }) => {
   const navigation = useNavigation<NavigationProps>();
-  const [selectedLocation, setSelectedLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<{ latitude: number; longitude: number } | null>({
+    latitude: initialLat,
+    longitude: initialLng,
+  });
 
   const onMapPress = useCallback((event: { nativeEvent: { coordinate: { latitude: number; longitude: number } } }) => {
-    setSelectedLocation({
-      latitude: event.nativeEvent.coordinate.latitude,
-      longitude: event.nativeEvent.coordinate.longitude,
-    });
+    setSelectedLocation(event.nativeEvent.coordinate);
   }, []);
 
   const saveLocationHandler = () => {
     if (selectedLocation) {
-      navigation.navigate('newnote', {
-        latitude: selectedLocation.latitude,
-        longitude: selectedLocation.longitude,
-      });
-      setSelectedLocation(null);
+      if (mode === 'create') {
+        navigation.navigate('newnote', {
+          latitude: selectedLocation.latitude,
+          longitude: selectedLocation.longitude,
+        });
+      } else if (mode === 'edit' && noteId) {
+        navigation.navigate('edit/[id]', {
+          id: noteId,
+          latitude: selectedLocation.latitude,
+          longitude: selectedLocation.longitude,
+        });
+      }
     } else {
       Alert.alert('Lokasi Belum Dipilih', 'Silakan pilih lokasi terlebih dahulu.');
     }
   };
+
   return (
     <View style={styles.container}>
       <MapView 
         style={styles.map}
         onPress={onMapPress}
         initialRegion={{
-          latitude: -7.25,
-          longitude: 115.33,
+          latitude: initialLat,
+          longitude: initialLng,
           latitudeDelta: 10,
           longitudeDelta: 10,
         }}
