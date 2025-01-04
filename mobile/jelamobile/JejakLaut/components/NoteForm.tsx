@@ -39,8 +39,10 @@ export function NoteForm({
   const [tagOptions, setTagOptions] = useState(
     availableTags.map((tag) => ({ label: tag.label, value: tag.id, color: tag.color }))
   );
-  const [lat, setLat] = useState(latitude);
-  const [lng, setLng] = useState(longitude);
+  const initialLat = latitude ?? 0;
+  const initialLng = longitude ?? 0;
+  const [lat, setLat] = useState(initialLat);
+  const [lng, setLng] = useState(initialLng);
 
   const [isTagPickerOpen, setIsTagPickerOpen] = useState(false);
   const [newTagText, setNewTagText] = useState(''); // State untuk tag baru
@@ -225,10 +227,7 @@ export function NoteForm({
           />
         </View>
 
-        <TouchableOpacity 
-          style={styles.pickLocationButton} 
-          onPress={() => navigation.navigate('pilihlokasi', { mode, id: mode === 'edit' ? title : undefined, latitude: lat, longitude: lng })}
-        >
+        <TouchableOpacity style={styles.pickLocationButton} onPress={() => navigation.navigate('pilihlokasi')}>
           <Text style={styles.pickLocationButtonText}>Lokasi</Text>
         </TouchableOpacity>
       </View>
@@ -238,8 +237,6 @@ export function NoteForm({
           {mode === 'edit' ? 'Perbarui Catatan' : 'Buat Catatan'}
         </Text>
       </TouchableOpacity>
-
-      
 
       {/* Modal untuk memilih warna */}
       <Modal visible={isColorPickerVisible} transparent animationType="slide">

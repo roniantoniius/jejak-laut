@@ -1,7 +1,7 @@
 import { useNotes } from '@/components/NoteContext';
 import { useLocalSearchParams } from 'expo-router';
 import { NoteForm } from '@/components/NoteForm';
-import { NoteData, RootStackParamList } from '@/components/types';
+import { NoteData, RootStackParamList, Tag } from '@/components/types';
 import { View, StyleSheet, Text } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useTags } from '@/components/TagContext';
@@ -16,6 +16,7 @@ export default function EditNoteScreen() {
   const [preloadedData, setPreloadedData] = useState<NoteData | null>(null);
   const [noteToEdit, setNoteToEdit] = useState<NoteData | null>(null);
 
+  // Gunakan useEffect untuk memuat data dengan aman
   useEffect(() => {
     const foundNote = notes.find((note) => note.id === id);
     setNoteToEdit(foundNote || null);

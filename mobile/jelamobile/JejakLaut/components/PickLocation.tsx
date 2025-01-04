@@ -6,53 +6,37 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './types';
 import { Text } from 'react-native';
 
-type NavigationProps = StackNavigationProp<RootStackParamList, 'newnote' | 'edit/[id]'>
+type NavigationProps = StackNavigationProp<RootStackParamList, 'newnote'>;
 
-interface PickLocationProps {
-  mode: 'create' | 'edit';
-  noteId?: string;
-  initialLat?: number;
-  initialLng?: number;
-}
-
-const PickLocation: React.FC<PickLocationProps> = ({ mode, noteId, initialLat = -7.25, initialLng = 115.33 }) => {
+const PickLocation = () => {
   const navigation = useNavigation<NavigationProps>();
-  const [selectedLocation, setSelectedLocation] = useState<{ latitude: number; longitude: number } | null>({
-    latitude: initialLat,
-    longitude: initialLng,
-  });
+  const [selectedLocation, setSelectedLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 
   const onMapPress = useCallback((event: { nativeEvent: { coordinate: { latitude: number; longitude: number } } }) => {
-    setSelectedLocation(event.nativeEvent.coordinate);
+    setSelectedLocation({
+      latitude: event.nativeEvent.coordinate.latitude,
+      longitude: event.nativeEvent.coordinate.longitude,
+    });
   }, []);
 
   const saveLocationHandler = () => {
     if (selectedLocation) {
-      if (mode === 'create') {
-        navigation.navigate('newnote', {
-          latitude: selectedLocation.latitude,
-          longitude: selectedLocation.longitude,
-        });
-      } else if (mode === 'edit' && noteId) {
-        navigation.navigate('edit/[id]', {
-          id: noteId,
-          latitude: selectedLocation.latitude,
-          longitude: selectedLocation.longitude,
-        });
-      }
+      navigation.navigate('newnote', {
+        latitude: selectedLocation.latitude,
+        longitude: selectedLocation.longitude,
+      });
     } else {
       Alert.alert('Lokasi Belum Dipilih', 'Silakan pilih lokasi terlebih dahulu.');
     }
   };
-
   return (
     <View style={styles.container}>
       <MapView 
         style={styles.map}
         onPress={onMapPress}
         initialRegion={{
-          latitude: initialLat,
-          longitude: initialLng,
+          latitude: -7.25,
+          longitude: 115.33,
           latitudeDelta: 10,
           longitudeDelta: 10,
         }}
