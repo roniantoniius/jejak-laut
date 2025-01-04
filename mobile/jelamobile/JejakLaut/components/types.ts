@@ -27,16 +27,24 @@ export interface NewNoteRouteParams {
 
 export interface EditNoteRouteParams {
     id: string;
+    latitude?: number;
+    longitude?: number;
 }
 
 export interface PeriksaLokasiRouteParams {
     id: string;
 }
 
+export interface PickLocationParams {
+    sourceScreen: 'newnote' | 'edit';
+    noteId?: string;
+}
+
 export type RootStackParamList = {
     newnote: NewNoteRouteParams;
-    ['edit/[id]']: EditNoteRouteParams;
-    ['periksalokasi/[id]']: PeriksaLokasiRouteParams;
+    'edit/[id]': EditNoteRouteParams;
+    'periksalokasi/[id]': PeriksaLokasiRouteParams;
+    pilihlokasi: PickLocationParams;
 };
 
 export type NewNoteRouteProp = RouteProp<RootStackParamList, 'newnote'>;

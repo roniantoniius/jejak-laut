@@ -1,41 +1,46 @@
 import { useNotes } from '@/components/NoteContext';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { NoteForm } from '@/components/NoteForm';
-import { NoteData, RootStackParamList, Tag } from '@/components/types';
+import { NoteData } from '@/components/types';
 import { View, StyleSheet, Text } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useTags } from '@/components/TagContext';
 import { useEffect, useState } from 'react';
 
 export default function EditNoteScreen() {
+  // Combine all hooks at the top level
   const { notes, updateNote } = useNotes();
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { tags, addTag } = useTags();
+  const params = useLocalSearchParams<{
+    id: string;
+    latitude?: string;
+    longitude?: string;
+  }>();
 
+  // State declarations
   const [preloadedData, setPreloadedData] = useState<NoteData | null>(null);
   const [noteToEdit, setNoteToEdit] = useState<NoteData | null>(null);
 
-  // Gunakan useEffect untuk memuat data dengan aman
+  // Combined useEffect for handling both initial load and location updates
   useEffect(() => {
-    const foundNote = notes.find((note) => note.id === id);
-    setNoteToEdit(foundNote || null);
-
+    const foundNote = notes.find((note) => note.id === params.id);
+    
     if (foundNote) {
-      setPreloadedData({
-        id: foundNote.id,
-        title: foundNote.title,
-        markdown: foundNote.markdown,
-        tags: foundNote.tags,
-        latitude: foundNote.latitude,
-        longitude: foundNote.longitude,
-        lastModified: foundNote.lastModified,
-      });
+      const noteData = {
+        ...foundNote,
+        // If we have new coordinates in params, use those, otherwise use existing
+        latitude: params.latitude ? parseFloat(params.latitude) : foundNote.latitude,
+        longitude: params.longitude ? parseFloat(params.longitude) : foundNote.longitude,
+      };
+      
+      setNoteToEdit(noteData);
+      setPreloadedData(noteData);
     } else {
+      setNoteToEdit(null);
       setPreloadedData(null);
     }
-  }, [id, notes]);
+  }, [params.id, params.latitude, params.longitude, notes]);
 
+  // Early return if data isn't loaded
   if (!noteToEdit || !preloadedData) {
     return (
       <View style={styles.center}>
@@ -45,12 +50,12 @@ export default function EditNoteScreen() {
   }
 
   const handleUpdateNote = (data: NoteData) => {
-    updateNote(id, {
+    updateNote(params.id, {
       ...data,
-      id: id, // Ensure we're using the correct ID
+      id: params.id,
       lastModified: new Date().toISOString(),
     });
-    navigation.goBack();
+    router.back();
   };
 
   return (
@@ -61,7 +66,6 @@ export default function EditNoteScreen() {
         onAddTag={(tag) => addTag(tag)}
         availableTags={tags}
         {...preloadedData}
-        navigation={navigation}
         latitude={noteToEdit.latitude}
         longitude={noteToEdit.longitude}
       />

@@ -3,6 +3,7 @@ import { View, Text, TextInput, KeyboardAvoidingView, StyleSheet, Alert, Touchab
 import DropDownPicker from 'react-native-dropdown-picker';
 import { NewNoteRouteProp, NoteData, Tag } from './types';
 import { useRoute } from '@react-navigation/native';
+import { router } from 'expo-router';
 
 const COLOR_OPTIONS = ['#FF5733', '#ed9e2f', '#052844', '#B6E5FF', '#18de8c'];
 
@@ -227,7 +228,22 @@ export function NoteForm({
           />
         </View>
 
-        <TouchableOpacity style={styles.pickLocationButton} onPress={() => navigation.navigate('pilihlokasi')}>
+        <TouchableOpacity 
+          style={styles.pickLocationButton} 
+          onPress={() => {
+            if (mode === 'edit') {
+              router.push({
+                pathname: '/pilihlokasi',
+                params: {
+                  sourceScreen: 'edit',
+                  noteId: title // assuming title is being used as ID in edit mode
+                }
+              });
+            } else {
+              router.push('/pilihlokasi');
+            }
+          }}
+        >
           <Text style={styles.pickLocationButtonText}>Lokasi</Text>
         </TouchableOpacity>
       </View>

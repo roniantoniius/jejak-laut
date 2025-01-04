@@ -1,16 +1,26 @@
 import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './types';
 import { Text } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
 
-type NavigationProps = StackNavigationProp<RootStackParamList, 'newnote'>;
+type NavigationProps = StackNavigationProp<RootStackParamList>;
 
 const PickLocation = () => {
+  const params = useLocalSearchParams<{ 
+    sourceScreen: string;
+    noteId: string;
+  }>();
   const navigation = useNavigation<NavigationProps>();
+  const route = useRoute();
   const [selectedLocation, setSelectedLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+
+  // Get the source screen and note ID if it exists
+  const sourceScreen = (route.params as any)?.sourceScreen || 'newnote';
+  const noteId = (route.params as any)?.noteId;
 
   const onMapPress = useCallback((event: { nativeEvent: { coordinate: { latitude: number; longitude: number } } }) => {
     setSelectedLocation({
@@ -21,10 +31,26 @@ const PickLocation = () => {
 
   const saveLocationHandler = () => {
     if (selectedLocation) {
-      navigation.navigate('newnote', {
-        latitude: selectedLocation.latitude,
-        longitude: selectedLocation.longitude,
-      });
+      if (params.sourceScreen === 'edit' && params.noteId) {
+        // Corrected navigation for edit mode
+        router.push({
+          pathname: '/(tabs)/edit/[id]' as const,
+          params: {
+            id: params.noteId,
+            latitude: selectedLocation.latitude,
+            longitude: selectedLocation.longitude
+          }
+        });
+      } else {
+        // Navigation for new note
+        router.push({
+          pathname: '/(tabs)/newnote' as const,
+          params: {
+            latitude: selectedLocation.latitude,
+            longitude: selectedLocation.longitude
+          }
+        });
+      }
     } else {
       Alert.alert('Lokasi Belum Dipilih', 'Silakan pilih lokasi terlebih dahulu.');
     }
