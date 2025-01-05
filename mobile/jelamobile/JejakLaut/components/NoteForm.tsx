@@ -164,7 +164,6 @@ export function NoteForm({
         placeholderTextColor="#9DA3B4"
       />
 
-      <Text style={styles.sectionLabel}>Kategori</Text>
       <DropDownPicker
         open={isTagPickerOpen}
         setOpen={setIsTagPickerOpen}
@@ -180,7 +179,7 @@ export function NoteForm({
         setItems={setTagOptions}
         multiple={true}
         mode="BADGE"
-        placeholder="Pilih tag"
+        placeholder="Tentukan Kategori Catatan"
         searchable={true}
         style={styles.dropdown}
         dropDownContainerStyle={styles.dropdownContainer}
@@ -190,7 +189,7 @@ export function NoteForm({
       <View style={styles.newTagContainer}>
         <TextInput
           style={styles.newTagInput}
-          placeholder="Tambah tag baru"
+          placeholder="Tambah Kategori baru"
           value={newTagText}
           onChangeText={setNewTagText}
           placeholderTextColor="#9DA3B4"
@@ -200,7 +199,6 @@ export function NoteForm({
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.sectionLabel}>Catatan</Text>
       <TextInput
         style={styles.markdownInput}
         multiline
@@ -213,7 +211,6 @@ export function NoteForm({
 
       <View style={styles.locationContainer}>
         <View style={styles.locationInputContainer}>
-          <Text style={styles.locationLabel}>Longitude</Text>
           <TextInput
             style={styles.locationInput}
             keyboardType="numeric"
@@ -223,7 +220,6 @@ export function NoteForm({
         </View>
 
         <View style={styles.locationInputContainer}>
-          <Text style={styles.locationLabel}>Latitude</Text>
           <TextInput
             style={styles.locationInput}
             keyboardType="numeric"
@@ -286,19 +282,16 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     borderWidth: 0,
-    backgroundColor: '#F8F9FA',
-    borderRadius: 8,
-    marginBottom: 16,
+    fontSize: 28,
+    marginBottom: 24,
+    paddingVertical: 8,
+    borderBottomWidth: 2,
+    borderBottomColor: '#F0F0F0',
   },
   dropdownContainer: {
     borderWidth: 0,
-    backgroundColor: '#F8F9FA',
     borderRadius: 8,
     elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
   },
   newTagContainer: {
     flexDirection: 'row',
@@ -308,15 +301,18 @@ const styles = StyleSheet.create({
   newTagInput: {
     flex: 1,
     fontSize: 16,
-    fontFamily: 'Montserrat',
-    backgroundColor: '#F8F9FA',
+    fontFamily: 'Montserrat-Medium',
     borderRadius: 8,
     padding: 12,
     marginRight: 12,
+    marginBottom: 24,
+    paddingVertical: 18,
+    borderBottomWidth: 2,
+    borderBottomColor: '#F0F0F0',
   },
   markdownInput: {
-    fontSize: 16,
-    fontFamily: 'Montserrat',
+    fontSize: 20,
+    fontFamily: 'Montserrat-Medium',
     backgroundColor: '#F8F9FA',
     borderRadius: 8,
     padding: 16,
@@ -340,10 +336,12 @@ const styles = StyleSheet.create({
   },
   locationInput: {
     fontSize: 16,
-    fontFamily: 'Montserrat',
-    backgroundColor: '#F8F9FA',
-    borderRadius: 8,
+    fontFamily: 'Montserrat-Medium',
     padding: 12,
+    marginBottom: 24,
+    paddingVertical: 8,
+    borderBottomWidth: 2,
+    borderBottomColor: '#F0F0F0',
   },
   pickLocationButton: {
     backgroundColor: '#052844',
@@ -378,8 +376,9 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   placeholder: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-SemiBold',
     color: '#9DA3B4',
+    fontSize: 20,
   },
   addButtonSmall: {
     backgroundColor: '#052844',
