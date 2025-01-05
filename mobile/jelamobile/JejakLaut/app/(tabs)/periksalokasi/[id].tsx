@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Alert, Dimensions } from 'react-native';
-import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { MapMarker, Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useLocalSearchParams } from 'expo-router';
 import { useNotes } from '@/components/NoteContext';
 import * as Location from 'expo-location';
@@ -16,12 +16,16 @@ export default function PeriksaLokasiScreen() {
   const [routeCoordinates, setRouteCoordinates] = useState<{ latitude: number; longitude: number }[]>([]);
   const [distance, setDistance] = useState<number | null>(null);
   const [duration, setDuration] = useState<number | null>(null);
+  const mapRef = useRef<MapView>(null);
+  const currentLocationMarkerRef = useRef<MapMarker | null>(null);
 
+  // Hook for finding note
   useEffect(() => {
     const foundNote = notes.find((note) => note.id === id);
     setNote(foundNote || null);
   }, [id, notes]);
 
+  // Hook for location permission and getting current location
   useEffect(() => {
     const requestLocationPermission = async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -40,6 +44,7 @@ export default function PeriksaLokasiScreen() {
     requestLocationPermission();
   }, []);
 
+  // Hook for route calculation
   useEffect(() => {
     if (currentLocation && note) {
       const calculateRoute = async () => {
@@ -57,17 +62,38 @@ export default function PeriksaLokasiScreen() {
             }));
             
             setRouteCoordinates(coordinates);
-            setDistance(route.distance / 1000); // Convert to kilometers
-            setDuration(route.duration / 60); // Convert to minutes
+            setDistance(route.distance / 1000);
+            setDuration(route.duration / 60);
           }
         } catch (error) {
-          Alert.alert('Error', 'Failed to calculate route');
+          Alert.alert('Error', 'Gagal menghitung jarak rute lokasi!');
         }
       };
 
       calculateRoute();
     }
   }, [currentLocation, note]);
+
+  // Hook for map animation
+  useEffect(() => {
+    if (currentLocation) {
+      mapRef.current?.animateToRegion({
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      }, 1000);
+    }
+  }, [currentLocation]);
+
+  // Hook for marker callout
+  useEffect(() => {
+    if (currentLocationMarkerRef.current) {
+      setTimeout(() => {
+        currentLocationMarkerRef.current?.showCallout();
+      }, 500);
+    }
+  }, [currentLocation]);
 
   if (!note) {
     return (
@@ -82,6 +108,7 @@ export default function PeriksaLokasiScreen() {
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
+        ref={mapRef}
         initialRegion={{
           latitude: note.latitude,
           longitude: note.longitude,
@@ -91,6 +118,7 @@ export default function PeriksaLokasiScreen() {
       >
         {currentLocation && (
           <Marker
+            ref={currentLocationMarkerRef}
             coordinate={currentLocation}
             title="Lokasi Anda"
             pinColor="blue"
@@ -111,11 +139,9 @@ export default function PeriksaLokasiScreen() {
         )}
       </MapView>
 
-      {/* Floating Card */}
       <View style={styles.floatingCard}>
         <Text style={styles.titleText}>{note.title}</Text>
         
-        {/* Tags */}
         <View style={styles.tagContainer}>
           {note.tags.map((tag) => (
             <View
@@ -127,7 +153,6 @@ export default function PeriksaLokasiScreen() {
           ))}
         </View>
 
-        {/* Route Info */}
         <View style={styles.routeInfo}>
           <Text style={styles.routeInfoText}>
             Jarak: {distance ? `${distance.toFixed(2)} km` : 'Menghitung...'}
@@ -137,7 +162,10 @@ export default function PeriksaLokasiScreen() {
           </Text>
         </View>
 
-        {/* Location */}
+        <Text style={styles.contentText} numberOfLines={3}>
+          {note.markdown}
+        </Text>
+
         <View style={styles.locationInfo}>
           <Text style={styles.locationText}>
             Longitude: {note.longitude.toFixed(6)}
@@ -147,10 +175,6 @@ export default function PeriksaLokasiScreen() {
           </Text>
         </View>
 
-        {/* Note Content */}
-        <Text style={styles.contentText} numberOfLines={3}>
-          {note.markdown}
-        </Text>
       </View>
     </View>
   );
@@ -188,8 +212,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   titleText: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 30,
+    fontFamily: 'Montserrat-Bold',
+    color: '#052844',
     marginBottom: 8,
   },
   tagContainer: {
@@ -198,7 +223,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   tag: {
-    borderRadius: 12,
+    borderRadius: 10,
     paddingHorizontal: 8,
     paddingVertical: 4,
     marginRight: 6,
@@ -206,7 +231,8 @@ const styles = StyleSheet.create({
   },
   tagText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: 15,
+    fontFamily: 'Montserrat-Bold',
   },
   routeInfo: {
     flexDirection: 'row',
@@ -218,18 +244,21 @@ const styles = StyleSheet.create({
   },
   routeInfoText: {
     fontSize: 14,
-    color: '#333',
+    fontFamily: 'Montserrat-Bold',
+    color: '#052844',
   },
   locationInfo: {
     marginBottom: 8,
   },
   locationText: {
     fontSize: 13,
-    color: '#666',
+    fontFamily: 'Montserrat-Bold',
+    color: '#052844',
   },
   contentText: {
     fontSize: 14,
-    color: '#444',
+    fontFamily: 'Montserrat-Medium',
+    color: '#052844',
     lineHeight: 20,
   },
 });
