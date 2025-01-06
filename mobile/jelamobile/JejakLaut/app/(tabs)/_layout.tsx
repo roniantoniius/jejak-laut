@@ -8,12 +8,14 @@ import { PopupCard } from '@/components/PopupCard';
 import { EditTagsModal } from '@/components/EditTagsModal';
 import { GuideModal } from '@/components/GuideModal';
 import React from 'react';
+import { TutorMarkdownModal } from '@/components/TutorMarkdown';
 
 export default function TabLayout() {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const router = useRouter();
   const [isEditTagsVisible, setEditTagsVisible] = useState(false);
   const [isGuideVisible, setGuideVisible] = useState(false);
+  const [isTutorMarkdownVisible, setTutorMarkdownVisible] = useState(false);
   
   const animateIcon = (focused: boolean) => {
     Animated.timing(scaleAnim, {
@@ -26,6 +28,14 @@ export default function TabLayout() {
   const styles = {
     guideButton: {
       backgroundColor: '#4CAF50', // Green button for guide
+      padding: 12,
+      borderRadius: 8,
+      width: '100%',
+      alignItems: 'center',
+      marginVertical: 5,
+    },
+    markdownButton: {
+      backgroundColor: '#f0b041',
       padding: 12,
       borderRadius: 8,
       width: '100%',
@@ -110,6 +120,12 @@ export default function TabLayout() {
                       label: 'Panduan',
                       onPress: () => setGuideVisible(true),
                       style: styles.guideButton,
+                      textStyle: styles.addButtonText,
+                    },
+                    {
+                      label: 'Tutorial Markdown',
+                      onPress: () => setTutorMarkdownVisible(true),
+                      style: styles.markdownButton,
                       textStyle: styles.addButtonText,
                     },
                     {
@@ -281,6 +297,10 @@ export default function TabLayout() {
                   <GuideModal
                     visible={isGuideVisible}
                     onClose={() => setGuideVisible(false)}
+                  />
+                  <TutorMarkdownModal 
+                    visible={isTutorMarkdownVisible}
+                    onClose={() => setTutorMarkdownVisible(false)}
                   />
                 </>
               ),

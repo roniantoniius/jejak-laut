@@ -5,8 +5,6 @@ import { NewNoteRouteProp, NoteData, Tag } from './types';
 import { useRoute } from '@react-navigation/native';
 import { router } from 'expo-router';
 
-const COLOR_OPTIONS = ['#FF5733', '#ed9e2f', '#052844', '#B6E5FF', '#18de8c'];
-
 type NoteFormProps = {
   onSubmit: (data: NoteData) => void;
   onAddTag: (tag: Tag) => void;
@@ -253,8 +251,6 @@ export function NoteForm({
           {mode === 'edit' ? 'Perbarui Catatan' : 'Buat Catatan'}
         </Text>
       </TouchableOpacity>
-
-      {/* Modal code remains the same */}
     </KeyboardAvoidingView>
   );
 }
