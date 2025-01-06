@@ -6,6 +6,7 @@ type NoteContextType = {
   notes: NoteData[];
   addNote: (note: NoteData) => void;
   updateNote: (id: string, updatedNote: NoteData) => void;
+  deleteNote: (id: string) => void;
 };
 
 const NoteContext = createContext<NoteContextType | undefined>(undefined);
@@ -29,8 +30,12 @@ export const NoteProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setNotes(updatedNotes);
     }
   };
+  const deleteNote = (id: string) => {
+    const updatedNotes = notes.filter(note => note.id !== id);
+    setNotes(updatedNotes);
+  };
   return (
-    <NoteContext.Provider value={{ notes, addNote, updateNote }}>
+    <NoteContext.Provider value={{ notes, addNote, updateNote, deleteNote }}>
       {children}
     </NoteContext.Provider>
   );

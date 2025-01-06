@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, KeyboardAvoidingView, StyleSheet, Alert, TouchableOpacity, Modal, FlatList, Platform} from 'react-native';
+import { View, Text, TextInput, KeyboardAvoidingView, StyleSheet, Alert, TouchableOpacity, Platform} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { NewNoteRouteProp, NoteData, Tag } from './types';
 import { useRoute } from '@react-navigation/native';
@@ -158,7 +158,7 @@ export function NoteForm({
         style={styles.titleInput}
         value={noteTitle}
         onChangeText={setNoteTitle}
-        placeholder="Judul Catatan"
+        placeholder="Ada apa hari ini?"
         placeholderTextColor="#9DA3B4"
       />
 

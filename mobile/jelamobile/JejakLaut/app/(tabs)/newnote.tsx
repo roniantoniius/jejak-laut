@@ -1,6 +1,6 @@
 // app/(tabs)/newnote.tsx
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTags } from '../../components/TagContext';
 import { useNotes } from '../../components/NoteContext';
@@ -27,16 +27,14 @@ export default function NewNoteScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <NoteForm 
-          onSubmit={handleCreateNote}
-          onAddTag={(tag) => addTag(tag)} 
-          availableTags={tags}
-          latitude={latitude}
-          longitude={longitude}
-          navigation={navigation}
-        />
-      </ScrollView>
+      <NoteForm 
+        onSubmit={handleCreateNote}
+        onAddTag={(tag) => addTag(tag)} 
+        availableTags={tags}
+        latitude={latitude}
+        longitude={longitude}
+        navigation={navigation}
+      />
     </View>
   );
 }

@@ -2,7 +2,7 @@ import { useNotes } from '@/components/NoteContext';
 import { router, useLocalSearchParams } from 'expo-router';
 import { NoteForm } from '@/components/NoteForm';
 import { NoteData } from '@/components/types';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { useTags } from '@/components/TagContext';
 import { useEffect, useState } from 'react';
 
@@ -60,17 +60,15 @@ export default function EditNoteScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <NoteForm
-          mode="edit"
-          onSubmit={handleUpdateNote}
-          onAddTag={(tag) => addTag(tag)}
-          availableTags={tags}
-          {...preloadedData}
-          latitude={noteToEdit.latitude}
-          longitude={noteToEdit.longitude}
-        />
-      </ScrollView>
+      <NoteForm
+        mode="edit"
+        onSubmit={handleUpdateNote}
+        onAddTag={(tag) => addTag(tag)}
+        availableTags={tags}
+        {...preloadedData}
+        latitude={noteToEdit.latitude}
+        longitude={noteToEdit.longitude}
+      />
     </View>
   );
 }

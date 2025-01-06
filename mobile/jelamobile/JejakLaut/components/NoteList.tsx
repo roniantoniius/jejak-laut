@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, Alert } from 'react-native';
 import { NoteCard } from './NoteCard';
 import { NoteData, Tag } from './types';
 import { SearchBar } from './SearchBar';
@@ -9,9 +9,10 @@ import { router, useNavigation } from 'expo-router';
 type NoteListProps = {
   tags: Tag[];
   notes: NoteData[];
+  onDelete: () => void;
 };
 
-export function NoteList({ notes }: NoteListProps) {
+export function NoteList({ notes, onDelete }: NoteListProps) {
   const [searchTitle, setSearchTitle] = useState('');
   const [searchTag, setSearchTag] = useState('');
 
@@ -40,6 +41,7 @@ export function NoteList({ notes }: NoteListProps) {
       params: { id }, // Kirim parameter id
     });
   }, []);
+  
   
   return (
     <FlatList

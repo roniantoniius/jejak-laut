@@ -1,5 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useCallback } from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LongPressGestureHandler, State, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Tag } from './types';
 
 type NoteCardProps = {
@@ -27,21 +29,64 @@ export function NoteCard({ id, title, tags, longitude, latitude, lastModified, o
     return `${diffInDays} hari yang lalu`;
   };
 
+  const handleLongPress = useCallback(async () => {
+    Alert.alert(
+      "Hapus Catatan",
+      "Apakah Anda yakin ingin menghapus catatan ini?",
+      [
+        { text: "Batal", style: "cancel" },
+        {
+          text: "Hapus", 
+          onPress: async () => {
+            try {
+              // Menghapus data dari AsyncStorage
+              await AsyncStorage.removeItem(id);
+              // Setelah menghapus, Anda mungkin ingin memperbarui daftar catatan
+              // atau memberikan notifikasi bahwa catatan telah dihapus
+              console.log(`Catatan dengan id ${id} telah dihapus.`);
+              // Jika ada fungsi untuk memperbarui daftar catatan di parent component, panggil disini
+            } catch (error) {
+              console.error('Error removing item from AsyncStorage:', error);
+              Alert.alert('Error', 'Gagal menghapus catatan.');
+            }
+          },
+          style: "destructive"
+        }
+      ],
+      { cancelable: false }
+    );
+  }, [id]);
+
+
   return (
-    <TouchableOpacity style={styles.card} onPress={() => onPress(id)}>
-      <View style={styles.cardBody}>
-        <Text style={styles.title}>{title}</Text>
-        <View style={styles.tagContainer}>
-          {tags.map((tag) => (
-            <Text key={tag.id} style={[styles.tag, { backgroundColor: tag.color }]}>
-              {tag.label}
-            </Text>
-          ))}
+    <GestureHandlerRootView>
+      <LongPressGestureHandler 
+        onHandlerStateChange={({ nativeEvent }) => {
+          if (nativeEvent.state === State.ACTIVE) {
+            handleLongPress();
+          }
+        }}
+        minDurationMs={3000} // 3 detik
+      >
+        <View>
+          <TouchableOpacity style={styles.card} onPress={() => onPress(id)}>
+            <View style={styles.cardBody}>
+              <Text style={styles.title}>{title}</Text>
+              <View style={styles.tagContainer}>
+                {tags.map((tag) => (
+                  <Text key={tag.id} style={[styles.tag, { backgroundColor: tag.color }]}>
+                    {tag.label}
+                  </Text>
+                ))}
+              </View>
+              <Text style={styles.lastModified}>{formatTimeAgo(lastModified)}</Text>
+              <Text style={styles.longlat}>| {longitude}, {latitude}</Text>
+            </View>
+          </TouchableOpacity>
         </View>
-        <Text style={styles.lastModified}>{formatTimeAgo(lastModified)}</Text>
-        <Text style={styles.longlat}>| {longitude}, {latitude}</Text>
-      </View>
-    </TouchableOpacity>
+      </LongPressGestureHandler>
+    </GestureHandlerRootView>
+
   );
 }
 
