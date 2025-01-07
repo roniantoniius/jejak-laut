@@ -9,7 +9,7 @@ import { router, useNavigation } from 'expo-router';
 type NoteListProps = {
   tags: Tag[];
   notes: NoteData[];
-  onDelete: () => void;
+  onDelete: (id: string) => void;
 };
 
 export function NoteList({ notes, onDelete }: NoteListProps) {
@@ -56,6 +56,7 @@ export function NoteList({ notes, onDelete }: NoteListProps) {
           latitude={item.latitude}
           lastModified={item.lastModified}
           onPress={() => handlePressNote(item.id)}
+          onDelete={onDelete}
         />
       )}
       ListHeaderComponent={

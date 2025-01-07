@@ -9,13 +9,13 @@ export default function Index() {
   const { tags } = useTags();
   const { notes, deleteNote } = useNotes();
 
-  const reloadNotes = useCallback(() => {
-  }, []);
-
+  const handleDeleteNote = useCallback((id: string) => {
+    deleteNote(id);
+  }, [deleteNote]);
   return (
     <View style={styles.container}>
       {/* Note List */}
-      <NoteList tags={tags} notes={notes} onDelete={reloadNotes} />
+      <NoteList tags={tags} notes={notes} onDelete={handleDeleteNote} />
     </View>
   );
 }

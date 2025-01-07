@@ -1,6 +1,6 @@
-import React, { createContext, useContext } from 'react';
 import { NoteData } from './types';
 import { useAsyncStorage } from './useAsyncStorage';
+import React, { createContext, useContext } from 'react';
 
 type NoteContextType = {
   notes: NoteData[];

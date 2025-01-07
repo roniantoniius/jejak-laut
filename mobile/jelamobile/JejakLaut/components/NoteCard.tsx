@@ -12,9 +12,10 @@ type NoteCardProps = {
   latitude: number;
   lastModified: string;
   onPress: (id: string) => void;
+  onDelete: (id: string) => void;
 };
 
-export function NoteCard({ id, title, tags, longitude, latitude, lastModified, onPress }: NoteCardProps) {
+export function NoteCard({ id, title, tags, longitude, latitude, lastModified, onPress, onDelete }: NoteCardProps) {
   const formatTimeAgo = (dateString: string): string => {
     const now = new Date();
     const date = new Date(dateString);
@@ -34,17 +35,15 @@ export function NoteCard({ id, title, tags, longitude, latitude, lastModified, o
       "Hapus Catatan",
       "Apakah Anda yakin ingin menghapus catatan ini?",
       [
-        { text: "Batal", style: "cancel" },
+        // ... existing cancel button
         {
           text: "Hapus", 
           onPress: async () => {
             try {
-              // Menghapus data dari AsyncStorage
               await AsyncStorage.removeItem(id);
-              // Setelah menghapus, Anda mungkin ingin memperbarui daftar catatan
-              // atau memberikan notifikasi bahwa catatan telah dihapus
               console.log(`Catatan dengan id ${id} telah dihapus.`);
-              // Jika ada fungsi untuk memperbarui daftar catatan di parent component, panggil disini
+              // Call the onDelete prop to update the parent's state
+              onDelete(id);
             } catch (error) {
               console.error('Error removing item from AsyncStorage:', error);
               Alert.alert('Error', 'Gagal menghapus catatan.');
@@ -55,7 +54,7 @@ export function NoteCard({ id, title, tags, longitude, latitude, lastModified, o
       ],
       { cancelable: false }
     );
-  }, [id]);
+  }, [id, onDelete]);
 
 
   return (
@@ -86,7 +85,6 @@ export function NoteCard({ id, title, tags, longitude, latitude, lastModified, o
         </View>
       </LongPressGestureHandler>
     </GestureHandlerRootView>
-
   );
 }
 
