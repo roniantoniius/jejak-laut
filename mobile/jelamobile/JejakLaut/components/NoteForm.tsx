@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, KeyboardAvoidingView, StyleSheet, Alert, TouchableOpacity, Platform} from 'react-native';
+import { View, Text, TextInput, KeyboardAvoidingView, StyleSheet, Alert, TouchableOpacity, Platform, FlatList, Button} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { NewNoteRouteProp, NoteData, Tag } from './types';
 import { useRoute } from '@react-navigation/native';
 import { router } from 'expo-router';
+import * as ImagePicker from 'expo-image-picker';
+import { Modal } from 'react-native';
+
+const COLOR_OPTIONS = ['#FF5733', '#33FF57', '#3357FF', '#FFC300', '#8E44AD'];
 
 type NoteFormProps = {
   onSubmit: (data: NoteData) => void;
@@ -51,6 +55,21 @@ export function NoteForm({
   const route = useRoute<NewNoteRouteProp>(); // Menangkap route params
   const [params, setParams] = useState(route.params);
   const [hasReceivedLocation, setHasReceivedLocation] = useState(false);
+
+  const [imageUri, setImageUri] = useState<string | undefined>(undefined);
+
+  const selectImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImageUri(result.assets[0].uri);
+    }
+  };
 
   useEffect(() => {
       setParams(route.params);
@@ -124,6 +143,7 @@ export function NoteForm({
       latitude: lat,
       longitude: lng,
       lastModified: new Date().toISOString(),
+      gambar: imageUri,
     });
 
     // Only reset form if it's not in edit mode
@@ -197,6 +217,10 @@ export function NoteForm({
         </TouchableOpacity>
       </View>
 
+      <TouchableOpacity style={styles.imageButton} onPress={selectImage}>
+        <Text style={styles.imageButtonText}>Pilih Gambar</Text>
+      </TouchableOpacity>
+
       <TextInput
         style={styles.markdownInput}
         multiline
@@ -251,6 +275,28 @@ export function NoteForm({
           {mode === 'edit' ? 'Perbarui Catatan' : 'Buat Catatan'}
         </Text>
       </TouchableOpacity>
+
+      {/* Modal untuk memilih warna */}
+      <Modal visible={isColorPickerVisible} transparent animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Pilih Warna Tag</Text>
+            <FlatList
+              data={COLOR_OPTIONS}
+              keyExtractor={(item) => item}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={[styles.colorOption, { backgroundColor: item }]}
+                  onPress={() => handleColorSelect(item)}
+                />
+              )}
+              numColumns={3}
+              contentContainerStyle={styles.colorGrid}
+            />
+            <Button title="Batal" onPress={() => setIsColorPickerVisible(false)} />
+          </View>
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
   );
 }
@@ -389,5 +435,46 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     color: 'white',
     fontSize: 16,
+  },
+  modalTitle: {
+    fontSize: 20,
+    marginBottom: 16,
+    color: '#000',
+  },
+  colorGrid: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  colorOption: {
+    width: 50,
+    height: 50,
+    margin: 8,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 16,
+    alignItems: 'center',
+    width: '80%',
+  },
+  imageButton: {
+    backgroundColor: '#007AFF',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 10
+  },
+  imageButtonText: {
+    color: 'white',
+    fontWeight: 'bold'
   },
 });

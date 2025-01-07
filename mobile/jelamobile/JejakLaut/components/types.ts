@@ -12,6 +12,7 @@ export type NoteData = {
     longitude: number;
     latitude: number;
     lastModified: string;
+    gambar?: string;
 };
 
 export type Tag = {

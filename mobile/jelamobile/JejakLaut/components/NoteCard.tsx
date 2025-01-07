@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LongPressGestureHandler, State, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { Tag } from './types';
 
 type NoteCardProps = {
@@ -11,11 +11,12 @@ type NoteCardProps = {
   longitude: number;
   latitude: number;
   lastModified: string;
+  gambar?: string;
   onPress: (id: string) => void;
   onDelete: (id: string) => void;
 };
 
-export function NoteCard({ id, title, tags, longitude, latitude, lastModified, onPress, onDelete }: NoteCardProps) {
+export function NoteCard({ id, title, tags, longitude, latitude, lastModified, onPress, onDelete, gambar }: NoteCardProps) {
   const formatTimeAgo = (dateString: string): string => {
     const now = new Date();
     const date = new Date(dateString);
@@ -35,6 +36,13 @@ export function NoteCard({ id, title, tags, longitude, latitude, lastModified, o
       "Hapus Catatan",
       "Apakah Anda yakin ingin menghapus catatan ini?",
       [
+        {
+          text: "Batal", // Tombol untuk batal
+          onPress: () => {
+            console.log("Penghapusan catatan dibatalkan.");
+          },
+          style: "cancel", // Gaya tombol default untuk batal
+        },
         // ... existing cancel button
         {
           text: "Hapus", 
@@ -65,11 +73,12 @@ export function NoteCard({ id, title, tags, longitude, latitude, lastModified, o
             handleLongPress();
           }
         }}
-        minDurationMs={3000} // 3 detik
+        minDurationMs={2000}
       >
         <View>
           <TouchableOpacity style={styles.card} onPress={() => onPress(id)}>
             <View style={styles.cardBody}>
+              {gambar && <Image source={{ uri: gambar }} style={styles.imageInCard} />}
               <Text style={styles.title}>{title}</Text>
               <View style={styles.tagContainer}>
                 {tags.map((tag) => (
@@ -140,5 +149,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#052844',
     fontFamily: 'Montserrat-Bold',
+  },
+  imageInCard: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover'
   },
 });
