@@ -5,6 +5,7 @@ import { NoteData } from '@/components/types';
 import { View, StyleSheet, Text } from 'react-native';
 import { useTags } from '@/components/TagContext';
 import { useEffect, useState } from 'react';
+import { ScrollView } from 'react-native';
 
 export default function EditNoteScreen() {
   // Combine all hooks at the top level
@@ -60,15 +61,17 @@ export default function EditNoteScreen() {
 
   return (
     <View style={styles.container}>
-      <NoteForm
-        mode="edit"
-        onSubmit={handleUpdateNote}
-        onAddTag={(tag) => addTag(tag)}
-        availableTags={tags}
-        {...preloadedData}
-        latitude={noteToEdit.latitude}
-        longitude={noteToEdit.longitude}
-      />
+      <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent}>
+        <NoteForm
+          mode="edit"
+          onSubmit={handleUpdateNote}
+          onAddTag={(tag) => addTag(tag)}
+          availableTags={tags}
+          {...preloadedData}
+          latitude={noteToEdit.latitude}
+          longitude={noteToEdit.longitude}
+        />
+      </ScrollView>
     </View>
   );
 }
@@ -88,5 +91,11 @@ const styles = StyleSheet.create({
   error: {
     fontSize: 16,
     color: 'red',
+  },
+  scrollContainer: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 16,
   },
 });

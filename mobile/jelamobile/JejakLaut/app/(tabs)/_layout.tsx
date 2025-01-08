@@ -158,7 +158,7 @@ export default function TabLayout() {
           <Tabs.Screen
             name="newnote"
             options={{
-              title: 'Tambah Jejak Baru',
+              title: 'Catatan Baru!',
               headerTitleStyle: {
                 fontSize: 28,
                 fontFamily: 'Montserrat-Bold',

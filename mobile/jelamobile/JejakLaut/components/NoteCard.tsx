@@ -77,18 +77,26 @@ export function NoteCard({ id, title, tags, longitude, latitude, lastModified, o
       >
         <View>
           <TouchableOpacity style={styles.card} onPress={() => onPress(id)}>
-            <View style={styles.cardBody}>
-              <Text style={styles.title}>{title}</Text>
-              <View style={styles.tagContainer}>
-                {tags.map((tag) => (
-                  <Text key={tag.id} style={[styles.tag, { backgroundColor: tag.color }]}>
-                    {tag.label}
-                  </Text>
-                ))}
+          <View style={styles.cardBody}>
+              {/* Data on the right */}
+              <View style={styles.dataContainer}>
+                <Text style={styles.title}>{title}</Text>
+                <View style={styles.tagContainer}>
+                  {tags.map((tag) => (
+                    <Text key={tag.id} style={[styles.tag, { backgroundColor: tag.color }]}>
+                      {tag.label}
+                    </Text>
+                  ))}
+                </View>
+                <Text style={styles.lastModified}>{formatTimeAgo(lastModified)}</Text>
+                <Text style={styles.longlat}>| {longitude}, {latitude}</Text>
               </View>
-              <Text style={styles.lastModified}>{formatTimeAgo(lastModified)}</Text>
-              <Text style={styles.longlat}>| {longitude}, {latitude}</Text>
-              {gambar && <Image source={{ uri: gambar }} style={styles.imageInCard} />}
+              {/* Image on the left */}
+              {gambar && (
+                <View style={styles.imageContainer}>
+                  <Image source={{ uri: gambar }} style={styles.imageInCard} />
+                </View>
+              )}
             </View>
           </TouchableOpacity>
         </View>
@@ -122,7 +130,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
   },
   cardBody: {
-    flexDirection: 'column',
+    flexDirection: 'row',
   },
   title: {
     fontSize: 24,
@@ -150,9 +158,18 @@ const styles = StyleSheet.create({
     color: '#052844',
     fontFamily: 'Montserrat-Bold',
   },
+  imageContainer: {
+    width: '40%', // Adjust based on how much space you want for the image
+    borderRadius: 10,
+    overflow: 'hidden', // This ensures the image takes the borderRadius
+  },
   imageInCard: {
     width: '100%',
-    height: 200,
-    resizeMode: 'cover'
+    height: '100%', // Changed from fixed height to full container
+    resizeMode: 'cover',
+  },
+  dataContainer: {
+    flex: 1, // This will take up the remaining space
+    paddingLeft: 10, // Add some space between image and data
   },
 });

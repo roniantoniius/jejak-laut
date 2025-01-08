@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { useNotes } from '@/components/NoteContext';
 import { useLocalSearchParams } from 'expo-router';
 import MarkDown from 'react-native-markdown-display';
@@ -35,6 +35,12 @@ export default function NoteDetail() {
   return (
     <>
       <ScrollView contentContainerStyle={styles.container}>
+        {/* Display the image if it exists */}
+        {note.gambar && (
+          <View style={styles.imageContainer}>
+            <Image source={{ uri: note.gambar }} style={styles.imageInCard} />
+          </View>
+        )}
         <Text style={styles.title}>{note.title}</Text>
         {note.tags.length > 0 && (
           <View style={styles.tagContainer}>
@@ -121,6 +127,17 @@ const styles = StyleSheet.create({
     editButtonText: {
       color: 'white',
       fontSize: 16,
+    },
+    imageContainer: {
+      width: '100%',
+      borderRadius: 10,
+      overflow: 'hidden',
+      marginBottom: 10,
+    },
+    imageInCard: {
+      width: '100%',
+      height: 200, // Adjust height as needed
+      resizeMode: 'cover',
     },
 });
 

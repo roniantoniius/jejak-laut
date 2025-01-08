@@ -229,8 +229,8 @@ export function NoteForm({
         {imageUri && (
           <Text style={styles.imagePathText}>{imageUri.split('/').pop()}</Text>
         )}
-        <TouchableOpacity style={styles.imageButton} onPress={selectImage}>
-          <Text style={styles.imageButtonText}>Pilih Gambar</Text>
+        <TouchableOpacity style={styles.addButtonSmall} onPress={selectImage}>
+          <Text style={styles.addButtonSmallText}>Gambar</Text>
         </TouchableOpacity>
       </View>
 
@@ -351,7 +351,6 @@ const styles = StyleSheet.create({
   newTagContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 24,
   },
   newTagInput: {
     flex: 1,
@@ -494,7 +493,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 10,
+    marginBottom: 24,
   },
   imagePathText: {
     flex: 1,
