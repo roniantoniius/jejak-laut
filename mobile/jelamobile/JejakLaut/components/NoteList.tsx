@@ -51,6 +51,7 @@ export function NoteList({ notes, onDelete }: NoteListProps) {
         <NoteCard
           id={item.id}
           title={item.title}
+          gambar={item.gambar}
           tags={item.tags}
           longitude={item.longitude}
           latitude={item.latitude}

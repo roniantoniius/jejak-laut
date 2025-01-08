@@ -19,7 +19,6 @@ export default function NewNoteScreen() {
     const newNote = { ...data, id: uuidV4() };
     addNote(newNote);
     console.log('Catatan baru berhasil disimpan:', newNote);
-    navigation.goBack();
   };
 
   const latitude = route.params?.latitude || 0;

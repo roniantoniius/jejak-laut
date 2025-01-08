@@ -78,7 +78,6 @@ export function NoteCard({ id, title, tags, longitude, latitude, lastModified, o
         <View>
           <TouchableOpacity style={styles.card} onPress={() => onPress(id)}>
             <View style={styles.cardBody}>
-              {gambar && <Image source={{ uri: gambar }} style={styles.imageInCard} />}
               <Text style={styles.title}>{title}</Text>
               <View style={styles.tagContainer}>
                 {tags.map((tag) => (
@@ -89,6 +88,7 @@ export function NoteCard({ id, title, tags, longitude, latitude, lastModified, o
               </View>
               <Text style={styles.lastModified}>{formatTimeAgo(lastModified)}</Text>
               <Text style={styles.longlat}>| {longitude}, {latitude}</Text>
+              {gambar && <Image source={{ uri: gambar }} style={styles.imageInCard} />}
             </View>
           </TouchableOpacity>
         </View>

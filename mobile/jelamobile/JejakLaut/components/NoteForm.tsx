@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, KeyboardAvoidingView, StyleSheet, Alert, TouchableOpacity, Platform, FlatList, Button} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { NewNoteRouteProp, NoteData, Tag } from './types';
 import { useRoute } from '@react-navigation/native';
-import { router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import { Ionicons } from '@expo/vector-icons';
 import { Modal } from 'react-native';
+import { router } from 'expo-router';
 
 const COLOR_OPTIONS = ['#FF5733', '#33FF57', '#3357FF', '#FFC300', '#8E44AD'];
 
@@ -48,11 +49,11 @@ export function NoteForm({
   const [lng, setLng] = useState(initialLng);
 
   const [isTagPickerOpen, setIsTagPickerOpen] = useState(false);
-  const [newTagText, setNewTagText] = useState(''); // State untuk tag baru
+  const [newTagText, setNewTagText] = useState('');
   const [isColorPickerVisible, setIsColorPickerVisible] = useState(false);
   const [pendingTag, setPendingTag] = useState<Tag | null>(null);
 
-  const route = useRoute<NewNoteRouteProp>(); // Menangkap route params
+  const route = useRoute<NewNoteRouteProp>();
   const [params, setParams] = useState(route.params);
   const [hasReceivedLocation, setHasReceivedLocation] = useState(false);
 
@@ -69,6 +70,9 @@ export function NoteForm({
     if (!result.canceled) {
       setImageUri(result.assets[0].uri);
     }
+  };
+  const resetImage = () => {
+    setImageUri(undefined);
   };
 
   useEffect(() => {
@@ -154,6 +158,7 @@ export function NoteForm({
       setLat(0);
       setLng(0);
       setHasReceivedLocation(false);
+      setImageUri(undefined);
     }
   };
   
@@ -217,9 +222,17 @@ export function NoteForm({
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.imageButton} onPress={selectImage}>
-        <Text style={styles.imageButtonText}>Pilih Gambar</Text>
-      </TouchableOpacity>
+      <View style={styles.imageSelectionContainer}>
+        <TouchableOpacity style={styles.resetButton} onPress={resetImage}>
+          <Ionicons name="reload" size={24} color="red" />
+        </TouchableOpacity>
+        {imageUri && (
+          <Text style={styles.imagePathText}>{imageUri.split('/').pop()}</Text>
+        )}
+        <TouchableOpacity style={styles.imageButton} onPress={selectImage}>
+          <Text style={styles.imageButtonText}>Pilih Gambar</Text>
+        </TouchableOpacity>
+      </View>
 
       <TextInput
         style={styles.markdownInput}
@@ -476,5 +489,21 @@ const styles = StyleSheet.create({
   imageButtonText: {
     color: 'white',
     fontWeight: 'bold'
+  },
+  imageSelectionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  imagePathText: {
+    flex: 1,
+    fontSize: 12,
+    color: '#333',
+    textAlign: 'center',
+    marginHorizontal: 10,
+  },
+  resetButton: {
+    padding: 10,
   },
 });
