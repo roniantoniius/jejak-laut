@@ -95,7 +95,8 @@ export function NoteForm({
       console.log('Route params:', route.params);
       console.log('Latitude state:', lat);
       console.log('Longitude state:', lng);
-  }, [route.params, lat, lng]);
+      console.log('Gambar:', imageUri);
+  }, [route.params, lat, lng, imageUri]);
 
   const handleCreateTag = () => {
     if (!newTagText.trim()) {
