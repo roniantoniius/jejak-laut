@@ -106,7 +106,7 @@ export function NoteForm({
 
     const newTag: Tag = { id: `${Date.now()}`, label: newTagText.trim(), color: '' };
     setPendingTag(newTag);
-    setIsColorPickerVisible(true); // Tampilkan modal untuk memilih warna
+    setIsColorPickerVisible(true);
   };
 
   const handleColorSelect = (color: string) => {

@@ -15,7 +15,7 @@ app = FastAPI(
 
 API_KEY_HEADER = APIKeyHeader(name="Authorization", auto_error=True)
 
-origins = ["http://localhost:5173"]
+origins = ["http://localhost:5173", "http://localhost:8081"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
