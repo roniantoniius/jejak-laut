@@ -14,8 +14,8 @@ app = FastAPI(
 )
 
 API_KEY_HEADER = APIKeyHeader(name="Authorization", auto_error=True)
-
-origins = ["http://localhost:5173", "http://localhost:8081"]
+            # punya web              # gatauu punya siapa      # punya expo native
+origins = ["http://localhost:5173", "http://localhost:8081", "exp://192.168.100.6:8081"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

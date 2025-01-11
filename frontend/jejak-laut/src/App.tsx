@@ -14,7 +14,6 @@ import { PickLocation } from "./pages/PickLocation";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 export type ChatbotData = {
   ai_access: number;
   daftar_token: Record<string, string>;

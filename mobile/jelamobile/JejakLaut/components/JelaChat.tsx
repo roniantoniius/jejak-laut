@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { ChatbotData, NoteData } from './types';
+import axios from 'axios';
 
 type Message = {
   id: string;
@@ -8,54 +10,95 @@ type Message = {
   actionButtons?: { label: string; onPress: () => void }[];
 };
 
-type JelaChatProps = {};
+type JelaChatProps = {
+  noteId: string;
+  chatbotData: ChatbotData;
+  noteData: NoteData;
+};
 
-export function JelaChat({}: JelaChatProps) {
+export function JelaChat({ noteId, chatbotData, noteData }: JelaChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const flatListRef = useRef<FlatList>(null);
+  const { ai_access, daftar_token } = chatbotData;
 
-  // Fungsi untuk menambahkan pesan dari pengguna
+  const getToken = async () => {
+    if (!daftar_token[noteId]) {
+      try {
+        const response = await axios.post("http://localhost:5212/api/session/redis/generate_token");
+        return response.data.token;
+      } catch (error) {
+        console.error("Gagal membuat token:", error);
+        return null;
+      }
+    }
+    return daftar_token[noteId];
+  };
+
   const addUserMessage = (text: string) => {
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      text: text,
-      role: 'user',
-    };
     setMessages(prevMessages => [
       ...prevMessages,
-      newMessage,
-      {
-        id: (Date.now() + 1).toString(),
-        text: 'Jela Jela Jela!',
-        role: 'jela',
-        actionButtons: [
-          { label: 'Ubah', onPress: () => console.log('Ubah clicked') },
-          { label: 'Tambah', onPress: () => console.log('Tambah clicked') },
-          { label: 'Tolak', onPress: () => console.log('Tolak clicked') },
-        ],
-      },
+      { id: Date.now().toString(), text: text, role: 'user' },
     ]);
     setInputText('');
   };
 
-  // Fungsi untuk mengirim pesan
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (inputText.trim()) {
       addUserMessage(inputText.trim());
+      const token = await getToken();
+      if (token) {
+        try {
+          const response = await axios.post(
+            "http://localhost:5212/api/jela/chat",
+            {
+              judul: noteData.title,
+              kategori: noteData.tags.map(tag => tag.label).join(", "),
+              catatan: noteData.markdown,
+              query: inputText.trim(),
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setMessages(prevMessages => [
+            ...prevMessages,
+            {
+              id: (Date.now() + 1).toString(),
+              text: `${response.data.response.apiResponse}\n\n${response.data.response.result}`,
+              role: 'jela',
+              actionButtons: [
+                { label: 'Ubah', onPress: () => console.log('Ubah clicked') },
+                { label: 'Tambah', onPress: () => console.log('Tambah clicked') },
+                { label: 'Tolak', onPress: () => console.log('Tolak clicked') },
+              ],
+            },
+          ]);
+        } catch (error) {
+          console.error("Gagal mengirim prompt ke AI:", error);
+          setMessages(prev => [
+            ...prev,
+            { 
+              id: (Date.now() + 1).toString(),
+              text: "Maaf, kami mengalami kesulitan menghubungi Jela. Silakan coba lagi nanti.",
+              role: 'jela'
+            }
+          ]);
+        }
+      }
     }
   };
 
   useEffect(() => {
-    // Inisialisasi pesan default dari 'jela' saat komponen dimount
     setMessages([{
       id: 'welcome',
       text: 'Selamat datang 😁! Kamu lagi ngobrol sama Jela ⛵, yang siap bantu optimalkan catatanmu serta menemani selama diskusi ini.',
       role: 'jela',
     }]);
-  }, []); // Array kosong sebagai kedua parameter berarti efek ini hanya berjalan sekali saat mount
+  }, []);
 
-  // Efek untuk scroll otomatis ke pesan terbaru
   useEffect(() => {
     if (flatListRef.current) {
       flatListRef.current.scrollToEnd({ animated: true });

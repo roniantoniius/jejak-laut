@@ -21,6 +21,11 @@ export type Tag = {
     color: string;
 };
 
+export type ChatbotData = {
+  ai_access: number;
+  daftar_token: Record<string, string>;
+};
+
 export interface NewNoteRouteParams {
     latitude?: number;
     longitude?: number;

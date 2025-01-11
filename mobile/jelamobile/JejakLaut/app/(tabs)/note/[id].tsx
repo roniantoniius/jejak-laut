@@ -7,7 +7,7 @@ import { PopupBawah } from '@/components/PopupBawah';
 import { JelaChat } from '@/components/JelaChat';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '@/components/types';
+import { RootStackParamList, Note, NoteData, ChatbotData } from '@/components/types';
 
 export default function NoteDetail() {
   const { notes } = useNotes();
@@ -31,6 +31,9 @@ export default function NoteDetail() {
   const handlePeriksaLokasi = () => {
     navigation.navigate('periksalokasi/[id]', { id: note.id });
   };
+
+  // Assuming chatbotData is somehow available or stored in Note or NoteData
+  const defaultChatbotData: ChatbotData = { ai_access: 0, daftar_token: {} };
 
   return (
     <>
@@ -76,7 +79,11 @@ export default function NoteDetail() {
         onClose={() => {}}
       >
         <View style={{ width: '100%' }}>
-          <JelaChat />
+          <JelaChat 
+            noteId={note.id} 
+            chatbotData={defaultChatbotData} 
+            noteData={note} 
+          />
         </View>
       </PopupBawah>
     </>

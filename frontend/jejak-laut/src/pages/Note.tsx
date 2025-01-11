@@ -10,7 +10,6 @@ import { JelaChat } from "../components/JelaChat";
 import { useEffect } from "react";
 import { ChatbotData } from "../App";
 
-
 type NoteProps = {
   onDelete: (id: string) => void;
 };
