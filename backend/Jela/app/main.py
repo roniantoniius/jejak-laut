@@ -15,7 +15,13 @@ app = FastAPI(
 
 API_KEY_HEADER = APIKeyHeader(name="Authorization", auto_error=True)
             # punya web              # gatauu punya siapa      # punya expo native
-origins = ["http://localhost:5173", "http://localhost:8081", "exp://192.168.100.6:8081"]
+origins = [
+    "http://localhost:5173", 
+    "http://localhost:8081", 
+    "exp://192.168.100.6:8081",
+    "http://192.168.100.6:19000",  # Metro Bundler default
+    "http://192.168.100.6:19001",  # Expo web client
+]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

@@ -25,7 +25,7 @@ export function JelaChat({ noteId, chatbotData, noteData }: JelaChatProps) {
   const getToken = async () => {
     if (!daftar_token[noteId]) {
       try {
-        const response = await axios.post("http://localhost:5212/api/session/redis/generate_token");
+        const response = await axios.post("http://192.168.100.6:5212/api/session/redis/generate_token");
         return response.data.token;
       } catch (error) {
         console.error("Gagal membuat token:", error);
@@ -50,7 +50,7 @@ export function JelaChat({ noteId, chatbotData, noteData }: JelaChatProps) {
       if (token) {
         try {
           const response = await axios.post(
-            "http://localhost:5212/api/jela/chat",
+            "http://192.168.100.6:5212/api/jela/chat",
             {
               judul: noteData.title,
               kategori: noteData.tags.map(tag => tag.label).join(", "),
