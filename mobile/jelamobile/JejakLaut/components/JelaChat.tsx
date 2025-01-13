@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { ChatbotData, NoteData } from './types';
 import axios from 'axios';
+import Markdown from 'react-native-markdown-display';
 
 type Message = {
   id: string;
@@ -63,11 +64,13 @@ export function JelaChat({ noteId, chatbotData, noteData }: JelaChatProps) {
               },
             }
           );
+          const { apiResponse, result } = response.data.response;
+          const fullResponse = `${apiResponse}\n\n${result}`;
           setMessages(prevMessages => [
             ...prevMessages,
             {
               id: (Date.now() + 1).toString(),
-              text: `${response.data.response.apiResponse}\n\n${response.data.response.result}`,
+              text: fullResponse,
               role: 'jela',
               actionButtons: [
                 { label: 'Ubah', onPress: () => console.log('Ubah clicked') },
@@ -113,7 +116,13 @@ export function JelaChat({ noteId, chatbotData, noteData }: JelaChatProps) {
         item.role === 'user' ? styles.userMessage : styles.jelaMessage,
       ]}
     >
-      <Text style={styles.messageText}>{item.text}</Text>
+      {item.role === 'jela' ? (
+        <Markdown>
+          {item.text}
+        </Markdown>
+      ) : (
+        <Text style={styles.messageText}>{item.text}</Text>
+      )}
       {item.actionButtons && (
         <View style={styles.actionButtonContainer}>
           {item.actionButtons.map((button, index) => (

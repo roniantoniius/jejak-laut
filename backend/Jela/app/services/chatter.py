@@ -10,12 +10,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 models = [
-    "llama3-groq-70b-8192-tool-use-preview",
-    "llama-3.1-70b-versatile",
-    "gemma2-9b-it",
+    "llama-3.3-70b-versatile",
+    "llama-3.3-70b-specdec",
+    "llama3-70b-8192",
 ]
 
-DEFAULT_MODEL = "llama3-groq-70b-8192-tool-use-preview"
+DEFAULT_MODEL = "llama-3.3-70b-versatile"
 
 def get_chatter():
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
