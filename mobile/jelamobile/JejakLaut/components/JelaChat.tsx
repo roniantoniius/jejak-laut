@@ -64,8 +64,11 @@ export function JelaChat({ noteId, chatbotData, noteData }: JelaChatProps) {
               },
             }
           );
-          const { apiResponse, result } = response.data.response;
+          
+          const apiResponse = response.data.response.response;
+          const result = response.data.response.result;
           const fullResponse = `${apiResponse}\n\n${result}`;
+
           setMessages(prevMessages => [
             ...prevMessages,
             {
