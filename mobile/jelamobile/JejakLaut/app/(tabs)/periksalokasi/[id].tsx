@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Alert, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import MapView, { MapMarker, Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useLocalSearchParams } from 'expo-router';
 import { useNotes } from '@/components/NoteContext';
 import * as Location from 'expo-location';
 import { Note } from '@/components/types';
-
-const { width, height } = Dimensions.get('window');
 
 export default function PeriksaLokasiScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

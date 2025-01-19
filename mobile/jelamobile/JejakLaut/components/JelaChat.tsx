@@ -78,7 +78,6 @@ export function JelaChat({ noteId, chatbotData, noteData }: JelaChatProps) {
               actionButtons: [
                 { label: 'Ubah', onPress: () => console.log('Ubah clicked') },
                 { label: 'Tambah', onPress: () => console.log('Tambah clicked') },
-                { label: 'Tolak', onPress: () => console.log('Tolak clicked') },
               ],
             },
           ]);

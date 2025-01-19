@@ -7,7 +7,7 @@ import { PopupBawah } from '@/components/PopupBawah';
 import { JelaChat } from '@/components/JelaChat';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/native';
-import { RootStackParamList, Note, NoteData, ChatbotData } from '@/components/types';
+import { RootStackParamList,  ChatbotData } from '@/components/types';
 
 export default function NoteDetail() {
   const { notes } = useNotes();
@@ -32,6 +32,10 @@ export default function NoteDetail() {
     navigation.navigate('periksalokasi/[id]', { id: note.id });
   };
 
+  const handleMarkdownLongPress = () => {
+    handleEdit();
+  };
+
   // Assuming chatbotData is somehow available or stored in Note or NoteData
   const defaultChatbotData: ChatbotData = { ai_access: 0, daftar_token: {} };
 
@@ -44,12 +48,13 @@ export default function NoteDetail() {
             <Image source={{ uri: note.gambar }} style={styles.imageInCard} />
           </View>
         )}
-        <Text style={styles.title}>{note.title}</Text>
+        <Text style={styles.title} selectable>{note.title}</Text>
         {note.tags.length > 0 && (
           <View style={styles.tagContainer}>
             {note.tags.map((tag) => (
               <Text
                 key={tag.id}
+                selectable
                 style={[styles.tag, { backgroundColor: tag.color }]}
               >
                 {tag.label}
@@ -57,21 +62,25 @@ export default function NoteDetail() {
             ))}
           </View>
         )}
-        <MarkDown style={markdownStyle}>
-          {note.markdown}
-        </MarkDown>
-        <View style={styles.locationContainer}>
-          <Text style={styles.location}>
-            Longitude: {note.longitude}, Latitude: {note.latitude}
-          </Text>
-          <TouchableOpacity style={styles.closeButton} onPress={handlePeriksaLokasi}>
-            <Text style={styles.closeButtonText}>Periksa Lokasi</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity onPress={handleEdit} style={styles.editButton}>
-          <Text style={styles.editButtonText}>Edit</Text>
+        <TouchableOpacity onLongPress={handleMarkdownLongPress}>
+          <MarkDown style={markdownStyle}>
+            {note.markdown}
+          </MarkDown>
+          <View style={styles.locationContainer}>
+            <Text style={styles.location} selectable>
+              Longlat: {note.longitude}, {note.latitude}
+            </Text>
+          </View>
         </TouchableOpacity>
       </ScrollView>
+      <View style={styles.floatingButtonsContainer}>
+        <TouchableOpacity onPress={handlePeriksaLokasi} style={[styles.floatingButton, styles.locationButton]}>
+          <Text style={styles.floatingButtonText}>Lokasi</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleEdit} style={[styles.floatingButton, styles.editButton]}>
+          <Text style={styles.floatingButtonText}>Ubah</Text>
+        </TouchableOpacity>
+      </View>
       <PopupBawah
         icon={<Text style={styles.iconText}>AI</Text>}
         title="Jela"
@@ -97,7 +106,7 @@ const styles = StyleSheet.create({
     tag: { fontSize: 16, padding: 8, borderRadius: 4, marginRight: 8, marginBottom: 8, fontFamily: 'Montserrat-Bold', color: 'white' },
     markdown: { fontSize: 16, marginBottom: 16, fontFamily: 'Montserrat-Medium' },
     locationContainer: { marginTop: 0, marginBottom: 46 },
-    location: { fontSize: 14, fontFamily: 'Montserrat-Bold', color: '#052844' },
+    location: { fontSize: 18, fontFamily: 'Montserrat-Bold', color: '#052844' },
     center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     error: { fontSize: 18, color: 'red', fontFamily: 'Montserrat-Bold' },
     closeButton: {
@@ -112,7 +121,7 @@ const styles = StyleSheet.create({
     closeButtonText: {
       fontFamily: 'Montserrat-Bold',
       color: '#052844',
-      fontSize: 18,
+      fontSize: 15,
     },
     iconText: {
       fontSize: 24,
@@ -145,6 +154,32 @@ const styles = StyleSheet.create({
       width: '100%',
       height: 200, // Adjust height as needed
       resizeMode: 'cover',
+    },
+    floatingButtonsContainer: {
+      position: 'absolute',
+      bottom: 30,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      width: '100%',
+    },
+    floatingButton: {
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+      borderRadius: 10,
+      marginHorizontal: 12,
+    },
+    locationButton: {
+      backgroundColor: '#4CAF50',
+      borderColor: '#052844',
+      padding: 10,
+      borderRadius: 5,
+      marginTop: 10,
+      borderWidth: 1,
+    },
+    floatingButtonText: {
+      color: 'white',
+      fontFamily: 'Montserrat-Bold',
+      fontSize: 18,
     },
 });
 
