@@ -5,6 +5,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useNotes } from '@/components/NoteContext';
 import * as Location from 'expo-location';
 import { Note } from '@/components/types';
+import { Dimensions } from 'react-native';
 
 export default function PeriksaLokasiScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -16,6 +17,8 @@ export default function PeriksaLokasiScreen() {
   const [duration, setDuration] = useState<number | null>(null);
   const mapRef = useRef<MapView>(null);
   const currentLocationMarkerRef = useRef<MapMarker | null>(null);
+
+  const { width, height } = Dimensions.get('window');
 
   // Hook for finding note
   useEffect(() => {
@@ -101,6 +104,16 @@ export default function PeriksaLokasiScreen() {
     );
   }
 
+  if (note && (note.longitude === undefined || note.latitude === undefined)) {
+    // Handle case where location data might be missing
+    console.warn('Location data is incomplete for this note');
+    return (
+      <View style={styles.center}>
+        <Text style={styles.error}>Data lokasi tidak lengkap untuk catatan ini</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <MapView
@@ -108,8 +121,8 @@ export default function PeriksaLokasiScreen() {
         style={styles.map}
         ref={mapRef}
         initialRegion={{
-          latitude: note.latitude,
-          longitude: note.longitude,
+          latitude: note?.latitude ?? 0,
+          longitude: note?.longitude ?? 0,
           latitudeDelta: 0.1,
           longitudeDelta: 0.1,
         }}
@@ -166,10 +179,10 @@ export default function PeriksaLokasiScreen() {
 
         <View style={styles.locationInfo}>
           <Text style={styles.locationText}>
-            Longitude: {note.longitude.toFixed(6)}
+            Longitude: {note?.longitude?.toFixed(6) || 'Data tidak tersedia'}
           </Text>
           <Text style={styles.locationText}>
-            Latitude: {note.latitude.toFixed(6)}
+            Latitude: {note?.latitude?.toFixed(6) || 'Data tidak tersedia'}
           </Text>
         </View>
 

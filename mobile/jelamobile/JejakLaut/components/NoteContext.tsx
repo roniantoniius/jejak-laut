@@ -15,18 +15,28 @@ export const NoteProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [notes, setNotes] = useAsyncStorage<NoteData[]>('NOTES', []);
 
   const addNote = (note: NoteData) => {
-    const updatedNotes = [...notes, note];
+    const newNote = {
+      ...note,
+      latitude: note.latitude || 0,
+      longitude: note.longitude || 0,
+    };
+    const updatedNotes = [...notes, newNote];
     setNotes(updatedNotes);
   };
 
-  const updateNote = (id: string, updatedNote: NoteData) => {
+  const updateNote = (id: string, updatedNote: Partial<NoteData>) => {
     const noteIndex = notes.findIndex(note => note.id === id);
     if (noteIndex !== -1) {
-      const updatedNotes = [...notes];
-      updatedNotes[noteIndex] = {
+      const existingNote = notes[noteIndex];
+      const newNote = {
+        ...existingNote,
         ...updatedNote,
-        id: id // Ensure ID remains the same
+        // Ensure latitude and longitude are numbers or use existing values
+        latitude: updatedNote.latitude ?? existingNote.latitude ?? 0,
+        longitude: updatedNote.longitude ?? existingNote.longitude ?? 0,
       };
+      const updatedNotes = [...notes];
+      updatedNotes[noteIndex] = newNote;
       setNotes(updatedNotes);
     }
   };

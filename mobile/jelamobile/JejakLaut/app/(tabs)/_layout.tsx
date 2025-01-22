@@ -5,11 +5,7 @@ import { useRef, useState } from 'react';
 import { TagProvider } from '../../components/TagContext';
 import { NoteProvider } from '@/components/NoteContext';
 import { PopupCard } from '@/components/PopupCard';
-import { EditTagsModal } from '@/components/EditTagsModal';
-import { GuideModal } from '@/components/GuideModal';
 import React from 'react';
-import { TutorMarkdownModal } from '@/components/TutorMarkdown';
-
 export default function TabLayout() {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const router = useRouter();
