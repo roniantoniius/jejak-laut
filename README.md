@@ -3,7 +3,9 @@
 ## 1. Jejak Laut - Menggambarkan jejak perjalanan nelayan di laut.
 A note-taking application designed specifically to address the unique challenges faced by Indonesian fishermen. Unlike generic note-taking apps, Jejak Laut allows users to record precise details like vessel type, fishing gear, GPS coordinates, and catch information tailored for the fishing industry. This application empowers fishermen to organize their data efficiently, ensuring accurate and useful records for future planning and analysis.
 
-*(If a logo exists, insert it here)*
+![dark-nobg](https://github.com/user-attachments/assets/7d885c1c-8734-4e20-b9b6-13a4d13cedf7)
+
+https://github.com/user-attachments/assets/4171dd44-adf9-4636-89cc-755b17bf0efb
 
 ---
 
